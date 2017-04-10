@@ -3,46 +3,32 @@ import java.util.Stack;
 public class Deck{
 
 
-	public Stack<DevelopCard> deck;
+	private Stack<DevelopmentCard> deck;
 	private int totalNumber;
 
 	public Deck(){
-		deck = new Stack<DevelopCard>(); 
+		deck = new Stack<DevelopmentCard>(); 
 		totalNumber = 0;
 	}
 
-	public void push(DevelopCard dc){
+	// Add card to deck
+	protected void addCard(DevelopmentCard dc){
 		deck.push(dc);
 		totalNumber++;
 	}
 
-	public boolean hasCard(){
+
+	// Check the deck whether or not is empty
+	protected boolean hasCard(){
 		return !deck.empty();
 	}
 
-	public DevelopCard drawCard(){
+	//Get a card from deck
+	protected DevelopmentCard drawCard(){
 		totalNumber--;
 		return deck.pop();
 	}
 
 	
-
-	public static void main(String[] args) {
-		Knight k = new Knight();
-		VictoryPoint vp = new VictoryPoint();
-		YearOfPlenty yop = new YearOfPlenty();
-		Monopoly mp = new Monopoly();
-		RoadBuilding rb = new RoadBuilding();
-		Deck d = new Deck();
-
-		
-		d.push(k);
-		d.push(vp);
-		// d.push(yop);
-		// d.push(mp);
-		// d.push(rb);
-		System.out.println(d.drawCard());
-		System.out.println(d.hasCard());
-	}
 	
 }
