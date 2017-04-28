@@ -10,7 +10,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 import javafx.stage.Stage;
 
 /**
@@ -23,21 +26,31 @@ public class SettlersOfMars extends Application {
     public void start(Stage primaryStage) {
         
         Button btn = new Button();
+        Pane pane= new Pane();
+        
+        
+       
         btn.setText("Start Game");
         btn.setOnAction(new EventHandler<ActionEvent>() {
             
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Hello World!");
+                
             }
         });
         
         
-        
+        HexBoard board= new HexBoard();
         StackPane root = new StackPane();
-        root.getChildren().add(btn);
         
-        Scene scene = new Scene(root, 300, 250);
+        pane=board.getBoardPane();
+        
+        
+       
+        root.getChildren().add(pane);
+        
+        Scene scene = new Scene(root, 800, 800);
         
         primaryStage.setTitle("Title Screen");
         primaryStage.setScene(scene);

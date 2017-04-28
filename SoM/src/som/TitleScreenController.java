@@ -31,7 +31,7 @@ public class TitleScreenController implements Initializable {
     //btnStartGame.setOnAction(new EventHandler<ActionEvent>())    
     
     public void handleButtonAction(ActionEvent event) throws IOException {
-        System.out.println("You clicked me!");
+        //System.out.println("You clicked me!");
         label.setText("Hello World!");
         Parent game_room_parent = FXMLLoader.load(getClass().getResource("GameRoomSelect.fxml"));
         Scene game_room_scene = new Scene(game_room_parent);
