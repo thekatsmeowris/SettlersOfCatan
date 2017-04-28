@@ -20,7 +20,8 @@ public class SoM extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
-        
+        ResourceBank resourceBank= new ResourceBank();
+        resourceBank.printResourceList();
         Scene scene = new Scene(root);
         stage.setTitle("Title Screen");
         stage.setScene(scene);
@@ -30,8 +31,34 @@ public class SoM extends Application {
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String[] args) {
         launch(args);
+        
+      
+        
     }
+    
+    public void TestDeck() {
+		Knight k = new Knight();
+		VictoryPoint vp = new VictoryPoint();
+		YearOfPlenty yop = new YearOfPlenty();
+		Monopoly mp = new Monopoly();
+		RoadBuilding rb = new RoadBuilding();
+		DevelopmentDeck d = new DevelopmentDeck();
+
+		
+		d.addCard(k);
+		d.addCard(vp);
+		// d.addCard(yop);
+		// d.addCard(mp);
+		d.addCard(rb);
+		while (d.hasCard()){
+			DevelopmentCard card = d.drawCard();
+			System.out.println(card);	
+			if (card instanceof RoadBuilding)
+				card.playCard();
+                }
+        }
     
 }
