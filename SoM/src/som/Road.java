@@ -5,14 +5,19 @@
  */
 package som;
 
+import javafx.geometry.Point2D;
+
 /**
  *
  * @author makogenq
  */
-public class Asset {
- 
-    String type;
-    Asset(){
-        type="baseAssetType";
+class Road extends Asset{
+
+    
+    Road(){
+        
+    }
+    Road(Point2D p, Point2D q){
+        
     }
 }

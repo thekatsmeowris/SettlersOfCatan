@@ -5,14 +5,19 @@
  */
 package som;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author makogenq
  */
-public class Asset {
- 
-    String type;
-    Asset(){
-        type="baseAssetType";
+public class Assets {
+    ArrayList<Settlement> settlements;
+    ArrayList<Road> roads;
+    ArrayList<City> cities;
+
+    public Assets() {
+        settlements = new ArrayList<>();
+        
     }
 }

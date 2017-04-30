@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package settlersofmars;
+package settlersofmars_sandbox;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;

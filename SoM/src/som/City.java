@@ -9,10 +9,6 @@ package som;
  *
  * @author makogenq
  */
-public class Asset {
- 
-    String type;
-    Asset(){
-        type="baseAssetType";
-    }
+class City {
+    
 }

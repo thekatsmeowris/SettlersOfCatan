@@ -65,7 +65,7 @@ public class HexBoard {
         vertexPane.setPickOnBounds(false);
         edgePane.setPickOnBounds(false);
         boardShell.getChildren().addAll(boardPane,edgePane,vertexPane);
-//        boardShell.getChildren().addAll(boardPane,edgePane);
+//        boardShell.getChildren().addAll(edgePane,vertexPane);
         
     }
     

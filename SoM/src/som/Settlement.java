@@ -5,14 +5,20 @@
  */
 package som;
 
+import javafx.geometry.Point2D;
+
 /**
  *
  * @author makogenq
  */
-public class Asset {
- 
-    String type;
-    Asset(){
-        type="baseAssetType";
+class Settlement {
+    Point2D position;
+    
+    Settlement(){
+        
+    }
+    
+    Settlement(Point2D p){
+        position=p;
     }
 }
