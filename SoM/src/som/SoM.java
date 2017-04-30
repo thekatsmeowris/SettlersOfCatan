@@ -26,6 +26,8 @@ public class SoM extends Application {
         resourceBank.printResourceList();
         Scene scene = new Scene(root);
         
+        stage.setX(300);
+        stage.setY(0);
         
         stage.setTitle("Title Screen");
         stage.setScene(scene);

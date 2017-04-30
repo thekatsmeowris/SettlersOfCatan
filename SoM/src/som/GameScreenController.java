@@ -58,7 +58,7 @@ public class GameScreenController implements Initializable {
     Pane popupDialog;
     
     @FXML 
-    Text popUpText;
+    Text txtPopUpText;
     
     @FXML
     AnchorPane lastAnchorPane;
@@ -75,7 +75,12 @@ public class GameScreenController implements Initializable {
     @FXML
     Button btnRollDice;
     
+    @FXML
+    Pane pnTradeDialog;
+
     Node selectedItem;
+
+
     int diceValue;
     //Circle selectedCircle=new HexVertex();
     
@@ -87,12 +92,14 @@ public class GameScreenController implements Initializable {
 //-----------------------------------------------------//
     
     ArrayList<Player> players;
-    
+    HexBoard board; 
+
     
     //----------------------------------------------------------------//
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        board= new HexBoard();
         dicePane.setVisible(true);
         dicePane.setMouseTransparent(false);
         dicePane.getParent().setMouseTransparent(false);
@@ -121,7 +128,6 @@ public class GameScreenController implements Initializable {
         //playerGUI.setPickOnBounds(false);
         
         
-        HexBoard board = new HexBoard();
        // Stage stage= (Stage) lastAnchorPane.getScene().getWindow();
         //System.out.println(lastAnchorPane.getScene());
         /*scene.setOnMousePressed((MouseEvent event) -> {
@@ -134,7 +140,8 @@ public class GameScreenController implements Initializable {
                 setSelectedItem(v);
             if(!popupDialog.isVisible()){
                 popupDialog.setVisible(true);
-                
+                //board.popUpDialog.setVisible(true);
+
                 popupDialog.setMouseTransparent(false);
                 popupDialog.getParent().setMouseTransparent(false);
                 for (Node n: popupDialog.getChildren()){
@@ -142,9 +149,14 @@ public class GameScreenController implements Initializable {
                 }
                 
             }
-                //popupDialog.setLayoutX(v.position.getX());
-                //popupDialog.setLayoutY(v.position.getY());
-                popupDialog.relocate(v.position.getX(), v.position.getY());
+                txtPopUpText.setText("Old: \n"+ popupDialog.getLayoutX()+", "+popupDialog.getLayoutY()
+                            +"Current: "+v.position.getX()+", "+ v.position.getY()
+                        );
+                //popupDialog.relocate(v.position.getX(), v.position.getY());
+                popupDialog.setLayoutX(v.position.getX());
+                popupDialog.setLayoutY(v.position.getY());
+                
+
                 //popupDialog.setLayoutY(v.getLayoutY());
             
             
@@ -223,7 +235,8 @@ public class GameScreenController implements Initializable {
     
     public void closeParentPane() throws IOException{
         popupDialog.getParent().setMouseTransparent(true); 
-        
+//        board.popUpDialog.setVisible(false);
+
         popupDialog.setMouseTransparent(true); 
         popupDialog.setVisible(false);
         
@@ -277,7 +290,7 @@ public class GameScreenController implements Initializable {
      
      public void buildSettlement(){
          if(canBuild()){
-             
+             System.out.println("BUILD SETTLEMENT DIALOG");
              
          }
      }
@@ -285,9 +298,10 @@ public class GameScreenController implements Initializable {
          return true;
      }
      public void buildRoad(){
-         
+         System.out.println("BUILD ROAD DIALOG");
      }
      public void buildCity(){
+         System.out.println("BUILD CITY DIALOG");
          
      }
 
@@ -307,4 +321,37 @@ public class GameScreenController implements Initializable {
 //        return mark;
         
     }
+    public void openTradeDialog(){
+        pnTradeDialog.setVisible(true);
+        pnTradeDialog.getParent().setMouseTransparent(false);
+        pnTradeDialog.setMouseTransparent(false);
+    }
+    public void closeTradeDialog(){
+        pnTradeDialog.setVisible(false);
+        pnTradeDialog.getParent().setMouseTransparent(true);
+        pnTradeDialog.setMouseTransparent(true);
+        
+    }
+    public void createTradePackage(){
+        Player creator, receiver;
+        int []tradePackage =new int[5];
+        Boolean accept;
+        
+        Boolean tradeSingle=false;
+        Boolean tradeBank=false;
+        TradePack tp;
+        tp = new TradePack(players.get(0),players.get(2),players.get(0).resources);
+        
+        if (!tradeSingle && !tradeBank){
+            for(Player p: players){
+                offerTrade(p, tp);
+            }
+            }
+        }
+        
+
+    private void offerTrade(Player p, TradePack tp) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
+

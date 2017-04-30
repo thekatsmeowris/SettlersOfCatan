@@ -38,6 +38,7 @@ public class HexBoard {
     Pane boardPane;
     Pane vertexPane;
     Pane edgePane;
+    Pane popUpDialog=new Pane();
 
     int columnMax;
     double hexRadius, inRadius;
@@ -135,7 +136,14 @@ public class HexBoard {
                     hV.setFill(Color.RED);
                 });
              ((Circle) (hV)).setOnMouseExited(e ->{
-                    hV.setFill(Color.TRANSPARENT);
+                 /*  if(popUpDialog.isVisible()){
+                 hV.setFill(Color.MAGENTA);
+                 
+                 }else{
+                 hV.setFill(Color.TRANSPARENT);
+                 }*/
+                hV.setFill(Color.TRANSPARENT);
+
                 });
              
                 
