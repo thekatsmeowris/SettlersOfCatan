@@ -25,47 +25,54 @@ public class HexBoard {
     //get longest row
     //build board based on longest row
     //ie 5 builds 5 rows of 3,4,5,4,3
-    
-    ArrayList<Hex> hexList;
-    ArrayList<HexVertex> vertexList;
-    ArrayList<HexEdge> edgeList;
 
-    int maxColumns=5; //default is 5 for catan
-    int numberOfRows=maxColumns;
-    int num=5;
+
+    //These lists keep track of the components that make up the board
+    ArrayList<Hex> hexList;                 //the list of hexes in this board
+    ArrayList<HexVertex> vertexList;        //the list of vertices in this board (removing duplicates)
+    ArrayList<HexEdge> edgeList;            //the list of edges in this board (removing duplicates)
+
+    int maxColumns=5;                       //default is 5 for catan: this is the maximum number of hexes allowed in the longest row
+    int numberOfRows=5;                     //this value is for the maximum number of rows.
     double currentX, currentY;
-    StackPane boardShell;
-    Pane boardPane;
-    Pane vertexPane;
-    Pane edgePane;
-    Pane popUpDialog=new Pane();
+    StackPane boardShell;                   //this is the stackpane that merges the board, the vertices, and the edges together
+    Pane boardPane;                         //this is what contains the hexes once they're each drawn
+    Pane vertexPane;                        //this contains the vertices once they're each drawn
+    Pane edgePane;                          //this contains the edges once they're each drawn
+    Pane popUpDialog=new Pane();            //this is the pane that appears once a vertex or edge is clicked.
 
-    int columnMax;
-    double hexRadius, inRadius;
-    float centerX, centerY;
+    int columnMax;                          //this is the maximum number of columns for a row...this is incremented and decremented to yield the 3,4,5,4,3 row pattern
+    double hexRadius, inRadius;             //this is the default circumradius and inradius of all hexes
+    float centerX, centerY;                 //this is the center of each hex when it is drawn
     
     public HexBoard() {
         //int[] boardBoundaries = new int[]{0.0,2,3,4};
         //800x600
-        columnMax=maxColumns-2;
-        Hex modelHex= new Hex(0,400,300,50, 50*0.87);
-        hexRadius=modelHex.getLayoutBounds().getHeight()/2;
-        inRadius= modelHex.getLayoutBounds().getWidth()/2;
-        boardPane= new Pane();
-        vertexPane= new Pane();
-        centerX= (float) (boardPane.getWidth()/2);
-        centerY= (float) (boardPane.getHeight()/2);
-        hexList = new ArrayList<>();
+        columnMax=maxColumns-2;                                 //this sets the max columns of the first row to 2 less than the longest (median) row
+        Hex modelHex= new Hex(0,400,300,50, 50*0.87);           //this generates a hex as a model to generate the rest of the board hexes from
+                                                                //i needed this because i had a hard time generating the radii of each in the constructor
+                                                                //since i needed to call super() before determining any of the hex's values
+        hexRadius=modelHex.getLayoutBounds().getHeight()/2;     //this makes the circumradius which is half the height (of a pointy top hexagon)
+        inRadius= modelHex.getLayoutBounds().getWidth()/2;      //this makes the inRadius which is roughly the circumradius * (sqrt(3)/2) but 1/2*getwidth is the same and it's prettier
+        boardPane= new Pane();                                  //creates new board for boardpane
+        vertexPane= new Pane();                                 //creates new board for vertexpane
+        
+        centerX= (float) (boardPane.getWidth()/2);              //assigns the center of the pane a value
+        centerY= (float) (boardPane.getHeight()/2);             
+                    
+        hexList = new ArrayList<>();                            //initializes the hex,vertex, and edge lists
         vertexList = new ArrayList<>();
         edgeList=new ArrayList<>();
-        boardShell= new StackPane();
-        makeBoard();
-        makeVertices();
-        makeEdges();
+        boardShell= new StackPane();                            //creates the stackpane for boardshell
+        makeBoard();                                            //generates a board of hexes using random distribution of terrain (does not assign dice values yet)
+        makeVertices();                                         //generates a set of verticies based on the hexes and vertexList
+        makeEdges();                                            //generates a set of edges based on the hexes, vertexList and edgeList
         //allows for mouseclicks through layers above
-        vertexPane.setPickOnBounds(false);
+        vertexPane.setPickOnBounds(false);                      //sets property to false so that the circle (vertex point) is selectable and the bounding shape around it is not
         edgePane.setPickOnBounds(false);
-        boardShell.getChildren().addAll(boardPane,edgePane,vertexPane);
+        
+        
+        boardShell.getChildren().addAll(boardPane,edgePane,vertexPane);     //adds the 3 panes to the stackpane and so publishes the constructed board.
 //        boardShell.getChildren().addAll(edgePane,vertexPane);
         
     }

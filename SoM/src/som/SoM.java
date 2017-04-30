@@ -32,7 +32,6 @@ public class SoM extends Application {
         stage.setTitle("Title Screen");
         stage.setScene(scene);
         stage.show();
-        
 
     }
 
