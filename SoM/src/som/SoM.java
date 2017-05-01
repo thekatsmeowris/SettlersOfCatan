@@ -6,9 +6,11 @@
 package som;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
@@ -23,9 +25,14 @@ public class SoM extends Application {
         ResourceBank resourceBank= new ResourceBank();
         resourceBank.printResourceList();
         Scene scene = new Scene(root);
+        
+        stage.setX(300);
+        stage.setY(0);
+        
         stage.setTitle("Title Screen");
         stage.setScene(scene);
         stage.show();
+
     }
 
     /**
