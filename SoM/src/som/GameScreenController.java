@@ -16,25 +16,19 @@ import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.scene.shape.Shape;
-import javafx.scene.shape.Polygon;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.Pane;
-import javafx.scene.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
+
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 
 
@@ -78,10 +72,24 @@ public class GameScreenController implements Initializable {
     @FXML
     Pane pnTradeDialog;
 
+    @FXML
+    Text txtRes00Text,txtRes01Text, txtRes02Text,txtRes03Text,txtRes04Text;
+    
+    @FXML
+    Pane pnPlayerLeft, pnPlayerMid, pnPlayerRight;
+    
+    @FXML
+    Text txtThisPlayerName;
+    
+    @FXML
+    ProgressBar pgbLongestRoad;
+
+
+
     Node selectedItem;
-
-
     int diceValue;
+    int longestRoadValue;
+    int largestArmyValue;
     //Circle selectedCircle=new HexVertex();
     
     /**
@@ -90,7 +98,8 @@ public class GameScreenController implements Initializable {
 
     
 //-----------------------------------------------------//
-    
+    Player thisPlayer=new Player("mark",new int[]{5,5,5,5,5});
+
     ArrayList<Player> players;
     HexBoard board; 
 
@@ -118,22 +127,13 @@ public class GameScreenController implements Initializable {
 
             }
         });
-        
+        longestRoadValue=3;
+        largestArmyValue=3;
         
         // TODO
-        //Parent game_screen_parent = FXMLLoader.load(getClass().getResource("GameScreen.fxml"));
-        //Scene game_screen_scene = new Scene(game_screen_parent);
-       // Stage a_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        //a_stage.setScene(game_screen_scene);
-        //playerGUI.setPickOnBounds(false);
         
         
-       // Stage stage= (Stage) lastAnchorPane.getScene().getWindow();
-        //System.out.println(lastAnchorPane.getScene());
-        /*scene.setOnMousePressed((MouseEvent event) -> {
-            System.out.println("mouse click detected! "+event.getSource());
-        });
-          */   
+
         for(HexVertex v: board.vertexList)
         {
             v.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
@@ -143,19 +143,63 @@ public class GameScreenController implements Initializable {
                 //board.popUpDialog.setVisible(true);
 
                 popupDialog.setMouseTransparent(false);
-                popupDialog.getParent().setMouseTransparent(false);
+                //popupDialog.getParent().setMouseTransparent(false);
                 for (Node n: popupDialog.getChildren()){
                     n.setMouseTransparent(false);
                 }
                 
             }
+            if(gameBoard.getRotate()>0){
+                                popupDialog.relocate(v.position.getY(), v.position.getX());
+
+            }else{
                 txtPopUpText.setText("Old: \n"+ popupDialog.getLayoutX()+", "+popupDialog.getLayoutY()
-                            +"Current: "+v.position.getX()+", "+ v.position.getY()
+                            +"Current: "+v.position.getX()+300+", "+ v.position.getY()
                         );
-                //popupDialog.relocate(v.position.getX(), v.position.getY());
-                popupDialog.setLayoutX(v.position.getX());
-                popupDialog.setLayoutY(v.position.getY());
+                popupDialog.relocate(v.position.getX()+350, v.position.getY());
+                //popupDialog.setLayoutX(v.position.getX());
+                //popupDialog.setLayoutY(v.position.getY());
                 
+            }
+                //popupDialog.setLayoutY(v.getLayoutY());
+            
+            
+            //selectedCircle.set(circle);
+            //selectedLocation.set(new Point2D(x, y));
+        });
+
+        }
+        
+                for(HexEdge v: board.edgeList)
+        {
+            v.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                setSelectedItem(v);
+            if(!popupDialog.isVisible()){
+                popupDialog.setVisible(true);
+                //board.popUpDialog.setVisible(true);
+
+                popupDialog.setMouseTransparent(false);
+                //popupDialog.getParent().setMouseTransparent(false);
+                for (Node n: popupDialog.getChildren()){
+                    n.setMouseTransparent(false);
+                }
+                
+            }
+                if(gameBoard.getRotate()>0){
+                popupDialog.relocate(Math.abs(v.startPoint.getY()-v.endPoint.getY()),Math.abs(v.startPoint.getX()-v.endPoint.getX()));
+                    
+                }else{
+                txtPopUpText.setText("Old: \n"+ popupDialog.getLayoutX()+", "+popupDialog.getLayoutY()
+                            +"Current: "+
+                            Math.abs(v.startPoint.getX()-v.endPoint.getX())
+                            +","+
+                            Math.abs(v.startPoint.getY()-v.endPoint.getY())
+                );
+                popupDialog.relocate(Math.abs(v.startPoint.getX()-v.endPoint.getX()),Math.abs(v.startPoint.getY()-v.endPoint.getY()));
+                }
+                /*
+                popupDialog.setLayoutX(v.getLayoutX());
+                popupDialog.setLayoutY(v.getLayoutY());*/                
 
                 //popupDialog.setLayoutY(v.getLayoutY());
             
@@ -165,12 +209,15 @@ public class GameScreenController implements Initializable {
         });
 
         }
+
      
         
         gameBoard.getChildren().add(board.getBoardPane());
         
-      
-        
+//Player GUI Stuff
+    makeResources();
+    createTestPlayers();
+    fillPlayerInfo();
  
       
      
@@ -234,7 +281,7 @@ public class GameScreenController implements Initializable {
     }
     
     public void closeParentPane() throws IOException{
-        popupDialog.getParent().setMouseTransparent(true); 
+        //popupDialog.getParent().setMouseTransparent(true); 
 //        board.popUpDialog.setVisible(false);
 
         popupDialog.setMouseTransparent(true); 
@@ -297,8 +344,23 @@ public class GameScreenController implements Initializable {
      public Boolean canBuild(){
          return true;
      }
-     public void buildRoad(){
+     public void buildRoad(ActionEvent e) throws IOException{
+         if(canBuildRoad()){
+         ((HexEdge)selectedItem).addRoad();
          System.out.println("BUILD ROAD DIALOG");
+         thisPlayer.assets.add(((HexEdge)selectedItem));
+          checkForLongestRoad();
+
+          System.out.println("PRogress: " + thisPlayer.assets.roads.size());
+
+          closeParentPane();
+         }
+     }
+     public void checkForLongestRoad(){
+         if(thisPlayer.assets.roads.size()>longestRoadValue) longestRoadValue=thisPlayer.assets.roads.size();
+         
+         pgbLongestRoad.progressProperty().set((double)(thisPlayer.assets.roads.size())/longestRoadValue);
+         
      }
      public void buildCity(){
          System.out.println("BUILD CITY DIALOG");
@@ -309,10 +371,11 @@ public class GameScreenController implements Initializable {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     public void createTestPlayers(){
+        players=new ArrayList<>();
         Player mark = new Player("Mark", new int[]{5,5,5,5,5});
         Player dek = new Player("Dehkoda", new int[]{5,5,5,5,5});
         Player lisa = new Player("Lisa", new int[]{5,5,5,5,5});
-        Player mew = new Player("Lisa", new int[]{5,5,5,5,5});
+        Player mew = new Player("Mew", new int[]{5,5,5,5,5});
         players.add(mark);
         players.add(dek);
         players.add(lisa);
@@ -325,12 +388,16 @@ public class GameScreenController implements Initializable {
         pnTradeDialog.setVisible(true);
         pnTradeDialog.getParent().setMouseTransparent(false);
         pnTradeDialog.setMouseTransparent(false);
+        //create new tradepack
+        thisPlayerTradePack= new TradePack();
+        
     }
     public void closeTradeDialog(){
         pnTradeDialog.setVisible(false);
         pnTradeDialog.getParent().setMouseTransparent(true);
         pnTradeDialog.setMouseTransparent(true);
-        
+        //clear tradepack
+        thisPlayerTradePack=null;
     }
     public void createTradePackage(){
         Player creator, receiver;
@@ -353,5 +420,47 @@ public class GameScreenController implements Initializable {
     private void offerTrade(Player p, TradePack tp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    public void offerResource(MouseEvent e){
+        if(pnTradeDialog.isVisible()){
+            thisPlayerTradePack.resources[0]+=1;
+        }
+        
+    }
+    public void requestResource(Resource rec, TradePack tp){
+        
+    }
+    //board setup
+    public void makeResources(){
+        txtRes00Text.setText(""+thisPlayer.resources[0]);
+        txtRes01Text.setText(""+thisPlayer.resources[1]);
+        txtRes02Text.setText(""+thisPlayer.resources[2]);
+        txtRes03Text.setText(""+thisPlayer.resources[3]);
+        txtRes04Text.setText(""+thisPlayer.resources[4]);
+
+    }
+    public void fillPlayerInfo(){
+        //get player icon blocks
+        ArrayList<Pane> playerBlocks= new ArrayList<>();
+        playerBlocks.add(pnPlayerLeft);
+        playerBlocks.add(pnPlayerMid);
+        playerBlocks.add(pnPlayerRight);
+        int counter=0;
+        for(Player p: players){
+            if(p.nickname!="Mark"){
+                ((Label) playerBlocks.get(counter).getChildren().get(1)).setText(p.nickname);
+                 counter++;
+
+                
+            }else{
+                txtThisPlayerName.setText(p.nickname);
+            }
+        }
+    }
+
+    private boolean canBuildRoad() {
+        return true;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }
 
