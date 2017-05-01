@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package som;
 
-/**
- *
- * @author makogenq
- */
-class City {
-    
+package som.assets;
+
+public class City extends Asset{
+
+	public City(Player player, HexBoard board, Hex hex, int[] coord) {
+		super(player, Asset.CITY, board, hex, coord);
+	}
+	
 }

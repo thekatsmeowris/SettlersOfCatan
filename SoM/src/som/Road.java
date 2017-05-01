@@ -1,23 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package som;
+package som.assets;
 
-import javafx.geometry.Point2D;
+public class Road extends Asset {
 
-/**
- *
- * @author makogenq
- */
-class Road extends Asset{
+	public Road(Player player, HexBoard board, Hex hex, int[] coord) {
+		super(player, Asset.ROAD, board, hex, coord);
+	}
 
-    
-    Road(){
+/*    Road(Point2D p, Point2D q){
         
-    }
-    Road(Point2D p, Point2D q){
-        
-    }
+    }*/
 }
