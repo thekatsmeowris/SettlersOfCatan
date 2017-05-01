@@ -31,8 +31,11 @@ public class Settlement extends Asset {
         
 
     }
+    public int getType(){
+        return 1;
+    }
         
-        
+
         
         
         

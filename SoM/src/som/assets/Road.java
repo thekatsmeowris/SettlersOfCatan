@@ -25,4 +25,7 @@ public class Road extends Asset {
         this.hex = hexEdge.getHex();
         this.hexEdge = hexEdge;
     }
+        public int getType(){
+        return 0;
+    }
 }
