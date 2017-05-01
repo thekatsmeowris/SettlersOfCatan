@@ -8,7 +8,6 @@ public abstract class Asset {
 	
 	public int assetType;
 	
-	// Defining the player and the board to which the Asset belongs
 	public Player player;
 	public HexBoard board;
 	public Hex hex;
@@ -77,7 +76,7 @@ public abstract class Asset {
 	 */
 	public int[] getResourcesRequired(int assetType) {
 		int[] assetArray = new int[5];
-		// Assumes => [clay, ore, sheep, wheat, wood] as order (alphabetical)
+		// Assumes => [soy, hemp, plastic, glass, steel] as order (alphabetical)
 		switch(assetType) {
 		case ROAD:
 			assetArray = [1,0,0,0,1];
