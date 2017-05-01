@@ -99,7 +99,7 @@ public class GameScreenController implements Initializable {
     
 //-----------------------------------------------------//
     Player thisPlayer=new Player("mark",new int[]{5,5,5,5,5});
-    TradePack thisPlayerTradePack;
+
     ArrayList<Player> players;
     HexBoard board; 
 
@@ -348,7 +348,7 @@ public class GameScreenController implements Initializable {
          if(canBuildRoad()){
          ((HexEdge)selectedItem).addRoad();
          System.out.println("BUILD ROAD DIALOG");
-         thisPlayer.assets.add(thisPlayer,((HexEdge)selectedItem));
+         thisPlayer.assets.add(((HexEdge)selectedItem));
           checkForLongestRoad();
 
           System.out.println("PRogress: " + thisPlayer.assets.roads.size());
@@ -356,12 +356,6 @@ public class GameScreenController implements Initializable {
           closeParentPane();
          }
      }
-     private boolean canBuildRoad() {
-     //   if (playerResources)
-     return true;
-    }
-    
-     
      public void checkForLongestRoad(){
          if(thisPlayer.assets.roads.size()>longestRoadValue) longestRoadValue=thisPlayer.assets.roads.size();
          
@@ -463,6 +457,10 @@ public class GameScreenController implements Initializable {
         }
     }
 
+    private boolean canBuildRoad() {
+        return true;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
 

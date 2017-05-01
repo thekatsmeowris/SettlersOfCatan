@@ -1,11 +1,5 @@
 package som.assets;
 
-import som.Hex;
-import som.HexBoard;
-import som.HexEdge;
-import som.HexVertex;
-import som.Player;
-
 public abstract class Asset {
 
 	public final static int ROAD = 0;
@@ -22,11 +16,11 @@ public abstract class Asset {
 	// Defining the coordinate according to the Hex on the HexBoard to which the Asset belongs
 	//		-Name/datatype might need editing to match with rest of classes.
 	public int[] coord;
-        
+	
 	
 
 	// Constructor method
-	/*public Asset(Player player, int assetType, HexBoard board, Hex hex, int[] coord) throws IllegalArgumentException {
+	public Asset(Player player, int assetType, HexBoard board, Hex hex, int[] coord) throws IllegalArgumentException {
 		if(player == null) {
 			throw new IllegalArgumentException("Player cannot be null");
 		}
@@ -38,11 +32,8 @@ public abstract class Asset {
 		this.board = board;
 		this.hex = hex;
 		this.coord = coord;
-	}*/
-		public Asset(Player player, Hex hex) throws IllegalArgumentException {
-                    this.player = player;
-                    this.hex = hex;
-                }
+	}
+	
 	
 	/** 
 	 * Getters 
@@ -50,31 +41,29 @@ public abstract class Asset {
 	public Player getPlayer() {
 		return player;
 	}
-        /*
-        public HexBoard getHexBoard() {
-        return board;
-        }*/
-        public Hex getHex() {
+	
+	public HexBoard getHexBoard() {
+		return board;
+	}
+	public Hex getHex() {
 		return hex;
 	}
 	public HexVertex hexVertex() {
 		if(this.hexVertex == null) {
-			//return "Asset not attached to a hex vertex.";
-                        return null;
+			return "Asset not attached to a hex vertex.";
 		}
 		return hexVertex;
 	}
 	public HexEdge getHexEdge() {
 		if(hexEdge == null) {
-			//return "Asset not attached to a hex edge.";
-                        return null;
+			return "Asset not attached to a hex edge.";
 		}
 		return hexEdge;
 	}
 	/* Will have to change this method according to Hex board layout */
-        /*public int[] getCoord() {
-        return coord;
-        }*/
+	public int[] getCoord() {
+		return coord;
+	}
 	/**
 	 * End Getters
 	 */
@@ -87,19 +76,18 @@ public abstract class Asset {
 	 */
 	public int[] getResourcesRequired(int assetType) {
 		int[] assetArray = new int[5];
-                
 		// Assumes => [soy, hemp, plastic, glass, steel] as order (alphabetical)
 		switch(assetType) {
 		case ROAD:
-			return new int[]{1,0,0,0,1};
-		//	break;
+			assetArray = [1,0,0,0,1];
+			break;
 		case SETTLEMENT:
-			return new int[]{1,0,1,1,1};
+			assetArray = [1,0,1,1,1];
 		case CITY:
-			return new int[]{0,3,0,1,0};
+			assetArray = [0,3,0,1,0];
 		default:
 			throw new IllegalArgumentException("Undefined asset type.");
-		//return assetArray;
+		return assetArray;
 		}
 	}
 	

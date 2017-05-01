@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author makogenq
  */
-public class Player {
+class Player {
     int[] resources;
     int victoryPoints;
     String nickname;

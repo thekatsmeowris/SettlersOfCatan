@@ -171,7 +171,7 @@ public class HexBoard {
                 System.out.println("check 0");
                 if (inList){
                     System.out.println(hV+" already exists");
-                    vertexList.get(vertexList.indexOf(hV)).addAdjacentHex(h);
+                    vertexList.get(vertexList.indexOf(hV)).addHex(h);
                     
                 }else{
                     System.out.println("adding vertex: "+hV+"\n");

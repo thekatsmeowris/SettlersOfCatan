@@ -42,11 +42,7 @@ public class HexEdge extends Line{
     public void setHex(Hex h){
         
     }
-    public Hex getHex(){
-        
-        return null;
-        
-    }
+    
     public void setEdge(Point2D p, Point2D q){
         
     }
