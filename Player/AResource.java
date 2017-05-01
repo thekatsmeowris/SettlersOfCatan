@@ -1,15 +1,17 @@
-class AResource {
+//edited the class name and extended it from polygon for onscreen representation
+class Resource extends Polygon {
 
 	private static final int MAX = 19;
 
 	private int resourceAmount;
 	
+	//edited constructor name to match newly changed class name
 	// Edited & Added
-	public AResource(){
+	public Resource(){
 		resourceAmount = 0;
 	}
 
-	public AResource(int num){
+	public Resource(int num){
 		resourceAmount = num;
 	}
 		
@@ -42,8 +44,8 @@ class AResource {
 			System.out.println("Too many of desired resource");
 
 	}
-
-	public int getResource() {
+	//Edited this method name for clarity-mg
+	public int getResourceAmount() {
 		// returns number of resource
 		return resourceAmount;	
 	}
