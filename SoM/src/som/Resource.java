@@ -5,18 +5,26 @@
  */
 package som;
 
+import javafx.scene.shape.Polygon;
+
 /**
  *
  * @author makogenq
  */
-    class Resource {
+    class Resource extends Polygon{
        
         private int resourceAmount;
         
         public Resource()
         {
-            resourceAmount = 19;
+//            super(100,100,200,100,200,200,200,300,200,400,100,400,0,400, 0,300, 0,200,0, 100);
+
+            resourceAmount = 0;
         }
+        public Resource(int value){
+            resourceAmount=value;
+        }
+        
         
         public void drawResource(int amount) //method to take desired amount of resources from the Bank, provided the desired number is appropriate
         {

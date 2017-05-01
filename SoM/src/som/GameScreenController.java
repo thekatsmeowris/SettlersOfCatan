@@ -18,10 +18,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
@@ -72,12 +75,21 @@ public class GameScreenController implements Initializable {
     @FXML
     Text txtRes00Text,txtRes01Text, txtRes02Text,txtRes03Text,txtRes04Text;
     
+    @FXML
+    Pane pnPlayerLeft, pnPlayerMid, pnPlayerRight;
     
+    @FXML
+    Text txtThisPlayerName;
     
+    @FXML
+    ProgressBar pgbLongestRoad;
+
+
+
     Node selectedItem;
-
-
     int diceValue;
+    int longestRoadValue;
+    int largestArmyValue;
     //Circle selectedCircle=new HexVertex();
     
     /**
@@ -115,7 +127,8 @@ public class GameScreenController implements Initializable {
 
             }
         });
-        
+        longestRoadValue=3;
+        largestArmyValue=3;
         
         // TODO
         
@@ -202,8 +215,9 @@ public class GameScreenController implements Initializable {
         gameBoard.getChildren().add(board.getBoardPane());
         
 //Player GUI Stuff
-    drawResources();
-        
+    makeResources();
+    createTestPlayers();
+    fillPlayerInfo();
  
       
      
@@ -330,8 +344,23 @@ public class GameScreenController implements Initializable {
      public Boolean canBuild(){
          return true;
      }
-     public void buildRoad(){
+     public void buildRoad(ActionEvent e) throws IOException{
+         if(canBuildRoad()){
+         ((HexEdge)selectedItem).addRoad();
          System.out.println("BUILD ROAD DIALOG");
+         thisPlayer.assets.add(((HexEdge)selectedItem));
+          checkForLongestRoad();
+
+          System.out.println("PRogress: " + thisPlayer.assets.roads.size());
+
+          closeParentPane();
+         }
+     }
+     public void checkForLongestRoad(){
+         if(thisPlayer.assets.roads.size()>longestRoadValue) longestRoadValue=thisPlayer.assets.roads.size();
+         
+         pgbLongestRoad.progressProperty().set((double)(thisPlayer.assets.roads.size())/longestRoadValue);
+         
      }
      public void buildCity(){
          System.out.println("BUILD CITY DIALOG");
@@ -342,10 +371,11 @@ public class GameScreenController implements Initializable {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     public void createTestPlayers(){
+        players=new ArrayList<>();
         Player mark = new Player("Mark", new int[]{5,5,5,5,5});
         Player dek = new Player("Dehkoda", new int[]{5,5,5,5,5});
         Player lisa = new Player("Lisa", new int[]{5,5,5,5,5});
-        Player mew = new Player("Lisa", new int[]{5,5,5,5,5});
+        Player mew = new Player("Mew", new int[]{5,5,5,5,5});
         players.add(mark);
         players.add(dek);
         players.add(lisa);
@@ -358,12 +388,16 @@ public class GameScreenController implements Initializable {
         pnTradeDialog.setVisible(true);
         pnTradeDialog.getParent().setMouseTransparent(false);
         pnTradeDialog.setMouseTransparent(false);
+        //create new tradepack
+        thisPlayerTradePack= new TradePack();
+        
     }
     public void closeTradeDialog(){
         pnTradeDialog.setVisible(false);
         pnTradeDialog.getParent().setMouseTransparent(true);
         pnTradeDialog.setMouseTransparent(true);
-        
+        //clear tradepack
+        thisPlayerTradePack=null;
     }
     public void createTradePackage(){
         Player creator, receiver;
@@ -386,14 +420,17 @@ public class GameScreenController implements Initializable {
     private void offerTrade(Player p, TradePack tp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    public void offerResource(Resource rec, TradePack tp){
+    public void offerResource(MouseEvent e){
+        if(pnTradeDialog.isVisible()){
+            thisPlayerTradePack.resources[0]+=1;
+        }
         
     }
     public void requestResource(Resource rec, TradePack tp){
         
     }
     //board setup
-    public void drawResources(){
+    public void makeResources(){
         txtRes00Text.setText(""+thisPlayer.resources[0]);
         txtRes01Text.setText(""+thisPlayer.resources[1]);
         txtRes02Text.setText(""+thisPlayer.resources[2]);
@@ -401,5 +438,29 @@ public class GameScreenController implements Initializable {
         txtRes04Text.setText(""+thisPlayer.resources[4]);
 
     }
+    public void fillPlayerInfo(){
+        //get player icon blocks
+        ArrayList<Pane> playerBlocks= new ArrayList<>();
+        playerBlocks.add(pnPlayerLeft);
+        playerBlocks.add(pnPlayerMid);
+        playerBlocks.add(pnPlayerRight);
+        int counter=0;
+        for(Player p: players){
+            if(p.nickname!="Mark"){
+                ((Label) playerBlocks.get(counter).getChildren().get(1)).setText(p.nickname);
+                 counter++;
+
+                
+            }else{
+                txtThisPlayerName.setText(p.nickname);
+            }
+        }
+    }
+
+    private boolean canBuildRoad() {
+        return true;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
 }
 

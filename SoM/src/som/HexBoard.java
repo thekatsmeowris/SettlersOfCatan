@@ -231,6 +231,7 @@ public class HexBoard {
                         new Point2D((double) points.get(p3),(double) points.get(p4))
                         
                         );
+                
                ((Line) (hE)).setOnMouseEntered(e ->{
                     hE.setStroke(Color.BLACK);
                 });

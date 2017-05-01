@@ -6,6 +6,7 @@
 package som;
 
 import java.util.ArrayList;
+import javafx.geometry.Point2D;
 
 /**
  *
@@ -18,6 +19,21 @@ public class Assets {
 
     public Assets() {
         settlements = new ArrayList<>();
+        roads = new ArrayList<>();
+        cities = new ArrayList<>();
         
+    }
+    public void add(HexVertex s){
+        Settlement settlement=new Settlement(s.position);
+        settlements.add(settlement);
+    }
+    public void add(HexEdge r){
+        Road road= new Road(r.startPoint, r.endPoint);
+        roads.add(road);
+    }
+    public void add(HexVertex c, Settlement s){
+        City city=new City();
+        settlements.remove(s);
+        cities.add(city);
     }
 }

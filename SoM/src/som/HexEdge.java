@@ -20,6 +20,7 @@ public class HexEdge extends Line{
     ArrayList<Hex> adjacentHex;
     ArrayList<HexEdge> adjacentEdge;
     ArrayList<HexVertex> adjacentVertex;
+    Boolean hasRoad;
     
     HexEdge(Point2D p, Point2D q){
         super(p.getX(),p.getY(),q.getX(),q.getY());
@@ -52,6 +53,18 @@ public class HexEdge extends Line{
     void addHex(Hex h) {
         adjacentHex.add(h);
     }
+    void addRoad(){
+        hasRoad=true;
+       this.setOnMouseEntered(e ->{
+            this.setStroke(Color.GREEN);
+        });
+       this.setOnMouseExited(e ->{
+            //this.setStroke(Color.TRANSPARENT);
+        });
+    }
+    
+    
+    
      @Override
     public boolean equals(Object o){
         boolean result = false;
