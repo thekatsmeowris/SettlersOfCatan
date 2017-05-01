@@ -1,18 +1,18 @@
 // ResourceManager.java
 
 public class ResourceManager {
-	private AResource soy;
-	private AResource hemp;
-	private AResource plastic;
-	private AResource glass;
-	private AResource steel;  
+	private Resource soy;
+	private Resource hemp;
+	private Resource plastic;
+	private Resource glass;
+	private Resource steel;  
 
 	public ResourceManager(){
-		soy = new AResource();
-		hemp = new AResource();
-		plastic = new AResource();
-		glass = new AResource();
-		steel = new AResource();
+		soy = new Resource();
+		hemp = new Resource();
+		plastic = new Resource();
+		glass = new Resource();
+		steel = new Resource();
 	}
 
 	public void give(String giveResourceName, int amountGive) {
@@ -60,22 +60,22 @@ public class ResourceManager {
 	}
 
 	public int getSoy(){
-		return soy.getResource();
+		return soy.getResourceAmount();
 	}
 
 	public int getHemp(){
-		return hemp.getResource();
+		return hemp.getResourceAmount();
 	}
 
 	public int getPlastic(){
-		return plastic.getResource();
+		return plastic.getResourceAmount();
 	}
 
 	public int getGlass(){
-		return glass.getResource();
+		return glass.getResourceAmount();
 	}
 
 	public int getSteel(){
-		return steel.getResource();
+		return steel.getResourceAmount();
 	}
 }
