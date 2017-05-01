@@ -1,4 +1,4 @@
-package com.som.assets;
+package som.assets;
 
 public abstract class Asset {
 
