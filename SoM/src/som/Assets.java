@@ -6,8 +6,9 @@
 package som;
 
 import java.util.ArrayList;
-import javafx.geometry.Point2D;
-
+import som.assets.City;
+import som.assets.Road;
+import som.assets.Settlement;
 /**
  *
  * @author makogenq
@@ -23,17 +24,18 @@ public class Assets {
         cities = new ArrayList<>();
         
     }
-    public void add(HexVertex s){
-        Settlement settlement=new Settlement(s.position);
-        settlements.add(settlement);
+    public void add(Player player, HexVertex hexVertex){
+        if (hexVertex.asset==null){
+        settlements.add(new Settlement(player, hexVertex));
+        }else{
+            settlements.remove((Settlement)hexVertex.getAsset());
+            cities.add(new City(player, hexVertex));
+        }
+        
     }
-    public void add(HexEdge r){
-        Road road= new Road(r.startPoint, r.endPoint);
+    public void add(Player player, HexEdge hexEdge){ 
+        Road road = new Road(player, hexEdge);
         roads.add(road);
     }
-    public void add(HexVertex c, Settlement s){
-        City city=new City();
-        settlements.remove(s);
-        cities.add(city);
-    }
+   
 }
