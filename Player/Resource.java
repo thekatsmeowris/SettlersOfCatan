@@ -1,5 +1,6 @@
 //edited the class name and extended it from polygon for onscreen representation
-class Resource extends Polygon {
+class Resource {
+// extends Polygon {
 
 	private static final int MAX = 19;
 
@@ -30,18 +31,22 @@ class Resource extends Polygon {
 	
 
 	// Added
-	public void give(int amount){
+	public void give(int amount) throws NoMoreResourceException, EmptyResourceException {
 		if(resourceAmount >= amount) 
 			resourceAmount -= amount;
+
+		else if (resourceAmount == 0)
+			throw new EmptyResourceException("This Resource is empty.");
+
 		else
-			System.out.println("No more of desired resource");
+			throw new NoMoreResourceException("No more of desired resource");
 	}
 
-	public void recieve(int amount){
+	public void recieve(int amount) throws TooManyResourceException {
 		if(resourceAmount+amount <= MAX) // <= Edited
 			resourceAmount += amount;
 		else 
-			System.out.println("Too many of desired resource");
+			throw new TooManyResourceException("Too many of desired resource");
 
 	}
 	//Edited this method name for clarity-mg
