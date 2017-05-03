@@ -19,6 +19,9 @@ public class City extends Asset{
         
 
     }
+        public int getType(){
+        return 2;
+    }
         
 	
 }
