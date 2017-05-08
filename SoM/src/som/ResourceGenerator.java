@@ -32,8 +32,8 @@ public class ResourceGenerator {
 		return hexes;
 	}
         /**
-         * this method will set the Hexes list find by retrouveHex() to the variable Hex 
-         * @param hexes the list of Hexes find by the method retrouveHex()
+         * this method will set the Hexes list find by retrieveHex() to the variable Hex 
+         * @param hexes the list of Hexes find by the method retrieveHex()
          */
 	public void setHexes(ArrayList<Hex> hexes) {
 		this.hexes = hexes;
@@ -52,7 +52,7 @@ public class ResourceGenerator {
          * @param dn the dice number
          * @return a list of hexes
          */
-	public ArrayList<Hex> retrouveHex(int dn)
+	public ArrayList<Hex> retrieveHex(int dn)
 	{
 		ArrayList<Hex>listOfHexes;
 		return listOfHexes;
