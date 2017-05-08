@@ -139,7 +139,6 @@ public class GameScreenController implements Initializable {
         dicePane.setMouseTransparent(false);
         dicePane.getParent().setMouseTransparent(false);
         leftDie.textProperty().addListener(new ChangeListener(){
-        
             // a change listener, once the value on the dice change it should do a 2 second sleep and then kill the dice pane
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -574,6 +573,10 @@ public class GameScreenController implements Initializable {
         }
     }
 
+    private boolean canBuildRoad() {
+        return true;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
 

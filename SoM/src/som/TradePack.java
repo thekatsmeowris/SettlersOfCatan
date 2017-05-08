@@ -38,4 +38,5 @@ class TradePack {
         +"OFFERING: "+ resourcesOffered.toString()
         +"Requesting: "+ resourcesRequested.toString();
     }
+
 }

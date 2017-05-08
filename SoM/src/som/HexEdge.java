@@ -47,6 +47,7 @@ public class HexEdge extends Line{
         return null;
         
     }
+
     public void setEdge(Point2D p, Point2D q){
         
     }

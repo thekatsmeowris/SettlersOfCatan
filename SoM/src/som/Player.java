@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Arc;
 
+
 /**
  *
  * @author makogenq
@@ -23,11 +24,12 @@ public class Player {
     
     int[] resources;
     ResourceManager resourceManager= new ResourceManager(); 
+
     int victoryPoints;
     String nickname;
     Assets assets;
     Player(){
-        
+
         assets=new Assets();
         resources= new int[]{0,0,0,0,0}; 
         victoryPoints=0;
@@ -94,4 +96,5 @@ public class Player {
 		Player p2 = new Player();
 		p1.trade(p2,"SOY",4,"STEEL",5);
 	}
+
 }
