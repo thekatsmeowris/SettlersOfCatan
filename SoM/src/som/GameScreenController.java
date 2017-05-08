@@ -18,7 +18,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.Pane;
@@ -107,12 +106,17 @@ public class GameScreenController implements Initializable {
     //----------------------------------------------------------------//
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         board= new HexBoard();
+       
+        
+        // THIS IS THE SECTON FOR THE ROLL DICE PANE AND FUNCTIONALITY 
         dicePane.setVisible(true);
         dicePane.setMouseTransparent(false);
         dicePane.getParent().setMouseTransparent(false);
         leftDie.textProperty().addListener(new ChangeListener(){
+           
+            // a change listener, once the value on the dice change it should do a 2 second sleep and then kill the dice pane
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
              try{   
@@ -127,6 +131,8 @@ public class GameScreenController implements Initializable {
 
             }
         });
+        
+        // ROLL DICE SECTION ENDS
         longestRoadValue=3;
         largestArmyValue=3;
         
@@ -134,10 +140,10 @@ public class GameScreenController implements Initializable {
         
         
 
-        for(HexVertex v: board.vertexList)
+        for(HexVertex hexVertex: board.vertexList)
         {
-            v.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                setSelectedItem(v);
+            hexVertex.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                setSelectedItem(hexVertex);
             if(!popupDialog.isVisible()){
                 popupDialog.setVisible(true);
                 //board.popUpDialog.setVisible(true);
@@ -150,13 +156,13 @@ public class GameScreenController implements Initializable {
                 
             }
             if(gameBoard.getRotate()>0){
-                                popupDialog.relocate(v.position.getY(), v.position.getX());
+                                popupDialog.relocate(hexVertex.position.getY(), hexVertex.position.getX());
 
             }else{
                 txtPopUpText.setText("Old: \n"+ popupDialog.getLayoutX()+", "+popupDialog.getLayoutY()
-                            +"Current: "+v.position.getX()+300+", "+ v.position.getY()
+                            +"Current: "+hexVertex.position.getX()+300+", "+ hexVertex.position.getY()
                         );
-                popupDialog.relocate(v.position.getX()+350, v.position.getY());
+                popupDialog.relocate(hexVertex.position.getX()+350, hexVertex.position.getY());
                 //popupDialog.setLayoutX(v.position.getX());
                 //popupDialog.setLayoutY(v.position.getY());
                 
@@ -170,10 +176,10 @@ public class GameScreenController implements Initializable {
 
         }
         
-                for(HexEdge v: board.edgeList)
+                for(HexEdge hexEdge: board.edgeList)
         {
-            v.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                setSelectedItem(v);
+            hexEdge.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                setSelectedItem(hexEdge);
             if(!popupDialog.isVisible()){
                 popupDialog.setVisible(true);
                 //board.popUpDialog.setVisible(true);
@@ -186,16 +192,16 @@ public class GameScreenController implements Initializable {
                 
             }
                 if(gameBoard.getRotate()>0){
-                popupDialog.relocate(Math.abs(v.startPoint.getY()-v.endPoint.getY()),Math.abs(v.startPoint.getX()-v.endPoint.getX()));
+                popupDialog.relocate(Math.abs(hexEdge.startPoint.getY()-hexEdge.endPoint.getY()),Math.abs(hexEdge.startPoint.getX()-hexEdge.endPoint.getX()));
                     
                 }else{
                 txtPopUpText.setText("Old: \n"+ popupDialog.getLayoutX()+", "+popupDialog.getLayoutY()
                             +"Current: "+
-                            Math.abs(v.startPoint.getX()-v.endPoint.getX())
+                            Math.abs(hexEdge.startPoint.getX()-hexEdge.endPoint.getX())
                             +","+
-                            Math.abs(v.startPoint.getY()-v.endPoint.getY())
+                            Math.abs(hexEdge.startPoint.getY()-hexEdge.endPoint.getY())
                 );
-                popupDialog.relocate(Math.abs(v.startPoint.getX()-v.endPoint.getX()),Math.abs(v.startPoint.getY()-v.endPoint.getY()));
+                popupDialog.relocate(Math.abs(hexEdge.startPoint.getX()-hexEdge.endPoint.getX()),Math.abs(hexEdge.startPoint.getY()-hexEdge.endPoint.getY()));
                 }
                 /*
                 popupDialog.setLayoutX(v.getLayoutX());
@@ -345,17 +351,37 @@ public class GameScreenController implements Initializable {
          return true;
      }
      public void buildRoad(ActionEvent e) throws IOException{
-         if(canBuildRoad()){
+         if(canBuildRoad((HexEdge)selectedItem)){
          ((HexEdge)selectedItem).addRoad();
          System.out.println("BUILD ROAD DIALOG");
          thisPlayer.assets.add(((HexEdge)selectedItem));
           checkForLongestRoad();
 
           System.out.println("PRogress: " + thisPlayer.assets.roads.size());
+          //System.out.println(((HexEdge) selectedItem).getType().toString());
 
           closeParentPane();
          }
      }
+<<<<<<< HEAD
+=======
+     private boolean canBuildRoad(HexEdge hexEdge) {
+         //if(hexEdge.adjacentEdge.contains(this))
+          /* 
+            if thisPlayer.resources are greater than or equal to Asset.requirement then continue
+            else return false
+            
+            if the adjacent vertex contains an asset belonging to thisPlayer, then return true
+            elseif the adjacent edges contain at least one road belonging to thisPlayer then return true
+            else rturn false
+         
+         
+         */
+     return true;
+    }
+    
+     
+>>>>>>> origin/master
      public void checkForLongestRoad(){
          if(thisPlayer.assets.roads.size()>longestRoadValue) longestRoadValue=thisPlayer.assets.roads.size();
          

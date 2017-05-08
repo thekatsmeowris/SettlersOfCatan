@@ -15,25 +15,25 @@ public class ResourceManager {
 		steel = new Resource();
 	}
 
-	public void give(String giveResourceName, int amountGive) {
-		if (giveResourceName.equals("SOY"))
-			soy.give(amountGive);
+	public void give(String giveResourceName, int amountGive) throws NoMoreResourceException, EmptyResourceException{
 
-		else if (giveResourceName.equals("HEMP"))
-	 		hemp.give(amountGive);
+			if (giveResourceName.equals("SOY"))
+				soy.give(amountGive);
 
-		else if (giveResourceName.equals("PLASTIC"))
-			plastic.give(amountGive);
+			else if (giveResourceName.equals("HEMP"))
+		 		hemp.give(amountGive);
 
-		else if (giveResourceName.equals("GLASS"))
-			glass.give(amountGive);
+			else if (giveResourceName.equals("PLASTIC"))
+				plastic.give(amountGive);
 
-		else if (giveResourceName.equals("STEEL"))
-			steel.give(amountGive);
-		
+			else if (giveResourceName.equals("GLASS"))
+				glass.give(amountGive);
+
+			else if (giveResourceName.equals("STEEL"))
+				steel.give(amountGive);
 	}
 
-	public void recieve(String recieveResourceName, int amountRecieve) {
+	public void recieve(String recieveResourceName, int amountRecieve) throws TooManyResourceException {
 
 		if (recieveResourceName.equals("SOY"))
 			soy.recieve(amountRecieve);
