@@ -8,7 +8,6 @@ package som;
 import java.util.ArrayList;
 import java.util.Objects;
 import javafx.geometry.Point2D;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import som.assets.Asset;

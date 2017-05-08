@@ -14,7 +14,7 @@ import javafx.scene.shape.Polygon;
     class Resource extends Polygon{
        
         private int resourceAmount;
-        
+        private int resourceType;
         public Resource()
         {
 //            super(100,100,200,100,200,200,200,300,200,400,100,400,0,400, 0,300, 0,200,0, 100);
@@ -25,7 +25,11 @@ import javafx.scene.shape.Polygon;
             resourceAmount=value;
         }
         
-        
+        public Resource(int resourceType, int resourceAmount ){
+            this.resourceAmount=resourceAmount;
+            this.resourceType=resourceType;
+        }
+                
         public void drawResource(int amount) //method to take desired amount of resources from the Bank, provided the desired number is appropriate
         {
             if(resourceAmount-amount >=0) resourceAmount -=amount;
@@ -38,8 +42,11 @@ import javafx.scene.shape.Polygon;
             else System.out.println("Too many of desired resource");
         }
         
-        public int getResource() //returns number of resource
+        public int getResourceAmount() //returns number of resource
         {
             return resourceAmount;
+        }
+        public int getType(){
+            return resourceType;
         }
     }

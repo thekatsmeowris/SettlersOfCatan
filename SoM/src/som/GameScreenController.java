@@ -6,6 +6,7 @@
 package som;
 
 
+import customcontrols.TradeResourceTracker;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,11 +26,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.Circle;
 
 import javafx.scene.text.Text;
-
 
 
 
@@ -40,6 +46,9 @@ import javafx.scene.text.Text;
 public class GameScreenController implements Initializable {
     @FXML
     Pane gameLayer;
+    
+    @FXML
+    Slider sldVictoryPoints;
     
     @FXML
     Pane gameBoard;
@@ -82,6 +91,9 @@ public class GameScreenController implements Initializable {
     
     @FXML
     ProgressBar pgbLongestRoad;
+    
+    @FXML
+    private HBox tradeResourceTrackers;
 
 
 
@@ -108,14 +120,26 @@ public class GameScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         board= new HexBoard();
-       
+        sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                Number old_val, Number new_val) {
+                    for (Player p : players){
+                        p.setVictoryPoints((Math.round((new_val.floatValue()))));
+                        System.out.println(((Math.round((new_val.floatValue()))))+"  "+ p.victoryPointGauge.getLength());
+                        
+                    }
+            }
+        });
+        
+        
+        
         
         // THIS IS THE SECTON FOR THE ROLL DICE PANE AND FUNCTIONALITY 
         dicePane.setVisible(true);
         dicePane.setMouseTransparent(false);
         dicePane.getParent().setMouseTransparent(false);
         leftDie.textProperty().addListener(new ChangeListener(){
-           
+        
             // a change listener, once the value on the dice change it should do a 2 second sleep and then kill the dice pane
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -408,13 +432,63 @@ public class GameScreenController implements Initializable {
         
     }
     public void openTradeDialog(){
+        //set Resource Values
+        //1) get hbox with tradeTrackers in it
+        ObservableList<Node> trackers, anchors;
+        trackers = tradeResourceTrackers.getChildren();
+        System.out.println("TRACKERS");
+        for(Node node: trackers){
+            anchors=((VBox) node).getChildren();
+            ((TradeResourceTracker)node).setResourcesAvailable(thisPlayer.resources[trackers.indexOf(node)]);
+            for(Node n: anchors){
+                System.out.println(((AnchorPane)n).getChildren());
+                //0 Circle
+                ((AnchorPane)n).getChildren().get(0);
+                //1 lblResourceGiveValue
+                //2 lblResourceReqValue
+                //3 Button ^
+                //4 Button v
+                //5 lblResourcesAvailable
+                ((Label)(((AnchorPane)n).getChildren().get(5))).setText(""+thisPlayer.resources[anchors.indexOf(n)]);
+                        //thisPlayer.resources[]
+                
+                
+                
+                
+                
+                
+                
+            }
+            
+            
+        }
+
+        
+        
+        
         pnTradeDialog.setVisible(true);
         pnTradeDialog.getParent().setMouseTransparent(false);
         pnTradeDialog.setMouseTransparent(false);
         //create new tradepack
         thisPlayerTradePack= new TradePack();
+    
+        /*
+        pnPlayerLeft.setLayoutX();
+        pnPlayerMid.setLayoutX();
+        pnPlayerRight.setLayoutX();
+        */
         
     }
+
+    
+    public boolean submitTradeOffer(){
+        createTradePackage();
+       
+        return false;
+        
+    }
+    
+    
     public void closeTradeDialog(){
         pnTradeDialog.setVisible(false);
         pnTradeDialog.getParent().setMouseTransparent(true);
@@ -424,32 +498,48 @@ public class GameScreenController implements Initializable {
     }
     public void createTradePackage(){
         Player creator, receiver;
-        int []tradePackage =new int[5];
+        int []resourcesOffered =new int[5];
+        int []resourcesRequested =new int[5];
+
         Boolean accept;
         
         Boolean tradeSingle=false;
         Boolean tradeBank=false;
         TradePack tp;
-        tp = new TradePack(players.get(0),players.get(2),players.get(0).resources);
+        
+        ObservableList<Node> trackers;
+        trackers = tradeResourceTrackers.getChildren();
+            
+         for(Node node: trackers){
+           resourcesRequested[trackers.indexOf(node)]=((TradeResourceTracker) node).getRequestedAmount();
+           resourcesOffered[trackers.indexOf(node)]=((TradeResourceTracker) node).getGivingAmount();
+           
+         }
+        tp = new TradePack(thisPlayer,players.get(3),resourcesOffered, resourcesRequested);         
+        System.out.println(tp);
         
         if (!tradeSingle && !tradeBank){
             for(Player p: players){
-                offerTrade(p, tp);
+            //    offerTrade(p, tp);
             }
             }
+        
+        
+
+        
         }
         
 
     private void offerTrade(Player p, TradePack tp) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    public void offerResource(MouseEvent e){
-        if(pnTradeDialog.isVisible()){
-            thisPlayerTradePack.resources[0]+=1;
-        }
-        
+      public void offerResource(MouseEvent e){
+    if(pnTradeDialog.isVisible()){
+    //thisPlayerTradePack.resourcesOffered[0]+=1;
     }
-    public void requestResource(Resource rec, TradePack tp){
+    
+    }
+      public void requestResource(Resource rec, TradePack tp){
         
     }
     //board setup
@@ -470,7 +560,11 @@ public class GameScreenController implements Initializable {
         int counter=0;
         for(Player p: players){
             if(p.nickname!="Mark"){
-                ((Label) playerBlocks.get(counter).getChildren().get(1)).setText(p.nickname);
+                p.pnPlayerInfo=playerBlocks.get(counter);
+                ((Label) playerBlocks.get(counter).getChildren().get(6)).setText(p.nickname);
+                 p.victoryPointGauge=(Arc) playerBlocks.get(counter).getChildren().get(1);
+                System.out.println(p.victoryPointGauge);
+
                  counter++;
 
                 

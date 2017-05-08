@@ -13,16 +13,29 @@ class TradePack {
     Player sender, receiver;
     Boolean tradeSingle;    
     Boolean tradeBank;
-    int [] resources;
+    int [] resourcesOffered;
+    int [] resourcesRequested;
+    
         TradePack(){
             tradeSingle=false;
             tradeBank=false;
-            resources=new int[]{0,0,0,0,0};
+            resourcesOffered=new int[]{0,0,0,0,0};
+            resourcesRequested=new int[]{0,0,0,0,0};
+
         }
-        TradePack(Player p1, Player p2, int[] resources){
+        TradePack(Player p1, Player p2, int[] resourcesOffered, int[] resourcesRequested){
             sender=p1;
             receiver=p2;
-            this.resources=resources;
+            this.resourcesOffered=resourcesOffered;
+            this.resourcesRequested=resourcesRequested;
+            
         }
-
+        
+    @Override
+    public String toString(){
+        return "SENDER: "+ sender.nickname
+        +"RECEIVER: "+ receiver.nickname
+        +"OFFERING: "+ resourcesOffered.toString()
+        +"Requesting: "+ resourcesRequested.toString();
+    }
 }

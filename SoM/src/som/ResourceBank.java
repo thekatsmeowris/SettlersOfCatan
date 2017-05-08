@@ -131,7 +131,7 @@ public class ResourceBank {
                       break; 
               }
                
-              System.out.println(resourceName+": "+resourceList.get(i).getResource()); //arrayList uses object Resource to call method getResource()
+        //      System.out.println(resourceName+": "+resourceList.get(i).getResource()); //arrayList uses object Resource to call method getResource()
           }
           
           
