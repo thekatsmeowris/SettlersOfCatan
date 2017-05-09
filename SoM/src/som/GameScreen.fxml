@@ -13,14 +13,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Arc?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import customcontrols.TradeResourceTracker?>
-
+<!-- <?import customcontrols.TradeResourceTracker?> -->
 
 <AnchorPane id="AnchorPane" fx:id="lastAnchorPane" minHeight="600.0" minWidth="800.0" prefHeight="720.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="som.GameScreenController">
    <children>
@@ -95,7 +94,7 @@
                                           <Font size="17.0" />
                                        </font>
                                     </Text>
-                                    <ProgressBar layoutX="-37.0" layoutY="34.0" prefHeight="16.0" prefWidth="200.0" progress="0.0" />
+                                    <ProgressBar fx:id="pgbVictoryPointGuage" layoutX="-37.0" layoutY="34.0" prefHeight="16.0" prefWidth="200.0" progress="0.0" />
                                     <Slider fx:id="sldVictoryPoints" blockIncrement="1.0" layoutX="-7.0" layoutY="11.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickMarks="true" snapToTicks="true" />
                                  </children>
                               </Group>
@@ -174,13 +173,16 @@
                                                 <Button layoutX="571.0" layoutY="463.0" mnemonicParsing="false" onAction="#submitTradeOffer" prefHeight="57.0" prefWidth="156.0" text="SUBMIT" />
                                                 <Circle fill="#ff2d1f" layoutX="55.0" layoutY="484.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
                                                 <Circle fill="#1fff79" layoutX="110.0" layoutY="484.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-                                                <ImageView fitHeight="28.0" fitWidth="26.0" layoutX="97.0" layoutY="472.0" pickOnBounds="true" preserveRatio="true">
+                                                <Circle fill="#d9ff1f" layoutX="168.0" layoutY="484.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
+                                          
+                                                <HBox fx:id="tradeResponses" prefHeight="100.0" prefWidth="200.0">
+                                                    <children>
+                                                              <ImageView fitHeight="28.0" fitWidth="26.0" layoutX="42.0" layoutY="472.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../res/green-check.png" />
                                                    </image>
                                                 </ImageView>
-                                                <Circle fill="#d9ff1f" layoutX="168.0" layoutY="484.0" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
-                                                <ImageView fitHeight="28.0" fitWidth="26.0" layoutX="42.0" layoutY="472.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fitHeight="28.0" fitWidth="26.0" layoutX="97.0" layoutY="472.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../res/green-check.png" />
                                                    </image>
@@ -190,6 +192,8 @@
                                                       <Image url="@../res/green-check.png" />
                                                    </image>
                                                 </ImageView>
+                                                    </children>
+                                                </HBox>
                                                 <HBox fx:id="tradeResourceTrackers" layoutX="463.0" layoutY="170.0" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="192.0" prefWidth="436.0">
                                                     <children>
                                                         <TradeResourceTracker />

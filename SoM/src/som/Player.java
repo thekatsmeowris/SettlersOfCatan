@@ -23,7 +23,7 @@ public class Player {
     
     int[] resources;
     ResourceManager resourceManager= new ResourceManager(); 
-    int victoryPoints;
+    private int victoryPoints;
     String nickname;
     Assets assets;
     Player(){
@@ -94,4 +94,8 @@ public class Player {
 		Player p2 = new Player();
 		p1.trade(p2,"SOY",4,"STEEL",5);
 	}
+
+    int getVictoryPoints() {
+        return victoryPoints;
+    }
 }
