@@ -19,6 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import customcontrols.TradeResourceTracker?>
+
 <!-- <?import customcontrols.TradeResourceTracker?> -->
 
 <AnchorPane id="AnchorPane" fx:id="lastAnchorPane" minHeight="600.0" minWidth="800.0" prefHeight="720.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="som.GameScreenController">
@@ -146,7 +147,7 @@
                                     </Pane>
                                     <AnchorPane mouseTransparent="true" prefHeight="574.0" prefWidth="1311.0">
                                        <children>
-                                          <Pane id="pnTradeDialog" fx:id="pnTradeDialog" layoutX="5.0" layoutY="22.0" mouseTransparent="true" prefHeight="521.0" prefWidth="1300.0" style="-fx-background-color: #c0c0c0;" visible="false">
+                                          <Pane id="pnTradeDialog" fx:id="pnTradeDialog" layoutX="5.0" layoutY="22.0" mouseTransparent="true" prefHeight="521.0" prefWidth="1300.0" style="-fx-background-color: #c0c0c0;">
                                              <children>
                                                 <Button layoutX="1274.0" mnemonicParsing="false" onAction="#closeTradeDialog" text="X" />
                                                 <Pane layoutX="337.0" layoutY="111.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #c3c3c3;" visible="false">
@@ -290,6 +291,7 @@
                                                 </Label>
                                              </children>
                                           </Pane>
+                                          <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00FFFF;" />
                                        </children>
                                     </AnchorPane>
                                  </children>
