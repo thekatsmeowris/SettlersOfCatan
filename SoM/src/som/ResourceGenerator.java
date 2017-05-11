@@ -54,7 +54,7 @@ public class ResourceGenerator {
          */
 	public ArrayList<Hex> retrieveHex(int dn)
 	{
-		ArrayList<Hex>listOfHexes;
+		ArrayList<Hex>listOfHexes= new ArrayList<>();
 		return listOfHexes;
 	}
 	/**
@@ -64,7 +64,7 @@ public class ResourceGenerator {
          */
 	public ArrayList<Player> checkPlayerOnHex(ArrayList<Hex> listOfHexes)
 	{
-		ArrayList<Player>listOfplayers;
+		ArrayList<Player>listOfplayers= new ArrayList<>();
 		
 		return listOfplayers;
 	}
