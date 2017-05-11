@@ -139,6 +139,7 @@ public class HexBoard {
                 Point2D p= new Point2D(h.getPoints().get(i), h.getPoints().get(i+1));
                 
                 HexVertex hV= new HexVertex(p, h);
+                h.addVertex(hV);
                 ((Circle) (hV)).setOnMouseEntered(e ->{
                     hV.setFill(Color.RED);
                 });
