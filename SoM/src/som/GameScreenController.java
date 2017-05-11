@@ -27,6 +27,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -45,55 +47,55 @@ import javafx.scene.text.Text;
  */
 public class GameScreenController implements Initializable {
     @FXML
-    Pane gameLayer;
+    Pane 
+            gameLayer, 
+            gameBoard,
+            playerGUI, 
+            popupDialog,
+            dicePane,
+            pnTradeDialog,
+            pnPlayerLeft, 
+            pnPlayerMid, 
+            pnPlayerRight;
+
     
     @FXML
     Slider sldVictoryPoints;
     
-    @FXML
-    Pane gameBoard;
-    
-    @FXML
-    Pane playerGUI; 
-    
-    @FXML
-    Pane popupDialog;
+   
     
     @FXML 
-    Text txtPopUpText;
-    
+    Text 
+            txtPopUpText, 
+            leftDie,
+            rightDie,
+            txtRes00Text,
+            txtRes01Text, 
+            txtRes02Text,
+            txtRes03Text,
+            txtRes04Text;
+
     @FXML
     AnchorPane lastAnchorPane;
 
-    @FXML
-    Text leftDie;
+                
     
-    @FXML
-    Text rightDie;            
     
-    @FXML
-    Pane dicePane;
 
     @FXML
     Button btnRollDice;
     
-    @FXML
-    Pane pnTradeDialog;
-
-    @FXML
-    Text txtRes00Text,txtRes01Text, txtRes02Text,txtRes03Text,txtRes04Text;
     
-    @FXML
-    Pane pnPlayerLeft, pnPlayerMid, pnPlayerRight;
+    
     
     @FXML
     Text txtThisPlayerName;
     
     @FXML
-    ProgressBar pgbLongestRoad;
+    ProgressBar pgbLongestRoad, pgbVictoryPoints;
     
     @FXML
-    private HBox tradeResourceTrackers;
+    private HBox tradeResourceTrackers,tradeResponses;
 
 
 
@@ -101,6 +103,7 @@ public class GameScreenController implements Initializable {
     int diceValue;
     int longestRoadValue;
     int largestArmyValue;
+    final int SETTLMENT_VP_VALUE=1;
     //Circle selectedCircle=new HexVertex();
     
     /**
@@ -367,6 +370,13 @@ public class GameScreenController implements Initializable {
      public void buildSettlement(){
          if(canBuild()){
              System.out.println("BUILD SETTLEMENT DIALOG");
+             ((HexVertex)selectedItem).addSettlement();
+         System.out.println("BUILD Settlement DIALOG");
+         thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));
+         thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE);
+         pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));
+          System.out.println(((HexVertex)selectedItem).adjacentEdge);
+          
              
          }
      }
@@ -406,6 +416,12 @@ public class GameScreenController implements Initializable {
          if(thisPlayer.assets.roads.size()>longestRoadValue) longestRoadValue=thisPlayer.assets.roads.size();
          
          pgbLongestRoad.progressProperty().set((double)(thisPlayer.assets.roads.size())/longestRoadValue);
+         if (pgbLongestRoad.progressProperty().doubleValue()>=100.0){
+             pgbLongestRoad.getStyleClass().add("gold-bar");
+         }else{
+            pgbLongestRoad.getStyleClass().add("basic-bar");
+
+         }
          
      }
      public void buildCity(){
@@ -479,15 +495,33 @@ public class GameScreenController implements Initializable {
         
     }
 
-    
+//Trade Functionality    
     public boolean submitTradeOffer(){
-        createTradePackage();
+       TradePack tp=createTradePackage();
+       boolean response;
+       //check for receiver
+       if (tp.getReceiver()==null){
+           //offer to each player
+           for(Player p: players){
+               if(p!=thisPlayer){
+                   tp.setReceiver(p);
+                   if(offerTrade(tp)){
+                   ((ImageView)(tradeResponses.getChildren().get(players.indexOf(p)+1))).setImage(new Image(""));
+               }else{
+                    ((ImageView)(tradeResponses.getChildren().get(players.indexOf(p)+1))).setImage(new Image(""));
+    
+                   }
+               }
+           }
+       }else{
+           return offerTrade(tp);
+       }
        
+       
+       System.out.println(tp);
         return false;
         
-    }
-    
-    
+    } 
     public void closeTradeDialog(){
         pnTradeDialog.setVisible(false);
         pnTradeDialog.getParent().setMouseTransparent(true);
@@ -495,7 +529,7 @@ public class GameScreenController implements Initializable {
         //clear tradepack
         thisPlayerTradePack=null;
     }
-    public void createTradePackage(){
+    public TradePack createTradePackage(){
         Player creator, receiver;
         int []resourcesOffered =new int[5];
         int []resourcesRequested =new int[5];
@@ -514,24 +548,25 @@ public class GameScreenController implements Initializable {
            resourcesOffered[trackers.indexOf(node)]=((TradeResourceTracker) node).getGivingAmount();
            
          }
-        tp = new TradePack(thisPlayer,players.get(3),resourcesOffered, resourcesRequested);         
-        System.out.println(tp);
-        
-        if (!tradeSingle && !tradeBank){
-            for(Player p: players){
-            //    offerTrade(p, tp);
-            }
-            }
-        
-        
-
-        
-        }
-        
-
-    private void offerTrade(Player p, TradePack tp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new TradePack(thisPlayer,players.get(3),resourcesOffered, resourcesRequested);         
     }
+        
+        //offer trade should fire an event with whichever player is being offered a trade
+        //need to find a way to get a response from players
+    private boolean offerTrade(TradePack tp) {
+        boolean response=false;
+        if (tp.getReceiver()==thisPlayer){
+            //open trade requested dialog
+            return response;
+        }else{
+            return generateTradeResponse();
+        }
+
+    }
+      //generate random response
+      public boolean generateTradeResponse(){
+          return new Random().nextBoolean();
+      }
       public void offerResource(MouseEvent e){
     if(pnTradeDialog.isVisible()){
     //thisPlayerTradePack.resourcesOffered[0]+=1;
@@ -541,7 +576,9 @@ public class GameScreenController implements Initializable {
       public void requestResource(Resource rec, TradePack tp){
         
     }
-    //board setup
+    
+
+//board setup
     public void makeResources(){
         txtRes00Text.setText(""+thisPlayer.resources[0]);
         txtRes01Text.setText(""+thisPlayer.resources[1]);

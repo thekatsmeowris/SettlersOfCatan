@@ -327,6 +327,7 @@
         <property name="ant-javafx.jar.location" value="${platform.home}${file.separator}tools${file.separator}ant-javafx.jar"/>
     </target>
     <target name="-check-ant-javafx-in-probjdk-lib" unless="ant-javafx.jar.location">
+
         <condition property="do.set.ant-javafx.in.probjdk.lib.has_jre">
             <available file="${java.home}${file.separator}..${file.separator}lib${file.separator}ant-javafx.jar"/>
         </condition>
@@ -340,6 +341,7 @@
                     <isset property="do.set.ant-javafx.in.probjdk.lib.has_jre"/>
                     <isset property="do.set.ant-javafx.in.probjdk.lib.no_jre"/>
                 </or>
+
             </and>
         </condition>
     </target>
@@ -362,6 +364,7 @@
                     <isset property="do.set.ant-javafx.in.probjdk.tools.has_jre"/>
                     <isset property="do.set.ant-javafx.in.probjdk.tools.no_jre"/>
                 </or>
+
             </and>
         </condition>
     </target>
@@ -1866,6 +1869,7 @@
                             }
                         }
                     }
+
                     var a1val = new String(project.getProperty("application.vendor"));
                     var a1 = new org.apache.tools.ant.taskdefs.Manifest.Attribute();
                     a1.setName("Implementation-Vendor");

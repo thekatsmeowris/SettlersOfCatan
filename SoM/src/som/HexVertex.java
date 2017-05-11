@@ -56,7 +56,17 @@ public class HexVertex extends Circle {
     public Hex getHex(){
         return parentHex;
     }
-    
+    public void addSettlement(){
+         //asset= new Settlement();
+       this.setOnMouseEntered(e ->{
+            this.setStroke(Color.GREEN);
+            this.setFill(Color.GREEN);
+        });
+       this.setOnMouseExited(e ->{
+            //this.setStroke(Color.TRANSPARENT);
+        });
+        
+    }
     public Asset getAsset(){
         return asset;
     }
