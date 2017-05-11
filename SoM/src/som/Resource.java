@@ -15,6 +15,7 @@ import javafx.scene.shape.Polygon;
        
         private int resourceAmount;
         private int resourceType;
+
         public Resource()
         {
 //            super(100,100,200,100,200,200,200,300,200,400,100,400,0,400, 0,300, 0,200,0, 100);
@@ -25,6 +26,7 @@ import javafx.scene.shape.Polygon;
             resourceAmount=value;
         }
         
+
         public Resource(int resourceType, int resourceAmount ){
             this.resourceAmount=resourceAmount;
             this.resourceType=resourceType;
@@ -49,4 +51,5 @@ import javafx.scene.shape.Polygon;
         public int getType(){
             return resourceType;
         }
+
     }

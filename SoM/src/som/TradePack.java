@@ -44,6 +44,7 @@ class TradePack {
         +"Requesting: "+ Arrays.toString(resourcesRequested);
     }
 
+
     public void setReceiver(Player receiver) {
         this.receiver=receiver;
     }
@@ -57,4 +58,5 @@ class TradePack {
         return sender;
     }
     
+
 }

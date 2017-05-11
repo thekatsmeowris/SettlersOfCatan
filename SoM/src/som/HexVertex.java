@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import som.assets.Asset;
 
+
 /**
  *
  * @author makogenq
@@ -22,6 +23,7 @@ public class HexVertex extends Circle {
     ArrayList<HexEdge> adjacentEdge;
     Asset asset;
     Hex parentHex;
+
     
     
     
@@ -30,11 +32,13 @@ public class HexVertex extends Circle {
     public HexVertex(Point2D position, Hex hex) {
         super(position.getX(),position.getY(),10, Color.TRANSPARENT);
         this.position=position;
+
         //adjacentHex.add(h);
         asset=null;
         adjacentHex=new ArrayList<>();
         adjacentEdge= new ArrayList<>();
         parentHex=hex;
+
     }
     public void setVertex(Point2D p){
         
@@ -44,6 +48,7 @@ public class HexVertex extends Circle {
     }
     
     public void addAdjacentHex(Hex h){
+
         adjacentHex.add(h);
         
     }
@@ -65,7 +70,7 @@ public class HexVertex extends Circle {
     public Asset getAsset(){
         return asset;
     }
-    
+
     
     @Override
     public boolean equals(Object o){
@@ -95,6 +100,4 @@ public class HexVertex extends Circle {
         this.setFill(Color.RED);
     }
     */
-
-
 }
