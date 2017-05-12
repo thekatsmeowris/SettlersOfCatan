@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
-
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,7 +19,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import customcontrols.TradeResourceTracker?>
-
 
 <!-- <?import customcontrols.TradeResourceTracker?> -->
 
@@ -137,7 +135,7 @@
                            <content>
                               <StackPane prefHeight="520.0" prefWidth="1300.0">
                                  <children>
-                                    <Pane fx:id="gameBoard" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" rotate="90.0" style="-fx-background-image: url('..\res\boardArt.png');" translateX="50.0" translateY="-50.0" />
+                                    <Pane fx:id="gameBoard" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" rotate="90.0" translateX="50.0" translateY="-50.0" />
                                     <Pane fx:id="popupDialog" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" onMouseClicked="#handleClick" prefHeight="176.0" prefWidth="172.0" style="-fx-background-color: #c0c0c0;" visible="false">
                                        <children>
                                           <Text id="txtPopUpText" fx:id="txtPopUpText" layoutX="67.0" layoutY="41.0" mouseTransparent="true" onMouseClicked="#handleClick" strokeType="OUTSIDE" strokeWidth="0.0" text="testing" />
@@ -149,7 +147,7 @@
                                     </Pane>
                                     <AnchorPane mouseTransparent="true" prefHeight="574.0" prefWidth="1311.0">
                                        <children>
-                                          <Pane id="pnTradeDialog" fx:id="pnTradeDialog" layoutX="5.0" layoutY="22.0" mouseTransparent="true" prefHeight="521.0" prefWidth="1300.0" style="-fx-background-color: #c0c0c0;">
+                                          <Pane id="pnTradeDialog" fx:id="pnTradeDialog" layoutX="5.0" layoutY="22.0" mouseTransparent="true" prefHeight="521.0" prefWidth="1300.0" style="-fx-background-color: #c0c0c0;" visible="false">
                                              <children>
                                                 <Button layoutX="1274.0" mnemonicParsing="false" onAction="#closeTradeDialog" text="X" />
                                                 <Pane layoutX="337.0" layoutY="111.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #c3c3c3;" visible="false">
@@ -293,7 +291,6 @@
                                                 </Label>
                                              </children>
                                           </Pane>
-                                          <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #00FFFF;" />
                                        </children>
                                     </AnchorPane>
                                  </children>
