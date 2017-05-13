@@ -215,7 +215,7 @@ import java.util.ArrayList;
               case "PLASTIC" :
                  resourceNumber = 2;
                  if (checkBank(currentResource))
-                      resourceBank.resourceList.get(resourceNumber).drawResource(1);
+                      resourceBank.resourceList.get(resourceNumber).drawResource(2);
                       for(int i = 0; i < listOfplayers.size() -1 ; i++) {
                       listOfplayers.get(i).resources[resourceNumber]++;
                  }                  
@@ -223,7 +223,7 @@ import java.util.ArrayList;
              case "GLASS" :
                  resourceNumber = 3;
                  if (checkBank(currentResource))
-                      resourceBank.resourceList.get(resourceNumber).drawResource(1);
+                      resourceBank.resourceList.get(resourceNumber).drawResource(3);
                       for(int i = 0; i < listOfplayers.size() -1 ; i++) {
                       listOfplayers.get(i).resources[resourceNumber]++;
                  }
@@ -231,7 +231,7 @@ import java.util.ArrayList;
              case "STEEL" :
                  resourceNumber = 4;
                  if (checkBank(currentResource))
-                      resourceBank.resourceList.get(resourceNumber).drawResource(1);
+                      resourceBank.resourceList.get(resourceNumber).drawResource(4);
                       for(int i = 0; i < listOfplayers.size() -1 ; i++) {
                       listOfplayers.get(i).resources[resourceNumber]++;
                  }
