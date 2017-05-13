@@ -5,6 +5,7 @@
  */
 package som;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.collections.ObservableList;
 import javafx.scene.shape.*;
@@ -18,7 +19,10 @@ public class Hex extends Polygon {
    // double inRadius, circumRadius, centralAngle, interiorAngle, side;
    double inRadius, circumRadius;
    double centerX, centerY;
+   public int tokenValue;
+   public String ressourceValue;
    public int index;
+   ArrayList<HexVertex> verticies;
    ObservableList<Double>hexPoints;
   
 
@@ -28,6 +32,7 @@ public class Hex extends Polygon {
         circumRadius=this.getLayoutBounds().getHeight();
         centerX=400;
         centerY=300;
+        verticies= new ArrayList<>();
     }
     Hex(int i,double cX, double cY, double R, double r){
         super(
@@ -45,6 +50,8 @@ public class Hex extends Polygon {
         circumRadius=R;
         inRadius=R*(int)(Math.sqrt(3)/2);
         hexPoints=super.getPoints();
+        verticies= new ArrayList<>();
+
        // makePoints();
        // this.getPoints().clear();
        //     for(int i=0; i<hexPoints.length-1; i++){
@@ -59,8 +66,12 @@ public class Hex extends Polygon {
    
         
     }
-
-       
+    public ArrayList<HexVertex> getVerticies(){
+        return verticies;
+    }
+   public void addVertex(HexVertex hexVertex){
+       verticies.add(hexVertex);
+   }    
 
 
    @Override

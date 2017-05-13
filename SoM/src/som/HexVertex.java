@@ -8,9 +8,10 @@ package som;
 import java.util.ArrayList;
 import java.util.Objects;
 import javafx.geometry.Point2D;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import som.assets.Asset;
+
 
 /**
  *
@@ -21,20 +22,23 @@ public class HexVertex extends Circle {
     ArrayList<Hex> adjacentHex;
     ArrayList<HexEdge> adjacentEdge;
     Asset asset;
-    
+    Hex parentHex;
+
     
     
     
     // hex vertex takes a location p and a hex h, 
     // the hex is the hex that the vertex belongs to
-    public HexVertex(Point2D p, Hex h) {
-        super(p.getX(),p.getY(),10, Color.TRANSPARENT);
-        position=p;
+    public HexVertex(Point2D position, Hex hex) {
+        super(position.getX(),position.getY(),10, Color.TRANSPARENT);
+        this.position=position;
+
         //adjacentHex.add(h);
         asset=null;
         adjacentHex=new ArrayList<>();
         adjacentEdge= new ArrayList<>();
-        
+        parentHex=hex;
+
     }
     public void setVertex(Point2D p){
         
@@ -43,12 +47,30 @@ public class HexVertex extends Circle {
         HexEdge hE= new HexEdge(p, q);
     }
     
-    public void addHex(Hex h){
+    public void addAdjacentHex(Hex h){
+
         adjacentHex.add(h);
         
     }
     
-    
+    public Hex getHex(){
+        return parentHex;
+    }
+    public void addSettlement(){
+         //asset= new Settlement();
+       this.setOnMouseEntered(e ->{
+            this.setStroke(Color.GREEN);
+            this.setFill(Color.GREEN);
+        });
+       this.setOnMouseExited(e ->{
+            //this.setStroke(Color.TRANSPARENT);
+        });
+        
+    }
+    public Asset getAsset(){
+        return asset;
+    }
+
     
     @Override
     public boolean equals(Object o){
