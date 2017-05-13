@@ -52,7 +52,7 @@ public class ResourceGenerator {
          * @param dn the dice number
          * @return a list of hexes
          */
-	public ArrayList<Hex> retrieveHex(int dn)
+	public ArrayList<Hex> retrieveHex(int diceValue, HexBoard board)
 	{
 		ArrayList<Hex>listOfHexes= new ArrayList<>();
 		return listOfHexes;
