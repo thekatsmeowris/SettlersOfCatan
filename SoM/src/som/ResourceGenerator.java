@@ -1,6 +1,6 @@
 
 
-//package som;
+package som;
 
 import java.util.ArrayList;
 
@@ -11,11 +11,13 @@ import java.util.ArrayList;
  */
  class ResourceGenerator {
     
-    private  ArrayList<Players> players = new ArrayList<>();
+    private  ArrayList<Player> players = new ArrayList<>();
     private  ArrayList<Hex> hexes = new ArrayList<>();
+    private ArrayList<Player> listOfplayers = new ArrayList<>();
     private int currentDiceValue;
     private String currentResource;    
     private ResourceBank resourceBank = new ResourceBank();
+    
     
     
     
@@ -34,7 +36,7 @@ import java.util.ArrayList;
    * This method will set the Players list
    * @param players ArrayList of players
    */  
-  public void setPlayers(ArrayList<Players> players)
+  public void setPlayers(ArrayList<Player> players)
   {
       this.players = players;
   }
@@ -43,7 +45,7 @@ import java.util.ArrayList;
    * This method returns a list of players around an Hex
    * @return Players a list of player object
    */
-  public ArrayList<Players> getPlayers()
+  public ArrayList<Player> getPlayers()
   {
       return players;
   }  
@@ -109,10 +111,17 @@ import java.util.ArrayList;
    * @param listOfHexes a list of hex to check in
    * @return list of players to assign resources 
    */   
-  public ArrayList<Players> checkPlayerOnHex(ArrayList<Hex> listOfHexes)
+  public ArrayList<Player> checkPlayerOnHex(ArrayList<Hex> listOfHexes)
   {
-      ArrayList<Players>listOfplayers = new ArrayList<>();
-  		
+        
+      
+  	for (Hex hex: listOfHexes){
+        //getVertices
+    ArrayList<HexVertex> verticies=hex.getVerticies();
+    for (HexVertex hexVertex: verticies){
+    listOfplayers.add(hexVertex.asset.getPlayer());
+}
+}	
   		return listOfplayers;
   }
    
@@ -140,27 +149,27 @@ import java.util.ArrayList;
             
             case "SOY" :                
                  resourceNumber = 0;
-                 if (resourceBank.resourceList.get(resourceNumber).getResource() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
+                 if (resourceBank.resourceList.get(resourceNumber).getResourceAmount() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
                     boolBank = true; 
                  break;
              case "HEMP" :
                  resourceNumber = 1;
-                 if (resourceBank.resourceList.get(resourceNumber).getResource() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
+                 if (resourceBank.resourceList.get(resourceNumber).getResourceAmount() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
                     boolBank = true; 
                  break;
               case "PLASTIC" :
                  resourceNumber = 2;
-                 if (resourceBank.resourceList.get(resourceNumber).getResource() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
+                 if (resourceBank.resourceList.get(resourceNumber).getResourceAmount() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
                     boolBank = true; 
                  break;
              case "GLASS" :
                  resourceNumber = 3;
-                 if (resourceBank.resourceList.get(resourceNumber).getResource() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
+                 if (resourceBank.resourceList.get(resourceNumber).getResourceAmount() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
                     boolBank = true; 
                  break;
              case "STEEL" :
                  resourceNumber = 4;
-                 if (resourceBank.resourceList.get(resourceNumber).getResource() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
+                 if (resourceBank.resourceList.get(resourceNumber).getResourceAmount() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
                     boolBank = true; 
                  break;
              default:
@@ -179,7 +188,7 @@ import java.util.ArrayList;
   */
   
   
-  public void assignValue(int playerTurnNumber) 
+  public void assignValue() 
   {
       //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
       //goes through players->specific playerTurnNumber -> increas resources array[resourceNumber];
@@ -190,33 +199,42 @@ import java.util.ArrayList;
             case "SOY" : 
                  resourceNumber = 0;
                  if (checkBank(currentResource))
-                      resourceBank.resourceList.get(resourceNumber).drawResource(1);
-                      players.get(playerTurnNumber).resources[resourceNumber]++;
+                      resourceBank.resourceList.get(resourceNumber).drawResource(0);
+                 for(int i = 0; i < listOfplayers.size() -1 ; i++) {
+                      listOfplayers.get(i).resources[resourceNumber]++;
+                 }
                  break;
              case "HEMP" :
                  resourceNumber = 1;
                  if (checkBank(currentResource))
                       resourceBank.resourceList.get(resourceNumber).drawResource(1);
-                      players.get(playerTurnNumber).resources[resourceNumber]++;
-                 resourceNumber = 1;                  
+                      for(int i = 0; i < listOfplayers.size() -1 ; i++) {
+                      listOfplayers.get(i).resources[resourceNumber]++;
+                 }                  
                  break;
               case "PLASTIC" :
                  resourceNumber = 2;
                  if (checkBank(currentResource))
                       resourceBank.resourceList.get(resourceNumber).drawResource(1);
-                      players.get(playerTurnNumber).resources[resourceNumber]++;                  
+                      for(int i = 0; i < listOfplayers.size() -1 ; i++) {
+                      listOfplayers.get(i).resources[resourceNumber]++;
+                 }                  
                  break;
              case "GLASS" :
                  resourceNumber = 3;
                  if (checkBank(currentResource))
                       resourceBank.resourceList.get(resourceNumber).drawResource(1);
-                      players.get(playerTurnNumber).resources[resourceNumber]++; 
+                      for(int i = 0; i < listOfplayers.size() -1 ; i++) {
+                      listOfplayers.get(i).resources[resourceNumber]++;
+                 }
                  break;
              case "STEEL" :
                  resourceNumber = 4;
                  if (checkBank(currentResource))
                       resourceBank.resourceList.get(resourceNumber).drawResource(1);
-                      players.get(playerTurnNumber).resources[resourceNumber]++;  
+                      for(int i = 0; i < listOfplayers.size() -1 ; i++) {
+                      listOfplayers.get(i).resources[resourceNumber]++;
+                 }
                  break;
              default:
                  System.out.println("INVALID RESOURCE");
