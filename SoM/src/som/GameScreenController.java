@@ -62,6 +62,9 @@ public class GameScreenController implements Initializable {
     @FXML
     Slider sldVictoryPoints;
     
+    @FXML
+    Label   lblCurrentStatus;
+
    
     
     @FXML 
@@ -136,12 +139,12 @@ public class GameScreenController implements Initializable {
         
         
         
-        
+        /*
         // THIS IS THE SECTON FOR THE ROLL DICE PANE AND FUNCTIONALITY 
         dicePane.setVisible(true);
         dicePane.setMouseTransparent(false);
-        dicePane.getParent().setMouseTransparent(false);
-        leftDie.textProperty().addListener(new ChangeListener(){
+        dicePane.getParent().setMouseTransparent(false);*/
+        /*leftDie.textProperty().addListener(new ChangeListener(){
             // a change listener, once the value on the dice change it should do a 2 second sleep and then kill the dice pane
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
@@ -156,7 +159,7 @@ public class GameScreenController implements Initializable {
              dicePane.setVisible(false);
 
             }
-        });
+        });*/
         
         // ROLL DICE SECTION ENDS
         longestRoadValue=3;
