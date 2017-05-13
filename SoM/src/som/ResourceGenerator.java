@@ -66,7 +66,11 @@ public class ResourceGenerator {
          * @param dn the dice number
          * @return a list of hexes
          */
+<<<<<<< HEAD
 	public ArrayList<Hex> retrieveHex(int diceValue, HexBoard board)
+=======
+	public ArrayList<Hex> retrieveHex(int dn)
+>>>>>>> e73975d9f15d9f032011c7467c9732d417cb720c
 	{
 		ArrayList<Hex>listOfHexes= new ArrayList<>();
                 for(int i=0;i<25;i++)
