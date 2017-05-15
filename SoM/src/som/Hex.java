@@ -6,6 +6,7 @@
 package som;
 
 import java.util.ArrayList;
+
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -18,6 +19,7 @@ import javafx.scene.shape.*;
 public class Hex extends Polygon {
 
    // double inRadius, circumRadius, centralAngle, interiorAngle, side;
+
    private double inRadius, circumRadius;
    private double centerX, centerY;
    private int index;
@@ -35,6 +37,7 @@ public class Hex extends Polygon {
         centerX=400;
         centerY=300;
         verticies= new ArrayList<>();
+
         hexColor=Color.BLACK;
         this.setFill(hexColor);
         this.terrainType=5;
@@ -56,6 +59,7 @@ public class Hex extends Polygon {
         inRadius=R*(int)(Math.sqrt(3)/2);
         hexPoints=super.getPoints();
         verticies= new ArrayList<>();
+
         this.hexColor=hexColor;
         this.setFill(hexColor);
         this.tokenValue=tokenValue;
