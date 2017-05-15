@@ -113,6 +113,12 @@ public class GameScreenController implements Initializable {
     int longestRoadValue;
     int largestArmyValue;
     final int SETTLMENT_VP_VALUE=1;
+    
+    
+    //bonuses
+    int freeRoad;                           //number of free roads the player can place
+    int freeSettlment;                      //number of free settlmenets the player can place
+    int resourcePass;                       //these skip checking resource requirements. 
     //Circle selectedCircle=new HexVertex();
     
     /**
@@ -170,7 +176,9 @@ public class GameScreenController implements Initializable {
         // ROLL DICE SECTION ENDS
         longestRoadValue=5;
         largestArmyValue=3;
-        
+        freeRoad=2;
+        freeSettlment=2;
+        resourcePass=4;
         // TODO
         
         
@@ -405,13 +413,33 @@ public class GameScreenController implements Initializable {
              
          }
      }
-     public Boolean canBuildSettlement(HexVertex selectedItem){
-         for(HexEdge edge: selectedItem.getAdjacentEdge() ){
-             if(edge.isOwned()) return true;
+     public boolean canBuildSettlement(HexVertex selectedItem){
+         if(freeSettlment<=0){
+            boolean result=false;
+            for(HexEdge edge: selectedItem.getAdjacentEdge() ){
+               if(edge.isOwned()){
+                   checkDistanceRuleSettlement((HexVertex)selectedItem);
+               }
+            }
+         }else{
+             freeSettlment--;
+             return true;
          }
          
-         
          return false;
+     }
+     private boolean checkDistanceRuleSettlement(HexVertex selectedItem){
+             boolean result=false;
+
+         for(HexEdge e: selectedItem.getAdjacentEdge() ){
+                       if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())!=null){
+                           result=true;
+                       }else{
+                           return false;
+                       }
+
+                   }
+         return result;
      }
      public void buildRoad(ActionEvent e) throws IOException{
          if(canBuildRoad(((HexEdge)selectedItem), thisPlayer)){
