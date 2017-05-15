@@ -23,7 +23,9 @@ public class Hex extends Polygon {
    private double inRadius, circumRadius;
    private double centerX, centerY;
    private int index;
-   private ArrayList<HexVertex> verticies;
+      private ArrayList<HexVertex> verticies;
+    private ArrayList<HexEdge> edges;
+  
    private ObservableList<Double>hexPoints;
    private Color hexColor;
    private int tokenValue;
@@ -59,6 +61,7 @@ public class Hex extends Polygon {
         inRadius=R*(int)(Math.sqrt(3)/2);
         hexPoints=super.getPoints();
         verticies= new ArrayList<>();
+        edges= new ArrayList<>();
 
         this.hexColor=hexColor;
         this.setFill(hexColor);
@@ -83,7 +86,18 @@ public class Hex extends Polygon {
     }
    public void addVertex(HexVertex hexVertex){
        verticies.add(hexVertex);
-   }    
+   }
+
+    public ArrayList<HexEdge> getEdges() {
+        return edges;
+    }
+
+    public void setEdges(ArrayList<HexEdge> edges) {
+        this.edges = edges;
+    }
+   public void addEdge(HexEdge hexEdge){
+       edges.add(hexEdge);
+   }
    public void setHexColor(Color hexColor){
        this.hexColor=hexColor;
        this.setFill(hexColor);
