@@ -102,7 +102,6 @@ public class HexBoard {
         //int[] boardBoundaries = new int[]{0.0,2,3,4};
         //800x600
         columnMax=maxColumns-2;                                 //this sets the max columns of the first row to 2 less than the longest (median) row
-        Hex modelHex= new Hex(0,400,300,50, 50*0.87, Color.ALICEBLUE, 0, 5);           //this generates a hex as a model to generate the rest of the board hexes from
                                                                 //i needed this because i had a hard time generating the radii of each in the constructor
                                                                 //since i needed to call super() before determining any of the hex's values
         hexRadius=modelHex.getLayoutBounds().getHeight()/2;     //this makes the circumradius which is half the height (of a pointy top hexagon)
