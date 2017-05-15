@@ -6,6 +6,9 @@
 package som;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Stack;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -15,6 +18,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import java.util.Collections;
+import java.util.List;
+
 import javafx.scene.shape.Shape;
 
 /**
@@ -44,12 +50,36 @@ public class HexBoard {
     int columnMax;                          //this is the maximum number of columns for a row...this is incremented and decremented to yield the 3,4,5,4,3 row pattern
     double hexRadius, inRadius;             //this is the default circumradius and inradius of all hexes
     float centerX, centerY;                 //this is the center of each hex when it is drawn
+    Color[]  colorPallete= new Color[]{
+            Color.web("#7EA6C4"),               //light blueish color           0
+            Color.web("#C16161"),               //abse REDDISH Color            1
+            Color.web("#EED79B"),               //pale yellow                   2
+            Color.web("#BDB7A2"),               //greenish GRAY                 3 
+            Color.web("#AE9C9E"),               //reddish GRAY                  4
+            Color.web("#000000")};              //black null color              5
+    List<Integer> possibleTokens= new ArrayList<Integer>();
+    int[] temp= new int[]{                      //tokenValue numbers possible
+        2,3,3,
+        4,4,5,5,
+        6,6,8,8,9,
+        9,10,10,11,
+        11,12};
+    int[] possibleTerrainTypes= new int[]{
+        3,3,3,                                  //hemp = grain distribution
+        3,4,4,4,                                //plastic = lumber distribution
+        4,2,2,2,2,                               //soy = pasture
+        0,0,0,1,                                  //steel = ore
+        1,1};                                        //brick = glass
+
+
+
+    Stack tokenStack= new Stack();
+    Stack terrainStack= new Stack();
     
     public HexBoard() {
         //int[] boardBoundaries = new int[]{0.0,2,3,4};
         //800x600
         columnMax=maxColumns-2;                                 //this sets the max columns of the first row to 2 less than the longest (median) row
-        Hex modelHex= new Hex(0,400,300,50, 50*0.87);           //this generates a hex as a model to generate the rest of the board hexes from
                                                                 //i needed this because i had a hard time generating the radii of each in the constructor
                                                                 //since i needed to call super() before determining any of the hex's values
         hexRadius=modelHex.getLayoutBounds().getHeight()/2;     //this makes the circumradius which is half the height (of a pointy top hexagon)
@@ -74,14 +104,26 @@ public class HexBoard {
         
         boardShell.getChildren().addAll(boardPane,edgePane,vertexPane);     //adds the 3 panes to the stackpane and so publishes the constructed board.
 //        boardShell.getChildren().addAll(edgePane,vertexPane);
-        
+
     }
     
     private void makeBoard(){
         int hexCounter=0;
         Hex h;
         double hexStartingPointY=0;
+        //MAKE number tokens
+    for(int j=0; j< temp.length; j++){
+        tokenStack.push(temp[j]);
+        terrainStack.push(possibleTerrainTypes[j]);
+    }
+    System.out.println(tokenStack);
+    Collections.shuffle(tokenStack);
+    Collections.shuffle(terrainStack);
+    
+    System.out.println(tokenStack);
 
+        
+        
         for(int i=0; i<numberOfRows;i++){
              if (i>0){
                    
@@ -93,32 +135,50 @@ public class HexBoard {
                      hexStartingPointY=200+((inRadius/2)+hexRadius)*i;
                 }
             for (int j=0;j<columnMax;j++){
-                
+            
+            Color hexColor;
+
+            hexColor=colorPallete[(int)terrainStack.peek()];
+/*          
+            if(randomNum>8&&randomNum<10){
+                hexColor=colorPallete[0];
+            }else if(randomNum>6&&randomNum<8){
+                hexColor=colorPallete[1];
+            }else if(randomNum>4&&randomNum<6){
+                hexColor=colorPallete[0];
+            }else if(randomNum>2&&randomNum<4){
+                hexColor=colorPallete[0];
+             //   hexColor=(Color.MOSSGREEN);
+            }else if(randomNum>0&&randomNum<2){
+                hexColor=Color.web("#AE9C9E");
+             //   hexColor=(Color.CHOCOLATE);
+            }else{
+                hexColor=Color.web("#000000");
+             //   hexColor=Color.BLACK;
+            }*/
+            //h.setHexColor(hexColor);
+    
                 
 
-               
+               if(i==2&&j==2){
                 h= new Hex(hexCounter,
                         200+(inRadius*(maxColumns-columnMax))+(inRadius*j*2),
                        hexStartingPointY,
                         hexRadius, 
-                        inRadius);
+                        inRadius,
+                        Color.BLACK, 0, 5);   
+               }else{
+                h= new Hex(hexCounter,
+                        200+(inRadius*(maxColumns-columnMax))+(inRadius*j*2),
+                       hexStartingPointY,
+                        hexRadius, 
+                        inRadius,
+                        hexColor, (int) tokenStack.pop(), (int) terrainStack.pop());
+               }
+                
                 hexCounter++;
                 boardPane.getChildren().add(h);
                 
-                float randomNum=(float) Math.random()*10;
-                
-
-                if(randomNum>8&&randomNum<10){
-                    h.setFill(Color.BLUE);
-                }else if(randomNum>6&&randomNum<8){
-                    h.setFill(Color.MAROON);
-                }else if(randomNum>4&&randomNum<6){
-                    h.setFill(Color.YELLOW);
-                }else if(randomNum>2&&randomNum<4){
-                    h.setFill(Color.AQUAMARINE);
-                }else if(randomNum>0&&randomNum<2){
-                    h.setFill(Color.CHOCOLATE);
-                }
                 hexList.add(h);
             }
         if(i<2){
