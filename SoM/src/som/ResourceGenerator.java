@@ -12,6 +12,7 @@ public class ResourceGenerator {
 	private ArrayList<Hex> hexes;
 	private int diceValue;
         private ResourceBank resourceBank = new ResourceBank();
+        private HexBoard board;
 
     public int getDiceValue() {        
         return diceValue;
