@@ -44,24 +44,24 @@ public class Hex extends Polygon {
         this.setFill(hexColor);
         this.terrainType=5;
     }
-    Hex(int i,double cX, double cY, double R, double r, Color hexColor, int tokenValue, int terrainType){
+    Hex(int index,double centerX, double centerY, double circumRadius, double inRadius, Color hexColor, int tokenValue, int terrainType){
         super(
-                cX, cY-R,
+                centerX, centerY-circumRadius,
 //                cX+(Math.round(R*Math.sqrt(3)/2)), cY-(R/2),
-                cX+(Math.round(R*Math.sqrt(3)/2)), cY-(R/2),
-                cX+(Math.round(R*Math.sqrt(3)/2)), cY+(R/2),
-                cX, cY+R,
-                cX-(Math.round(R*Math.sqrt(3)/2)), cY+(R/2),
-                cX-(Math.round(R*Math.sqrt(3)/2)), cY-(R/2)
+                centerX+(Math.round(circumRadius*Math.sqrt(3)/2)), centerY-(circumRadius/2),
+                centerX+(Math.round(circumRadius*Math.sqrt(3)/2)), centerY+(circumRadius/2),
+                centerX, centerY+circumRadius,
+                centerX-(Math.round(circumRadius*Math.sqrt(3)/2)), centerY+(circumRadius/2),
+                centerX-(Math.round(circumRadius*Math.sqrt(3)/2)), centerY-(circumRadius/2)
         );
-        index =i;
-        centerX=cX;
-        centerY=cY;
-        circumRadius=R;
-        inRadius=R*(int)(Math.sqrt(3)/2);
-        hexPoints=super.getPoints();
-        verticies= new ArrayList<>();
-        edges= new ArrayList<>();
+        this.index =index;
+        this.centerX=centerX;
+        this.centerY=centerX;
+        this.circumRadius=circumRadius;
+        this.inRadius=circumRadius*(int)(Math.sqrt(3)/2);
+        this.hexPoints=super.getPoints();
+        this.verticies= new ArrayList<>();
+        this.edges= new ArrayList<>();
 
         this.hexColor=hexColor;
         this.setFill(hexColor);
