@@ -122,6 +122,15 @@ public class HexEdge extends Line{
         return null;
         
     }
+    public HexVertex getOtherPoint(HexVertex hexVertex){
+        if(hexVertex.getPosition()==startPoint){
+            return new HexVertex(endPoint);
+        }else{
+            return new HexVertex(startPoint);
+        }
+        
+        
+    }
 
     public void setEdge(Point2D p, Point2D q){
         
