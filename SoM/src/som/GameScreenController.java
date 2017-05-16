@@ -114,7 +114,7 @@ public class GameScreenController implements Initializable {
     int longestRoadValue;
     int largestArmyValue;
     final int SETTLMENT_VP_VALUE=1;
-    
+    ResourceBank resourceBank=new ResourceBank(19);
     
     //bonuses
     int freeRoad;                           //number of free roads the player can place
@@ -128,6 +128,7 @@ public class GameScreenController implements Initializable {
 
     
 //-----------------------------------------------------//
+    
     Player thisPlayer=new Player("mark",new int[]{5,5,5,5,5});
     TradePack thisPlayerTradePack;
     ArrayList<Player> players;
@@ -417,16 +418,24 @@ public class GameScreenController implements Initializable {
      public void buildSettlement() throws IOException{
          if(canBuildSettlement((HexVertex) selectedItem)){
              System.out.println("BUILD SETTLEMENT DIALOG");
-             ((HexVertex)selectedItem).addSettlement(thisPlayer);
+             //((HexVertex)selectedItem).addSettlement(thisPlayer);
+            if (freeSettlment<0){                                                                                                               //quick bug fix to see if freeSettlment can work. must change where it decrements.
+            resourceBank.bankReturnResource(resourceBank.getResourceCost(((HexVertex)selectedItem).addSettlement(thisPlayer)),thisPlayer);
+            }else{
+                ((HexVertex)selectedItem).addSettlement(thisPlayer);
+            }
             System.out.println("BUILD Settlement DIALOG");
             thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));
             thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE);
             //pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));
-            
+            updateResources();
             System.out.println("ADJACENT EDGES:");
             System.out.println(((HexVertex)selectedItem).getAdjacentEdge());
             for(HexEdge edge:((HexVertex)selectedItem).getAdjacentEdge() ){
                 edge.setStroke(Color.WHITE);
+                if(((HexEdge)edge).isOwned()){
+                    edge.setFill(Color.GREENYELLOW);
+                }
             }
            closeParentPane();
 
@@ -455,7 +464,7 @@ public class GameScreenController implements Initializable {
                 return true;
             }  
                
-         return false;
+         return result;
      }
      private boolean checkDistanceRuleSettlement(HexVertex selectedItem){
              boolean result=false;
@@ -546,7 +555,7 @@ public class GameScreenController implements Initializable {
     }
     private boolean isGreater(int[] a, int[] b){                                //checks if the contents of int[]a are greater than int[] b
         for(int i=0; i<a.length; i++){
-            if(a[i]>b[i]){
+            if(a[i]>=b[i]){
                continue; 
             }else{
                 return false;
