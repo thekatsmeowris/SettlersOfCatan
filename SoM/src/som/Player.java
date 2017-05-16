@@ -129,6 +129,18 @@ public class Player {
     public void setResource(int index, int value) {
         this.resources[index]=value;
     }
+    
+    public int countResources()
+    {
+        int counter = 0;
+        
+        for(int i = 0; i < resources.length -1; i++)
+        {
+            counter += resources[i];
+        }
+        return counter;
+    }
+
 
  
 }
