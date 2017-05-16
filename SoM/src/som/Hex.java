@@ -6,6 +6,7 @@
 package som;
 
 import java.util.ArrayList;
+
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -18,10 +19,13 @@ import javafx.scene.shape.*;
 public class Hex extends Polygon {
 
    // double inRadius, circumRadius, centralAngle, interiorAngle, side;
+
    private double inRadius, circumRadius;
    private double centerX, centerY;
    private int index;
-   private ArrayList<HexVertex> verticies;
+      private ArrayList<HexVertex> verticies;
+    private ArrayList<HexEdge> edges;
+  
    private ObservableList<Double>hexPoints;
    private Color hexColor;
    private int tokenValue;
@@ -35,27 +39,30 @@ public class Hex extends Polygon {
         centerX=400;
         centerY=300;
         verticies= new ArrayList<>();
+
         hexColor=Color.BLACK;
         this.setFill(hexColor);
         this.terrainType=5;
     }
-    Hex(int i,double cX, double cY, double R, double r, Color hexColor, int tokenValue, int terrainType){
+    Hex(int index,double centerX, double centerY, double circumRadius, double inRadius, Color hexColor, int tokenValue, int terrainType){
         super(
-                cX, cY-R,
+                centerX, centerY-circumRadius,
 //                cX+(Math.round(R*Math.sqrt(3)/2)), cY-(R/2),
-                cX+(Math.round(R*Math.sqrt(3)/2)), cY-(R/2),
-                cX+(Math.round(R*Math.sqrt(3)/2)), cY+(R/2),
-                cX, cY+R,
-                cX-(Math.round(R*Math.sqrt(3)/2)), cY+(R/2),
-                cX-(Math.round(R*Math.sqrt(3)/2)), cY-(R/2)
+                centerX+(Math.round(circumRadius*Math.sqrt(3)/2)), centerY-(circumRadius/2),
+                centerX+(Math.round(circumRadius*Math.sqrt(3)/2)), centerY+(circumRadius/2),
+                centerX, centerY+circumRadius,
+                centerX-(Math.round(circumRadius*Math.sqrt(3)/2)), centerY+(circumRadius/2),
+                centerX-(Math.round(circumRadius*Math.sqrt(3)/2)), centerY-(circumRadius/2)
         );
-        index =i;
-        centerX=cX;
-        centerY=cY;
-        circumRadius=R;
-        inRadius=R*(int)(Math.sqrt(3)/2);
-        hexPoints=super.getPoints();
-        verticies= new ArrayList<>();
+        this.index =index;
+        this.centerX=centerX;
+        this.centerY=centerX;
+        this.circumRadius=circumRadius;
+        this.inRadius=circumRadius*(int)(Math.sqrt(3)/2);
+        this.hexPoints=super.getPoints();
+        this.verticies= new ArrayList<>();
+        this.edges= new ArrayList<>();
+
         this.hexColor=hexColor;
         this.setFill(hexColor);
         this.tokenValue=tokenValue;
@@ -79,7 +86,18 @@ public class Hex extends Polygon {
     }
    public void addVertex(HexVertex hexVertex){
        verticies.add(hexVertex);
-   }    
+   }
+
+    public ArrayList<HexEdge> getEdges() {
+        return edges;
+    }
+
+    public void setEdges(ArrayList<HexEdge> edges) {
+        this.edges = edges;
+    }
+   public void addEdge(HexEdge hexEdge){
+       edges.add(hexEdge);
+   }
    public void setHexColor(Color hexColor){
        this.hexColor=hexColor;
        this.setFill(hexColor);

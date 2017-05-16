@@ -25,7 +25,7 @@ public class Assets {
         
     }
     public void add(Player player, HexVertex hexVertex){
-        if (hexVertex.asset==null){
+        if (hexVertex.getAsset()==null){
         settlements.add(new Settlement(player, hexVertex));
         }else{
             settlements.remove((Settlement)hexVertex.getAsset());
