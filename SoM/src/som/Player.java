@@ -17,15 +17,17 @@ import javafx.scene.shape.Arc;
 public class Player {
     final int VICTORY_POINT_MAX=10;
     
-    
+    private TradePack tradePack= new TradePack(this);
+
+
     Pane pnPlayerInfo=new Pane();
     Arc victoryPointGauge = new Arc();
     
     
     int[] resources;
     ResourceManager resourceManager= new ResourceManager(); 
+    private int victoryPoints;
 
-    int victoryPoints;
     String nickname;
     Assets assets;
     Player(){
@@ -43,7 +45,7 @@ public class Player {
     }
 
     Player(String name, int[] resources) {
-        nickname=name;
+        this.nickname=name;
         this.resources=resources;
         victoryPoints=4;
         assets=new Assets();
@@ -97,4 +99,48 @@ public class Player {
 		p1.trade(p2,"SOY",4,"STEEL",5);
 	}
 
+
+    int getVictoryPoints() {
+        return victoryPoints;
+    }
+    public TradePack getTradePack() {
+        return tradePack;
+    }
+
+    public void setTradePack(TradePack tradePack) {
+        this.tradePack = tradePack;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public int[] getResources() {
+        return resources;
+    }
+
+    public void setResources(int[] resources) {
+        this.resources = resources;
+    }
+    public void setResource(int index, int value) {
+        this.resources[index]=value;
+    }
+    
+    public int countResources()
+    {
+        int counter = 0;
+        
+        for(int i = 0; i < resources.length -1; i++)
+        {
+            counter += resources[i];
+        }
+        return counter;
+    }
+
+
+ 
 }

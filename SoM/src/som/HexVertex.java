@@ -11,6 +11,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import som.assets.Asset;
+import som.assets.Settlement;
 
 
 /**
@@ -18,14 +19,57 @@ import som.assets.Asset;
  * @author makogenq
  */
 public class HexVertex extends Circle {
-    Point2D position;
-    ArrayList<Hex> adjacentHex;
-    ArrayList<HexEdge> adjacentEdge;
-    Asset asset;
-    Hex parentHex;
+    private Point2D position;
+    private ArrayList<Hex> adjacentHex;
+    private ArrayList<HexEdge> adjacentEdge;
+    private Asset asset;
+    private Hex parentHex;
+    
+    public Point2D getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point2D position) {
+        this.position = position;
+    }
+
+    public ArrayList<Hex> getAdjacentHex() {
+        return adjacentHex;
+    }
+
+    public void setAdjacentHex(ArrayList<Hex> adjacentHex) {
+        this.adjacentHex = adjacentHex;
+    }
+
+    public ArrayList<HexEdge> getAdjacentEdge() {
+        return adjacentEdge;
+    }
+
+    public void setAdjacentEdge(ArrayList<HexEdge> adjacentEdge) {
+        this.adjacentEdge = adjacentEdge;
+    }
+
+    public Hex getParentHex() {
+        return parentHex;
+    }
+
+    public void setParentHex(Hex parentHex) {
+        this.parentHex = parentHex;
+    }
 
     
     
+    public HexVertex(Point2D position) {
+        super(position.getX(),position.getY(),10, Color.TRANSPARENT);
+        this.position=position;
+
+        //adjacentHex.add(h);
+        asset=null;
+        adjacentHex=new ArrayList<>();
+        adjacentEdge= new ArrayList<>();
+        parentHex=null;
+
+    }
     
     // hex vertex takes a location p and a hex h, 
     // the hex is the hex that the vertex belongs to
@@ -56,9 +100,23 @@ public class HexVertex extends Circle {
     public Hex getHex(){
         return parentHex;
     }
-    
+    public Settlement addSettlement(Player player){
+         this.asset= new Settlement(player,this);
+       this.setOnMouseEntered(e ->{
+            this.setStroke(Color.GREEN);
+            this.setFill(Color.GREEN);
+            System.out.println("THIS ASSET: "+ this.asset);
+        });
+       this.setOnMouseExited(e ->{
+            //this.setStroke(Color.TRANSPARENT);
+        });
+        return (Settlement) this.asset;
+    }
     public Asset getAsset(){
         return asset;
+    }
+    public void addAdjacentEdge(HexEdge hexEdge){
+        adjacentEdge.add(hexEdge);
     }
 
     
@@ -77,12 +135,7 @@ public class HexVertex extends Circle {
     
         return Objects.equals(position, hV.position);
     }
-    @Override
-    public String toString(){
-        return "("+position.getX()+", "+position.getY()+")\n";
-        
-        
-    }
+   
     
     // mouse events
     /*
@@ -90,4 +143,9 @@ public class HexVertex extends Circle {
         this.setFill(Color.RED);
     }
     */
+
+    @Override
+    public String toString() {
+        return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge + ", asset=" + asset + ", \n\tparentHex=" + parentHex + '}';
+    }
 }
