@@ -15,7 +15,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author David Kapanga
  */
 public class AI implements Runnable{
-    
+
     @Override
     public void run() {
          Lock lock =new ReentrantLock();
@@ -32,7 +32,6 @@ public class AI implements Runnable{
         {
             for(int i=0;i<6;i++)
             {
-                Player thisPlayer = null;                                                                           //!!!!!!!code patch to run
                 if(hex.getVerticies().get(i).getAsset().getPlayer()==thisPlayer)
                 {
                     listOfPlayerVertexToUpgrade.add(hex.getVerticies().get(i));
