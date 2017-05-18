@@ -32,10 +32,10 @@ public class AI implements Runnable{
         {
             for(int i=0;i<6;i++)
             {
-                if(hex.getVerticies().get(i).getAsset().getPlayer()==thisPlayer)
+              /* if(hex.getVerticies().get(i).getAsset().getPlayer()==thisPlayer)
                 {
                     listOfPlayerVertexToUpgrade.add(hex.getVerticies().get(i));
-                }
+                }*/
             }
         }
         //generate a random number between 0 and the number of vertex that the player has a settlement 
