@@ -126,7 +126,9 @@ public class Player {
     public void setResources(int[] resources) {
         this.resources = resources;
     }
-    
+        void setResource(int index, int value) {
+            
+    }
     public int countResources()
     {
         int counter = 0;
@@ -137,6 +139,8 @@ public class Player {
         }
         return counter;
     }
+
+
 
 
  
