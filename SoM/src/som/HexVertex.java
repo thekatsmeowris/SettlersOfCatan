@@ -11,6 +11,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import som.assets.Asset;
+import som.assets.Settlement;
 
 
 /**
@@ -23,7 +24,7 @@ public class HexVertex extends Circle {
     private ArrayList<HexEdge> adjacentEdge;
     private Asset asset;
     private Hex parentHex;
-
+    
     public Point2D getPosition() {
         return position;
     }
@@ -99,16 +100,17 @@ public class HexVertex extends Circle {
     public Hex getHex(){
         return parentHex;
     }
-    public void addSettlement(){
-         //asset= new Settlement();
+    public Settlement addSettlement(Player player){
+         this.asset= new Settlement(player,this);
        this.setOnMouseEntered(e ->{
             this.setStroke(Color.GREEN);
             this.setFill(Color.GREEN);
+            System.out.println("THIS ASSET: "+ this.asset);
         });
        this.setOnMouseExited(e ->{
             //this.setStroke(Color.TRANSPARENT);
         });
-        
+        return (Settlement) this.asset;
     }
     public Asset getAsset(){
         return asset;
@@ -130,7 +132,7 @@ public class HexVertex extends Circle {
         if (getClass() != o.getClass()) return false;
         HexVertex hV = (HexVertex) o;
         // field comparison
-    
+        System.out.println("...");
         return Objects.equals(position, hV.position);
     }
    
@@ -144,6 +146,6 @@ public class HexVertex extends Circle {
 
     @Override
     public String toString() {
-        return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge + ", asset=" + asset + ", \n\tparentHex=" + parentHex + '}';
+        return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge + ", asset=" + asset + ", \n\tparentHex=" + parentHex + "Color= \n\t" +this.getFill()+ '}';
     }
 }

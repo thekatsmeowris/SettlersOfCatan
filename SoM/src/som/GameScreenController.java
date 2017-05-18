@@ -20,6 +20,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.Pane;
@@ -39,6 +40,7 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 
 import javafx.scene.text.Text;
+import som.assets.Settlement;
 
 
 
@@ -113,6 +115,12 @@ public class GameScreenController implements Initializable {
     int longestRoadValue;
     int largestArmyValue;
     final int SETTLMENT_VP_VALUE=1;
+    ResourceBank resourceBank=new ResourceBank(19);
+    
+    //bonuses
+    int freeRoad;                           //number of free roads the player can place
+    int freeSettlment;                      //number of free settlmenets the player can place
+    int resourcePass;                       //these skip checking resource requirements. 
     //Circle selectedCircle=new HexVertex();
     
     /**
@@ -121,6 +129,7 @@ public class GameScreenController implements Initializable {
 
     
 //-----------------------------------------------------//
+    
     Player thisPlayer=new Player("mark",new int[]{5,5,5,5,5});
     TradePack thisPlayerTradePack;
     ArrayList<Player> players;
@@ -170,7 +179,9 @@ public class GameScreenController implements Initializable {
         // ROLL DICE SECTION ENDS
         longestRoadValue=5;
         largestArmyValue=3;
-        
+        freeRoad=2;
+        freeSettlment=2;
+        resourcePass=4;
         // TODO
         
         
@@ -262,14 +273,15 @@ public class GameScreenController implements Initializable {
  
       
      
-    
+    //gameLoop();
     }
     public void setSelectedItem(Node o){
         selectedItem=o;
     }
     
-    public void rollDice(){
+    public int rollDice(){
        btnRollDice.setDisable(true);
+            int diceValue;
             Integer r;
             Random z = new Random();
             r=z.nextInt(6)+1;
@@ -282,7 +294,7 @@ public class GameScreenController implements Initializable {
             diceValue+=r;
             rightDie.setText(r.toString());
             System.out.println(r);
-
+            return diceValue;
         
        
     }
@@ -293,9 +305,12 @@ public class GameScreenController implements Initializable {
         
         //is Player's turn
         //if so,
-        btnRollDice.setDisable(false);
         
-        generateResources(diceValue);
+        boolean endGame=false;
+        while (!endGame){
+        btnRollDice.setDisable(false);
+        diceValue=rollDice();
+        //ResourceGenerator.generateResources(diceValue);
         
         //Player actions
         
@@ -315,14 +330,28 @@ public class GameScreenController implements Initializable {
          //roll dice to find the first person's turn
          
          //first player's turn
-         
+         endGame=getWinCondition();
+        }
          
             
             
         
         
     }
-    
+    public boolean getWinCondition(){
+        for (Player player: players){
+            if(player.getVictoryPoints()>=10){
+                 System.out.println("GAME OVER");
+
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    public void endTurn(){
+        
+    }
     
     
     
@@ -390,32 +419,85 @@ public class GameScreenController implements Initializable {
      public void buildSettlement() throws IOException{
          if(canBuildSettlement((HexVertex) selectedItem)){
              System.out.println("BUILD SETTLEMENT DIALOG");
-             ((HexVertex)selectedItem).addSettlement();
-         System.out.println("BUILD Settlement DIALOG");
-         thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));
-         thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE);
-         //pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));
-         System.out.println("ADJACENT EDGES:");
-         System.out.println(((HexVertex)selectedItem).getAdjacentEdge());
-         for(HexEdge edge:((HexVertex)selectedItem).getAdjacentEdge() ){
-             edge.setStroke(Color.WHITE);
-         }
-        closeParentPane();
+             //((HexVertex)selectedItem).addSettlement(thisPlayer);
+            if (freeSettlment<0){                                                                                                               //quick bug fix to see if freeSettlment can work. must change where it decrements.
+            resourceBank.bankReturnResource(resourceBank.getResourceCost(((HexVertex)selectedItem).addSettlement(thisPlayer)),thisPlayer);
+            }else{
+                ((HexVertex)selectedItem).addSettlement(thisPlayer);
+            }
+            thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));
+            thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE);
+            //pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));
+            updateResources();
+            for(HexEdge edge:((HexVertex)selectedItem).getAdjacentEdge() ){
+                edge.setStroke(Color.WHITE);
+                if(((HexEdge)edge).isOwned()){
+                    edge.setFill(Color.GREENYELLOW);
+                }
+            }
+            System.out.println("!!! CHECKING FOR WORKAGE");
+
+            System.out.println(board.vertexList.indexOf(new HexVertex(((HexVertex) selectedItem).getPosition())));
+            //Point2D point2D= ((HexVertex)selectedItem).getPosition();
+            HexVertex hv=(HexVertex)selectedItem;
+            int index=board.vertexList.indexOf(hv);
+            System.out.println("\n\n\n\n\n");
+            System.out.println(board.vertexList.get(index));
+            for(HexEdge edge: ((HexVertex) selectedItem).getAdjacentEdge()){
+               System.out.println(edge);
+               System.out.println(board.vertexList.get(index));
+               System.out.println(edge.getOtherPoint((board.vertexList.get(index))));
+
+                board.vertexList.get(board.vertexList.indexOf(new HexVertex (edge.getOtherPoint(((HexVertex)selectedItem))))).setFill(Color.GOLDENROD);
+            }
+           closeParentPane();
 
              
          }
      }
-     public Boolean canBuildSettlement(HexVertex selectedItem){
-         for(HexEdge edge: selectedItem.getAdjacentEdge() ){
-             if(edge.isOwned()) return true;
-         }
-         
-         
-         return false;
+     public void getSelectedItemInfo(){
+         System.out.println((HexVertex)selectedItem);
+     }
+     public boolean canBuildSettlement(HexVertex selectedItem){
+            boolean result=false;
+            //if (thisPlayer.assets.settlements.size()>=1&&thisPlayer.assets.cities.size()>=1){
+            if(freeSettlment<=0){
+    
+                for(HexEdge e: selectedItem.getAdjacentEdge() ){                            //check all adjacent edges
+                    System.out.println("ADJACENT VERTICIES: ");
+                  //  System.out.println(e.getOtherPoint(selectedItem).getAsset());
+                    /*if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())==null){    //in each edge check if the otherPoint has city or settlement
+                        result=true;                                                        //only returns true if the otherPoint has no settlement
+                    }*/
+                }
+            
+
+                //check resource requirements
+
+ 
+            }else{
+                freeSettlment--;
+                return true;
+            }  
+               
+         return result;
+     }
+     private boolean checkDistanceRuleSettlement(HexVertex selectedItem){
+             boolean result=false;
+
+         for(HexEdge e: selectedItem.getAdjacentEdge() ){
+             /*    if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())!=null){
+             result=true;
+             }else{
+             return false;
+             }*/
+                   }
+         return result;
      }
      public void buildRoad(ActionEvent e) throws IOException{
          if(canBuildRoad(((HexEdge)selectedItem), thisPlayer)){
          ((HexEdge)selectedItem).addRoad(thisPlayer);
+                                                                                                //put resources back to the bank
          System.out.println("BUILD ROAD DIALOG");
          System.out.println("ADJACENT EDGES:");
          System.out.println(((HexEdge)selectedItem).getAdjacentEdge());
@@ -429,27 +511,52 @@ public class GameScreenController implements Initializable {
              System.out.println(edge.isOwned());
          }
           closeParentPane();
-         }
+         } 
      }
      private boolean canBuildRoad(HexEdge hexEdge, Player player) {
-         if(checkRequirementsRoad(hexEdge, player)){
+         if(checkRequirements(hexEdge, player)){
              for(HexEdge edge : hexEdge.getAdjacentEdge()){
                  if(edge.isOwned()){
                      if(edge.getOwner()==thisPlayer){
                          return true;
                      }
                  }
+                for(HexVertex v: edge.getAdjacentVertex()){
+                    if(v.getAsset()!=null){
+                        return true;
+                    }
+                }
+                System.out.println("\n\n\n ADJACENT VERTEX: ");
+                System.out.println(edge.getAdjacentVertex());
              }
          }
      return false;
     }
-    private boolean checkRequirementsRoad(HexEdge hexEdge, Player player){
+
+     private boolean checkRequirements(HexEdge hexEdge, Player player){             //checks requirements for road
         //road requirements: BRICK AND LUMBER (plastic + glass) 1+4
         
         return (isGreater(thisPlayer.getResources(), new int[]{0,1,0,0,1}));
                 
         
     }
+        private boolean checkRequirements(HexVertex hexVertex, Player player){      //checks requirements for settlement
+        //road requirements: BRICK AND LUMBER (plastic + glass) 1+4
+        
+        return (isGreater(thisPlayer.getResources(), new int[]{0,1,1,1,1}));
+                
+        
+    }
+        private boolean checkRequirements(HexVertex hexVertex, Player player, Settlement settlement){      //checks requirements for settlement
+
+            return (isGreater(thisPlayer.getResources(), new int[]{3,0,0,2,0}));
+
+        }
+        private boolean checkRequirements(Player player){      //checks requirements for developmentCards
+
+            return (isGreater(thisPlayer.getResources(), new int[]{1,0,1,1,0}));
+
+        }
     private boolean isAdjacentEdgeOwned(HexEdge hexEdge, Player player){
         for(HexEdge edge: hexEdge.getAdjacentEdge()){
             if(edge.isOwned()){
@@ -463,7 +570,7 @@ public class GameScreenController implements Initializable {
     }
     private boolean isGreater(int[] a, int[] b){                                //checks if the contents of int[]a are greater than int[] b
         for(int i=0; i<a.length; i++){
-            if(a[i]>b[i]){
+            if(a[i]>=b[i]){
                continue; 
             }else{
                 return false;
@@ -771,6 +878,10 @@ public class GameScreenController implements Initializable {
                 txtThisPlayerName.setText(p.nickname);
             }
         }
+    }
+
+    private boolean winCondition() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     

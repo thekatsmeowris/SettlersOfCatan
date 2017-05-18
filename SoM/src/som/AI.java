@@ -33,6 +33,10 @@ public class AI implements Runnable{
             for(int i=0;i<6;i++)
             {
                 Player thisPlayer = null;
+<<<<<<< HEAD
+=======
+                
+>>>>>>> master
                 if(hex.getVerticies().get(i).getAsset().getPlayer()==thisPlayer)
                 {
                     listOfPlayerVertexToUpgrade.add(hex.getVerticies().get(i));
