@@ -155,6 +155,7 @@ public class GameScreenController implements Initializable {
         
         
         /*
+        LLLL
         // THIS IS THE SECTON FOR THE ROLL DICE PANE AND FUNCTIONALITY 
         dicePane.setVisible(true);
         dicePane.setMouseTransparent(false);
