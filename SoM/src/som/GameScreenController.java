@@ -20,6 +20,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.Pane;
@@ -446,23 +447,38 @@ public class GameScreenController implements Initializable {
             }else{
                 ((HexVertex)selectedItem).addSettlement(thisPlayer);
             }
-            System.out.println("BUILD Settlement DIALOG");
             thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));
             thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE);
             //pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));
             updateResources();
-            System.out.println("ADJACENT EDGES:");
-            System.out.println(((HexVertex)selectedItem).getAdjacentEdge());
             for(HexEdge edge:((HexVertex)selectedItem).getAdjacentEdge() ){
                 edge.setStroke(Color.WHITE);
                 if(((HexEdge)edge).isOwned()){
                     edge.setFill(Color.GREENYELLOW);
                 }
             }
+            System.out.println("!!! CHECKING FOR WORKAGE");
+
+            System.out.println(board.vertexList.indexOf(new HexVertex(((HexVertex) selectedItem).getPosition())));
+            //Point2D point2D= ((HexVertex)selectedItem).getPosition();
+            HexVertex hv=(HexVertex)selectedItem;
+            int index=board.vertexList.indexOf(hv);
+            System.out.println("\n\n\n\n\n");
+            System.out.println(board.vertexList.get(index));
+            for(HexEdge edge: ((HexVertex) selectedItem).getAdjacentEdge()){
+               System.out.println(edge);
+               System.out.println(board.vertexList.get(index));
+               System.out.println(edge.getOtherPoint((board.vertexList.get(index))));
+
+                board.vertexList.get(board.vertexList.indexOf(new HexVertex (edge.getOtherPoint(((HexVertex)selectedItem))))).setFill(Color.GOLDENROD);
+            }
            closeParentPane();
 
              
          }
+     }
+     public void getSelectedItemInfo(){
+         System.out.println((HexVertex)selectedItem);
      }
      public boolean canBuildSettlement(HexVertex selectedItem){
             boolean result=false;
@@ -471,10 +487,10 @@ public class GameScreenController implements Initializable {
     
                 for(HexEdge e: selectedItem.getAdjacentEdge() ){                            //check all adjacent edges
                     System.out.println("ADJACENT VERTICIES: ");
-                    System.out.println(e.getOtherPoint(selectedItem).getAsset());
-                    if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())==null){    //in each edge check if the otherPoint has city or settlement
+                  //  System.out.println(e.getOtherPoint(selectedItem).getAsset());
+                    /*if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())==null){    //in each edge check if the otherPoint has city or settlement
                         result=true;                                                        //only returns true if the otherPoint has no settlement
-                    }
+                    }*/
                 }
             
 
@@ -492,12 +508,11 @@ public class GameScreenController implements Initializable {
              boolean result=false;
 
          for(HexEdge e: selectedItem.getAdjacentEdge() ){
-                       if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())!=null){
-                           result=true;
-                       }else{
-                           return false;
-                       }
-
+             /*    if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())!=null){
+             result=true;
+             }else{
+             return false;
+             }*/
                    }
          return result;
      }

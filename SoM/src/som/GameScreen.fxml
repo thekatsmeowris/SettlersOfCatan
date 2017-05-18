@@ -35,7 +35,8 @@
                            <children>
                               <Group layoutX="14.0" layoutY="14.0">
                                  <children>
-                                    <Button layoutX="144.0" layoutY="28.0" mnemonicParsing="false" onAction="#simulateTradeRequest" prefHeight="54.0" prefWidth="96.0" text="Function" />
+                                    <!--<Button layoutX="144.0" layoutY="28.0" mnemonicParsing="false" onAction="#simulateTradeRequest" prefHeight="54.0" prefWidth="96.0" text="Function" />-->
+                                    <Button layoutX="144.0" layoutY="28.0" mnemonicParsing="false" onAction="#getSelectedItemInfo" prefHeight="54.0" prefWidth="96.0" text="Function" />
                                     <Button mnemonicParsing="false" onAction="#openTradeDialog" prefHeight="47.0" prefWidth="96.0" text="TRADE" />
                                     <Button layoutX="14.0" layoutY="34.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="96.0" text="DEVELOP" />
                                  </children>
