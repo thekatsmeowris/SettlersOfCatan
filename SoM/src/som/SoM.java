@@ -22,7 +22,7 @@ import javafx.stage.Stage;
  * @author makogenq
  */
 public class SoM extends Application {
-    
+    //audio
     //private static URL musicURL1, musicURL2;
     //static AudioClip aMusic1, aMusic2;
      String music1Path = "src/WASTELAND1.wav";
