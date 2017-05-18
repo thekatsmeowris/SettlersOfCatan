@@ -435,18 +435,11 @@ public class GameScreenController implements Initializable {
                     edge.setFill(Color.GREENYELLOW);
                 }
             }
-            System.out.println("!!! CHECKING FOR WORKAGE");
+            //test
 
-            System.out.println(board.vertexList.indexOf(new HexVertex(((HexVertex) selectedItem).getPosition())));
-            //Point2D point2D= ((HexVertex)selectedItem).getPosition();
             HexVertex hv=(HexVertex)selectedItem;
             int index=board.vertexList.indexOf(hv);
-            System.out.println("\n\n\n\n\n");
-            System.out.println(board.vertexList.get(index));
             for(HexEdge edge: ((HexVertex) selectedItem).getAdjacentEdge()){
-               System.out.println(edge);
-               System.out.println(board.vertexList.get(index));
-               System.out.println(edge.getOtherPoint((board.vertexList.get(index))));
 
                 board.vertexList.get(board.vertexList.indexOf(new HexVertex (edge.getOtherPoint(((HexVertex)selectedItem))))).setFill(Color.GOLDENROD);
             }
