@@ -31,7 +31,7 @@ public class Hex extends Polygon {
    private int tokenValue;
    private int terrainType;
    private boolean sandstorming;
-
+   
     Hex(){
         super(100,100,200,100,200,200,200,300,200,400,100,400,0,400, 0,300, 0,200,0, 100);
         inRadius=this.getLayoutBounds().getWidth();
@@ -175,12 +175,13 @@ public class Hex extends Polygon {
     public void setSandstorming(boolean sandstorming) {
         this.sandstorming = sandstorming;
     }
+    
    @Override
    public String toString(){
     
     return "Hex: "+index
             +hexPoints+"\n";
-}
+   }
    
 
   
