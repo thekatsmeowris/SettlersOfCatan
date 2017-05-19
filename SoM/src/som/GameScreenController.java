@@ -10,6 +10,8 @@ import customcontrols.TradeResourceTracker;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -90,8 +92,14 @@ public class GameScreenController implements Initializable {
     
 
     @FXML
-    Button btnRollDice;
-    
+    Button 
+    		diceRoller,
+    		btnRollDice,
+    		startGameBtn,
+    		tradeBtn,
+    		buildBtn,
+    		gameStateBtn,
+    		devBtn;
     
     
     
@@ -115,6 +123,39 @@ public class GameScreenController implements Initializable {
     int largestArmyValue;
     final int SETTLMENT_VP_VALUE=1;
     ResourceBank resourceBank=new ResourceBank(19);
+    ResourceGenerator resGen;
+    
+    public final static int MAX_PLAYERS = 4;
+    private static Player currentPlayer;
+    private static Player playerWithLongestRoad;
+    private static Player playerWithLargestArmy;
+    private static int gameState;
+    
+    public final static int GAME_OVER = 404;
+    public final static int NEW_GAME = 0;
+    public final static int DETERMINE_PLAYER_ORDER = 1;
+    public final static int INIT_BUILD_PHASE_A = 2;
+    public final static int INIT_BUILD_PHASE_B = 3;
+    public final static int PRE_ROLL = 4; // roll/ play dev card
+    public final static int MAIN_PHASE = 5; // After roll, player can build/trade/play dev card
+    
+    public final static int PLACING_ROAD = 10;
+    public final static int PLACING_SETTLEMENT = 11;
+    public final static int PLACING_CITY = 12;
+    public final static int MOVING_ROBBER = 13;
+    
+    public final static int PLAY_ROAD_BUILDING = 15;
+    public final static int PLAY_MONOPOLY = 16;
+    public final static int PLAY_KNIGHT = 17;
+    public final static int PLAY_VICTORY_POINT = 18;
+    
+    /*
+     * public final static int DISTR_RESOURCES = 20;
+     * public final static int DISCARDING = 21;
+     * public final static int STEALING_RESOURCE = 22;
+     * public final static int 
+     * 
+     */
     
     //bonuses
     int freeRoad;                           //number of free roads the player can place
@@ -140,6 +181,7 @@ public class GameScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         board= new HexBoard();
+        System.out.println("HELLO" +board.hexList);
         sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
@@ -149,6 +191,7 @@ public class GameScreenController implements Initializable {
                         
                     }
             }
+            
         });
         
         
@@ -181,9 +224,12 @@ public class GameScreenController implements Initializable {
         freeRoad=2;
         freeSettlment=2;
         resourcePass=4;
+        
         // TODO
         
-        
+//        diceRoller.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+//        	openBuildDialog();
+//        });
 
         for(HexVertex hexVertex: board.vertexList)
         {
@@ -265,78 +311,166 @@ public class GameScreenController implements Initializable {
         
         gameBoard.getChildren().add(board.getBoardPane());
         
-//Player GUI Stuff
-    makeResources();
-    createTestPlayers();
-    fillPlayerInfo();
- 
-      
-     
-    //gameLoop();
+	//  Player GUI Stuff
+	    resGen = new ResourceGenerator();
+	    makeResources();
+	    createTestPlayers();
+	    fillPlayerInfo();
+	    
+	    gameState = NEW_GAME;
+	    setUIFromGameState();
+	    // If gameState = NEW_GAME, display "Start Game" overlay Panel
+	    //		--> Pressing "Start Game" button launches startGame();
+
     }
     public void setSelectedItem(Node o){
         selectedItem=o;
     }
     
+    //**************************************
+    //*Beginning of Game Loop related code *
+    //**************************************
     public int rollDice(){
        btnRollDice.setDisable(true);
-            int diceValue;
-            Integer r;
-            Random z = new Random();
-            r=z.nextInt(6)+1;
-            diceValue=r;
-            System.out.println(r);
-           leftDie.setText(r.toString());
+	   Integer r;
+	   Random z = new Random();
+	   r=z.nextInt(6)+1;
+	   diceValue=r;
+	   System.out.println("first die: "+r);
+	   leftDie.setText(r.toString());
+	
+	   
+	   r=z.nextInt(6)+1;
+	   diceValue+=r;
+	   rightDie.setText(r.toString());
+	   System.out.println("total die: "+diceValue);
+	   System.out.println("Game State: "+gameState);
+	   System.out.println("Current Player: "+getCurrentPlayer().toString());
+	   if(gameState == PRE_ROLL) {
+		   resGen.generateResources(diceValue, board);
+		   gameState = MAIN_PHASE;
+		   // Implement a listener for gameState change??? (Observable, boolean logic);
+		   setUIFromGameState();
+	   }
+	   
+	   return diceValue;
 
-           
-            r=z.nextInt(6)+1;
-            diceValue+=r;
-            rightDie.setText(r.toString());
-            System.out.println(r);
-            return diceValue;
         
        
     }
-    public void gameLoop(){
-        int gameState=1;
-        
+	public ArrayList<Player> getPlayerOrder(ArrayList<Player> players) {
+		// Need to add proper dice roll effects for each player's dice roll.
+		// Note: This method has a "cheat" in that it doesn't allow tie values: it will simply
+		//			rerun the function for all players to avoid complications. This should be considered
+		//			when displaying the die rolls for the Setup Phase.
+		
+		boolean hasTie = false;
+		dicePane.setVisible(true);
+    	for (int i = 0; i < players.size(); i++) {
+        	// Need to change this to match fxml if needed
+        	players.get(i).setDiceRoll((Integer)rollDice());
+//        	System.out.println(players.get(i).getNickname()+": "+players.get(i).getDiceRoll());
+        }
+    	Collections.sort(players, new Comparator<Player>() {
+    		@Override
+    		public int compare(Player a, Player b) {
+    			return Integer.compare(b.getDiceRoll(), a.getDiceRoll());
+    		}
+    	});
+    	int j = 0;
+		while(j < players.size()) {
+    		int dieRollNum = players.get(j).getDiceRoll();
+    		j++;
+    		while(j < players.size() && players.get(j).getDiceRoll() == dieRollNum) {
+    			j++;
+    			hasTie = true;
+    		}
+    		if (hasTie) {
+    			hasTie = false;
+    			getPlayerOrder(players);
+    		}
+		}
+		dicePane.setVisible(false);
+    	return players;
+    }
+	public void doInitialBuildPhase() {
+		for (int i = 0; i < players.size(); i++) {
+			players.get(i).buildInitial();
+		}
+		for (int i = players.size() - 1; i >= 0; i--) {
+			players.get(i).buildInitial();
+		}
+	}
+	public void buildPhase() {
+		
+	}
+	
+	
+	
+//@#$!@#$!#@$!@#$!@#$!#$!@#$!@#$!@#$!@#$!@#$!#$$!@##$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$
+//@#$!@#$!@#$!@#$$!@##$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@
+//@#$!@#$!#@$!@#$!@#$!#$!@#$!@#$!@#$!@#$!@#$!#$$!@##$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$
+//@#$!@#$!@#$!@#$$!@##$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@
+	public void startGame() {
+		gameState = PRE_ROLL;
+		setUIFromGameState();
+		currentPlayer = players.get(0);
+		System.out.println(currentPlayer.toString());
+		System.out.println("GAME STARTED");
+		System.out.println(gameState);
+	}
+//    public void gameLoop(){
+	public void nextTurn(){
+    	
+        // Game Setup Phase:
+    	// Need to take this out of gameLoop(), and into game initialization
+
+    	
+    	
+    	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    	// TODO: -Need to set currentPlayer = to players.get(0);
+    	//		 -Need to set initial game phase as well as create an initializing portion
+    	//
+     
         
         
         //is Player's turn
         //if so,
-        
-        boolean endGame=false;
-        while (!endGame){
-        btnRollDice.setDisable(false);
-        diceValue=rollDice();
-        //ResourceGenerator.generateResources(diceValue);
-        
-        //Player actions
-        
-        //build
-        
-
-        //trade
-        
-        
-        //develop
-        
-
-    
-
-
-         //get list of players
-         //roll dice to find the first person's turn
-         
-         //first player's turn
-         endGame=getWinCondition();
-        }
-         
-            
-            
-        
-        
+//        btnRollDice.setDisable(false);
+//        
+//        generateResources(diceValue);   
     }
+	
+	public void setUIFromGameState() {
+		switch(gameState) {
+		case NEW_GAME:
+			tradeBtn.setDisable(true);
+			diceRoller.setDisable(true);
+			startGameBtn.setDisable(false);
+			devBtn.setDisable(true);
+			gameBoard.setDisable(true);
+			buildBtn.setDisable(true);
+			break;
+		case PRE_ROLL:
+			tradeBtn.setDisable(true);
+			diceRoller.setDisable(false);
+			startGameBtn.setDisable(true);
+			devBtn.setDisable(false);
+			gameBoard.setDisable(true);
+			buildBtn.setDisable(true);
+			break;
+		case MAIN_PHASE:
+			tradeBtn.setDisable(false);
+			diceRoller.setDisable(true);
+			startGameBtn.setDisable(true);
+			devBtn.setDisable(false);
+			gameBoard.setDisable(false);
+			buildBtn.setDisable(false);
+			break;
+		case PLACING_SETTLEMENT:
+		}
+	}
+    
     public boolean getWinCondition(){
         for (Player player: players){
             if(player.getVictoryPoints()>=10){
@@ -348,17 +482,12 @@ public class GameScreenController implements Initializable {
         
         return false;
     }
+    
+    //End(immediately-related) Game Loop stuffs
+    
     public void endTurn(){
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
     
     public void closeParentPane() throws IOException{
         //popupDialog.getParent().setMouseTransparent(true); 
@@ -464,7 +593,7 @@ public class GameScreenController implements Initializable {
                 return true;
             }  
                
-         return result;
+         return true;
      }
      private boolean checkDistanceRuleSettlement(HexVertex selectedItem){
              boolean result=false;
@@ -586,7 +715,7 @@ public class GameScreenController implements Initializable {
     public void createTestPlayers(){
         players=new ArrayList<>();
         Player mark = new Player("Mark", new int[]{5,5,5,5,5});
-        Player dek = new Player("Dehkoda", new int[]{5,5,5,5,5});
+        Player dek = new Player("Dehkhoda", new int[]{5,5,5,5,5});
         Player lisa = new Player("Lisa", new int[]{5,5,5,5,5});
         Player mew = new Player("Mew", new int[]{5,5,5,5,5});
         players.add(mark);
@@ -607,7 +736,7 @@ public class GameScreenController implements Initializable {
             anchors=((VBox) node).getChildren();
             ((TradeResourceTracker)node).setResourcesAvailable(thisPlayer.resources[trackers.indexOf(node)]);
             for(Node n: anchors){
-                System.out.println(((AnchorPane)n).getChildren());
+                System.out.println(((AnchorPane)n).getChildren()+" heh");
                 //0 Circle
                 ((AnchorPane)n).getChildren().get(0);
                 //1 lblResourceGiveValue
@@ -784,6 +913,25 @@ public class GameScreenController implements Initializable {
     }
 
     
+    public void openDevelopDialog(){
+    	System.out.println("Develop Card Play!");
+    }
+    
+    public void openBuildDialog(){
+    	if(!popupDialog.isVisible()){
+    		popupDialog.setVisible(true);
+    	}
+    	popupDialog.setMouseTransparent(false);
+        for (Node n: popupDialog.getChildren()){
+            n.setMouseTransparent(false);
+        }
+    }
+    
+    public void buildDevCard() {
+    	System.out.println("Buy/Build dev card stuff here");
+    }
+    
+    
     private int[] addTwoResourceSets(int[] a, int[] b){
         int[] result=new int[a.length];
         for (int i=0; i<result.length; i++){
@@ -867,6 +1015,57 @@ public class GameScreenController implements Initializable {
 
     private boolean winCondition() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public Player getCurrentPlayer() {
+    	return currentPlayer;
+    }
+    public static Player getPlayerWithLargestArmy() {
+    	return playerWithLargestArmy;
+    }
+    public void setPlayerWithLargestArmy(Player player) {
+    	this.playerWithLargestArmy = player;
+    }
+    public static Player getPlayerWithLongestRoad() {
+    	return playerWithLongestRoad;
+    }
+    public void setPlayerWithLongestRoad(Player player) {
+    	this.playerWithLongestRoad = player;
+    }
+    
+    // Temporary Helper function to help determine current game state; Should delete when no longer needed
+    public String gameStateToString(){
+    	switch(gameState) {
+    	case NEW_GAME:
+    		return "New Game";
+    	case DETERMINE_PLAYER_ORDER:
+    		return "Determining Player Order";
+    	case INIT_BUILD_PHASE_A:
+    		return "Initial Build Phase Part A";
+    	case INIT_BUILD_PHASE_B:
+    		return "Initial Build Phase Part B";
+    	case PRE_ROLL:
+    		return "Pre-roll Phase";
+    	case MAIN_PHASE:
+    		return "Main Phase";
+    	case PLACING_ROAD:
+    	case PLACING_CITY:
+    	case PLACING_SETTLEMENT:
+    		return "Placing asset piece";
+    	case MOVING_ROBBER:
+    		return "Moving Robber";
+    	case PLAY_ROAD_BUILDING:
+    	case PLAY_MONOPOLY:
+    	case PLAY_KNIGHT:
+    	case PLAY_VICTORY_POINT:
+    		return "Development Card Played";
+    	default:
+    		return "Game State unknown";
+    	}
+    }
+    
+    public void printPrettyGameState() {
+    	System.out.println("Game State ==> "+gameStateToString());
     }
 
     
