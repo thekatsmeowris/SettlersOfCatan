@@ -51,6 +51,7 @@ public class SoM extends Application {
         stage.setScene(scene);
         stage.show();
 
+        playMusic1();
     }
 
     /**
