@@ -21,10 +21,10 @@ public class ResourceGenerator {
     private ArrayList<Player> players;
     private ArrayList<Hex> hexes;
     private int diceValue;
-    private HexBoard board;
+//    private HexBoard board;
     private ResourceBank resourceBank = new ResourceBank();
     
-    void generateResources(int diceValue) {
+    void generateResources(int diceValue, HexBoard board) {
             
         //1 get dice value
         //2 find all hexes with correspondinge dice value
@@ -32,10 +32,11 @@ public class ResourceGenerator {
         //4 get amount of resources to be distributed
         //5 check if the bank has enough
         //6 distribute resources
-        
-        hexes=checkHexWithDiceValue(diceValue);
+    	System.out.println("This is the resource dice value: "+diceValue);
+        hexes=checkHexWithDiceValue(diceValue, board);
         players=getPlayersOnHex(hexes);
         //for each hex
+        
         
     }
 
@@ -48,13 +49,14 @@ public class ResourceGenerator {
          * @param dn the dice number
          * @return a list of hexes
          */
-        public ArrayList<Hex> checkHexWithDiceValue(int diceValue) 
+        public ArrayList<Hex> checkHexWithDiceValue(int diceValue, HexBoard board) 
         {
 		ArrayList<Hex>listOfHexes= new ArrayList<>();
                 for (Hex hex: board.hexList)
                 {
                     if(hex.getTokenValue()==diceValue)
                     {
+                    	System.out.println("Also good here: TOKEN VALUE: "+hex.getTokenValue()+" AND Terrain:"+hex.getTerrainType()+" AND COORD: "+hex.getCenterX() + "/" +hex.getCenterY());
                         listOfHexes.add(hex);
                     }
                 }
@@ -68,17 +70,19 @@ public class ResourceGenerator {
          */
 	public ArrayList<Player> getPlayersOnHex(ArrayList<Hex> listOfHexes)
 	{
-		ArrayList<Player>listOfplayers= new ArrayList<>();
+		ArrayList<Player> listOfPlayers= new ArrayList<>();
 		for(Hex Hex:listOfHexes)
                 {
                     for(int eachVertex=0;eachVertex<6;eachVertex++){
                         if(Hex.getVerticies().get(eachVertex).getAsset()!=null)
                         {
-                            listOfplayers.add(Hex.getVerticies().get(eachVertex).getAsset().getPlayer());
+                        	System.out.println(Hex.getVerticies().get(eachVertex).getAsset().getPlayer().toString());
+                            listOfPlayers.add(Hex.getVerticies().get(eachVertex).getAsset().getPlayer());
                         }
                     }
                 }
-		return listOfplayers;
+		
+		return listOfPlayers;
 	}
         /**
          * this method check if there is enoungh resources in the bank and return true if the bank has it.
