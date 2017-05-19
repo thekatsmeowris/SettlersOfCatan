@@ -17,6 +17,8 @@ import javafx.scene.shape.Arc;
 public class Player {
     final int VICTORY_POINT_MAX=10;
     
+    Integer diceRoll;
+    
     private TradePack tradePack= new TradePack(this);
 
 
@@ -47,7 +49,7 @@ public class Player {
     Player(String name, int[] resources) {
         this.nickname=name;
         this.resources=resources;
-        victoryPoints=4;
+        victoryPoints=0;
         assets=new Assets();
        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   
@@ -58,11 +60,16 @@ public class Player {
         System.out.println(pnPlayerInfo.getWidth());
     }
     
-    	public void build(String assetName){
+    public void build(String assetName){
 		if (assetName.equals("SETTLEMENT"));
 		else if (assetName.equals("ROAD"));
 		else if (assetName.equals("CITY"));
 	}
+    
+    public void buildInitial() {
+    	this.build("SETTLEMENT");
+    	this.build("ROAD");
+    }
 
 	public void buy(){
 		// resources.bankDrawResource("SOY", 10);
@@ -141,6 +148,25 @@ public class Player {
         return counter;
     }
 
+	public void setDiceRoll(Integer rollDice) {
+		this.diceRoll = rollDice;
+	}
+	
+	public Integer getDiceRoll(){
+		return this.diceRoll;
+	}
+	public boolean hasLargestArmy() {
+		return (GameScreenController.getPlayerWithLargestArmy() == this);
+	}
+	public boolean hasLongestRoad() {
+		return (GameScreenController.getPlayerWithLongestRoad() == this);
+	}
+	
+	@Override
+	// in progress
+	public String toString() {
+		return "Name: "+this.nickname+"\nVP: "+this.getVictoryPoints();
+	}
 
  
 }
