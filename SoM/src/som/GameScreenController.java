@@ -148,6 +148,9 @@ public class GameScreenController implements Initializable {
                         p.setVictoryPoints((Math.round((new_val.floatValue()))));
                         System.out.println(((Math.round((new_val.floatValue()))))+"  "+ p.victoryPointGauge.getLength());
                         
+                        
+                        //setHighestVictoryPoints(p);
+
                     }
             }
         });
@@ -276,6 +279,26 @@ public class GameScreenController implements Initializable {
      
     //gameLoop();
     }
+    
+     /*public void setHighestVictoryPoints(Player p) {
+        int oldHighest = currentHighestVictoryPoints;
+        
+        if (p.getVictoryPoints() > currentHighestVictoryPoints) {
+            currentHighestVictoryPoints = p.getVictoryPoints();
+
+            if (p.getVictoryPoints() > 6 && !SoM.aMusic2.isPlaying()) {
+                SoM.playMusic2();
+                SoM.aMusic1.stop();
+            }       
+            else if(oldHighest > currentHighestVictoryPoints && !SoM.aMusic1.isPlaying())
+            {
+                SoM.playMusic1();
+                SoM.aMusic2.stop();
+            }
+        }
+    }*/
+
+    
     public void setSelectedItem(Node o){
         selectedItem=o;
     }
