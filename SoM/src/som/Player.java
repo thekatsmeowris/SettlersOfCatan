@@ -6,6 +6,8 @@
 package som;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Arc;
 
@@ -56,6 +58,18 @@ public class Player {
         victoryPoints=value;
         victoryPointGauge.setLength(((double)value/(double)VICTORY_POINT_MAX)*360);     //3.6 is 360 divided by the 100 for the 100 we would have multiplied the value/vpMax to get a percentage.
         System.out.println(pnPlayerInfo.getWidth());
+        
+        
+        if (victoryPoints > 6) {
+                SoM.playMusic2();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GameRoomSelectController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //SoM.mMusic1.stop();
+            }
+
     }
     
     	public void build(String assetName){
