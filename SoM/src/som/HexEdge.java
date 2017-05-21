@@ -58,7 +58,7 @@ public class HexEdge extends Line{
     public HexVertex getStartVertex(){
         return startVertex;
     }
-    public void addEndVertex(HexVertex startVertex){
+    public void addEndVertex(HexVertex endVertex){
         this.endVertex=endVertex;
     }
     public HexVertex getEndVertex(){
@@ -138,17 +138,17 @@ public class HexEdge extends Line{
         return null;
         
     }
-    public Point2D getOtherPoint(HexVertex hexVertex){
-        HexVertex sVertex=new HexVertex(startPoint);
-        HexVertex eVertex=new HexVertex(endPoint);
-        System.out.println(hexVertex+"\n"+sVertex+"\t"+eVertex);
-        if(hexVertex.equals(sVertex)){
-            System.out.println("START POS\t in: \n"+startPoint+"\t out: \t "+endPoint);
-            return endPoint;
-        }else if (hexVertex.equals(eVertex)){
-            System.out.println("END POS\t in: \n"+endPoint+"\t out:\t "+startPoint);
+    public HexVertex getOtherPoint(HexVertex hexVertex){
+        System.out.println("\n\n\n|||||||||||||||||||||||||||||||");
+        System.out.println(hexVertex+"\n");
+        if(hexVertex.equals(endVertex)){
+            System.out.println("END VERTEX IN START VERTEX OUT "+ startVertex);
+            
+            return startVertex;
+        }else if (hexVertex.equals(startVertex)){
+            System.out.println("START VERTEX IN END VERTEX OUT "+ endVertex);
 
-            return startPoint;
+            return endVertex;
         }else{
             System.out.println("NO MATCH FOR GETOTHERPOINT");
             return null;
@@ -200,8 +200,7 @@ public class HexEdge extends Line{
 
     @Override
     public String toString() {
-       // return "HexEdge{" + "startPoint=" + startPoint + ", endPoint=" + endPoint + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge + ", adjacentVertex=" + adjacentVertex + ", owned=" + owned + '}';
-       return "owned: "+owned;
+        return "HexEdge{" + "startPoint=" + startPoint + ", endPoint=" + endPoint + ", asset=" + asset + ", owned=" + owned + ", owner=" + owner + '}';
     }
 
 }

@@ -443,8 +443,17 @@ public class GameScreenController implements Initializable {
             HexVertex hv=(HexVertex)selectedItem;
             int index=board.vertexList.indexOf(hv);
             for(HexEdge edge: ((HexVertex) selectedItem).getAdjacentEdge()){
+                
+                System.out.println("//");
+                try{
+                    System.out.println("Startpoint for edge: "+edge.getStartVertex());
+                 System.out.println("!!"+(HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem))));
+                ((HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem)))).setFill(Color.GOLDENROD);
 
-                board.vertexList.get(board.vertexList.indexOf(new HexVertex (edge.getOtherPoint(((HexVertex)selectedItem))))).setFill(Color.GOLDENROD);
+                }catch(NullPointerException nullPointer){
+                    System.out.println("FAIL");
+                }
+                
             }
            closeParentPane();
 
@@ -462,8 +471,9 @@ public class GameScreenController implements Initializable {
                 for(HexEdge e: selectedItem.getAdjacentEdge() ){                            //check all adjacent edges
                     System.out.println("ADJACENT VERTICIES: ");
                     for(HexEdge edge: ((HexVertex) selectedItem).getAdjacentEdge()){
-
-                    result= board.vertexList.get(board.vertexList.indexOf(new HexVertex (edge.getOtherPoint(((HexVertex)selectedItem))))).getAsset()==null;
+                        
+                    result= ((HexVertex) (edge.getOtherPoint(((HexVertex)selectedItem)))).getAsset()!=null;
+                    if (result){return false;}
                 }
                   //  System.out.println(e.getOtherPoint(selectedItem).getAsset());
                     /*if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())==null){    //in each edge check if the otherPoint has city or settlement
@@ -529,10 +539,10 @@ public class GameScreenController implements Initializable {
                 
                 try
                 {               
-                                if(((HexEdge)selectedItem).getStartVertex().getAsset()!=null){
-                                    if(((HexEdge)selectedItem).getStartVertex().getAsset().getPlayer().equals(thisPlayer)){
-                                    return true;
-                                }
+                    if(((HexEdge)selectedItem).getStartVertex().getAsset()!=null){
+                        if(((HexEdge)selectedItem).getStartVertex().getAsset().getPlayer().equals(thisPlayer)){
+                        return true;
+                    }
                 }
                 }
                 catch (NullPointerException nullPointer)
@@ -540,8 +550,8 @@ public class GameScreenController implements Initializable {
                     System.out.println("FAIL ON START");
                 }   
                 try{
-                                System.out.println("END VERTEX ASSET: "+((HexEdge)selectedItem).getEndVertex().getAsset());
-                                return true;
+                    System.out.println("END VERTEX ASSET: "+((HexEdge)selectedItem).getEndVertex().getAsset());
+                    return true;
                 }
                 catch(NullPointerException nullPointer){
                     System.out.println("FAIL ON END");
@@ -557,7 +567,7 @@ public class GameScreenController implements Initializable {
      return false;
     }
 
-     private boolean checkRequirements(HexEdge hexEdge, Player player){             //checks requirements for road
+     private boolean checkRequirements(HexEdge hexEdge, Player player){             //checks requirem   ents for road
         //road requirements: BRICK AND LUMBER (plastic + glass) 1+4
         
         return (isGreater(thisPlayer.getResources(), new int[]{0,1,0,0,1}));

@@ -68,6 +68,7 @@ public class HexVertex extends Circle {
         adjacentHex=new ArrayList<>();
         adjacentEdge= new ArrayList<>();
         parentHex=null;
+        
 
     }
     
@@ -132,7 +133,6 @@ public class HexVertex extends Circle {
         if (getClass() != o.getClass()) return false;
         HexVertex hV = (HexVertex) o;
         // field comparison
-        System.out.println("...");
         return Objects.equals(position, hV.position);
     }
    
@@ -146,6 +146,7 @@ public class HexVertex extends Circle {
 
     @Override
     public String toString() {
-        return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge + ", asset=" + asset + ", \n\tparentHex=" + parentHex + "Color= \n\t" +this.getFill()+ '}';
+        return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge + ", asset=" + asset + ", parentHex=" + parentHex + '}';
     }
+
 }
