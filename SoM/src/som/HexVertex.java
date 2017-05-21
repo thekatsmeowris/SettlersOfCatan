@@ -96,7 +96,7 @@ public class HexVertex extends Circle {
         adjacentHex.add(h);
         
     }
-    
+
     public Hex getHex(){
         return parentHex;
     }

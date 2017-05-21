@@ -21,7 +21,7 @@ public abstract class Asset {
 	public HexEdge hexEdge;
 	// Defining the coordinate according to the Hex on the HexBoard to which the Asset belongs
 	//		-Name/datatype might need editing to match with rest of classes.
-	public int[] coord;
+//	public int[] coord;
         
 	
 
@@ -44,6 +44,11 @@ public abstract class Asset {
                     this.hex = hex;
                 }
 	
+        public Asset(Player player) throws IllegalArgumentException {
+                    this.player = player;
+                    
+                }        
+                
 	/** 
 	 * Getters 
 	 */
@@ -117,7 +122,8 @@ public abstract class Asset {
 	}
 	
 	public String toString() {
-		return "Asset type: "+this.assetTypeToString(assetType)+"//Player: "+player+"//Location: "+coord;
+            return "Asset type: "+this.assetTypeToString(assetType)+"//Player: "+player;
+            //return "Asset type:";
 	}
 	
 	@Override
@@ -128,6 +134,6 @@ public abstract class Asset {
 		if(!(o instanceof Asset)){
 			return false;
 		}
-		return ((this.assetType == ((Asset)o).assetType) && (this.player == ((Asset)o).player) && (this.coord == ((Asset)o).coord));
+		return ((this.assetType == ((Asset)o).assetType) && (this.player == ((Asset)o).player));
 	}
 }

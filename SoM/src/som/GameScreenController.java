@@ -36,10 +36,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 
 import javafx.scene.text.Text;
+import som.assets.Asset;
 import som.assets.Settlement;
 
 
@@ -130,7 +132,7 @@ public class GameScreenController implements Initializable {
     
 //-----------------------------------------------------//
     
-    Player thisPlayer=new Player("mark",new int[]{5,5,5,5,5});
+    Player thisPlayer=new Player("mark",new int[]{5,5,5,5,5}, Color.GREEN);
     TradePack thisPlayerTradePack;
     ArrayList<Player> players;
     HexBoard board; 
@@ -425,6 +427,7 @@ public class GameScreenController implements Initializable {
             }else{
                 ((HexVertex)selectedItem).addSettlement(thisPlayer);
             }
+            ((HexVertex) selectedItem).setFill((Paint) thisPlayer.getPlayerColor());
             thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));
             thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE);
             //pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));
@@ -458,6 +461,10 @@ public class GameScreenController implements Initializable {
     
                 for(HexEdge e: selectedItem.getAdjacentEdge() ){                            //check all adjacent edges
                     System.out.println("ADJACENT VERTICIES: ");
+                    for(HexEdge edge: ((HexVertex) selectedItem).getAdjacentEdge()){
+
+                    result= board.vertexList.get(board.vertexList.indexOf(new HexVertex (edge.getOtherPoint(((HexVertex)selectedItem))))).getAsset()==null;
+                }
                   //  System.out.println(e.getOtherPoint(selectedItem).getAsset());
                     /*if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())==null){    //in each edge check if the otherPoint has city or settlement
                         result=true;                                                        //only returns true if the otherPoint has no settlement
@@ -506,7 +513,7 @@ public class GameScreenController implements Initializable {
           closeParentPane();
          } 
      }
-     private boolean canBuildRoad(HexEdge hexEdge, Player player) {
+     private boolean canBuildRoad(HexEdge hexEdge, Player player)   {
          if(checkRequirements(hexEdge, player)){
              for(HexEdge edge : hexEdge.getAdjacentEdge()){
                  if(edge.isOwned()){
@@ -514,11 +521,35 @@ public class GameScreenController implements Initializable {
                          return true;
                      }
                  }
-                for(HexVertex v: edge.getAdjacentVertex()){
+                /*for(HexVertex v: edge.getAdjacentVertex()){
                     if(v.getAsset()!=null){
                         return true;
                     }
+                }*/
+                
+                try
+                {               
+                                if(((HexEdge)selectedItem).getStartVertex().getAsset()!=null){
+                                    if(((HexEdge)selectedItem).getStartVertex().getAsset().getPlayer().equals(thisPlayer)){
+                                    return true;
+                                }
                 }
+                }
+                catch (NullPointerException nullPointer)
+                {
+                    System.out.println("FAIL ON START");
+                }   
+                try{
+                                System.out.println("END VERTEX ASSET: "+((HexEdge)selectedItem).getEndVertex().getAsset());
+                                return true;
+                }
+                catch(NullPointerException nullPointer){
+                    System.out.println("FAIL ON END");
+                }
+
+/*                if ((((HexEdge)selectedItem).getStartVertex().getAsset()!=null)||(((HexEdge)selectedItem).getEndVertex().getAsset()!=null)) {
+                    return true;
+                }*/ 
                 System.out.println("\n\n\n ADJACENT VERTEX: ");
                 System.out.println(edge.getAdjacentVertex());
              }
@@ -593,10 +624,10 @@ public class GameScreenController implements Initializable {
     }
     public void createTestPlayers(){
         players=new ArrayList<>();
-        Player mark = new Player("Mark", new int[]{5,5,5,5,5});
-        Player dek = new Player("Dehkoda", new int[]{5,5,5,5,5});
-        Player lisa = new Player("Lisa", new int[]{5,5,5,5,5});
-        Player mew = new Player("Mew", new int[]{5,5,5,5,5});
+        Player mark = new Player("Mark", new int[]{5,5,5,5,5}, Color.GREEN);
+        Player dek = new Player("Dehkoda", new int[]{5,5,5,5,5}, Color.RED);
+        Player lisa = new Player("Lisa", new int[]{5,5,5,5,5}, Color.BLUE);
+        Player mew = new Player("Mew", new int[]{5,5,5,5,5}, Color.VIOLET);
         players.add(mark);
         players.add(dek);
         players.add(lisa);

@@ -10,6 +10,8 @@ import java.util.Objects;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import som.assets.Asset;
+import som.assets.Road;
 
 /**
  *
@@ -25,9 +27,11 @@ public class HexEdge extends Line{
         this.owner = owner;
     }
     private Point2D startPoint, endPoint;
+    private HexVertex startVertex, endVertex;
     private ArrayList<Hex> adjacentHex;
     private ArrayList<HexEdge> adjacentEdge;
     private ArrayList<HexVertex> adjacentVertex;
+    private Asset asset;
     private Boolean owned;
     private Player owner;
 
@@ -48,7 +52,19 @@ public class HexEdge extends Line{
     }
     
     
-    
+    public void addStartVertex(HexVertex startVertex){
+        this.startVertex=startVertex;
+    }
+    public HexVertex getStartVertex(){
+        return startVertex;
+    }
+    public void addEndVertex(HexVertex startVertex){
+        this.endVertex=endVertex;
+    }
+    public HexVertex getEndVertex(){
+        return endVertex;
+    }
+
     public void addAdjacentVertex(HexVertex hexVertex){
         adjacentVertex.add(hexVertex);
     }
@@ -151,15 +167,17 @@ public class HexEdge extends Line{
     void addHex(Hex h) {
         adjacentHex.add(h);
     }
-    void addRoad(Player player){
+    public Road addRoad(Player player){
         this.owned=true;
         this.owner=player;
+        this.asset=new Road(player, this);
        this.setOnMouseEntered(e ->{
             this.setStroke(Color.GREEN);
         });
        this.setOnMouseExited(e ->{
             //this.setStroke(Color.TRANSPARENT);
         });
+       return (Road) this.asset;    
     }
     
     
