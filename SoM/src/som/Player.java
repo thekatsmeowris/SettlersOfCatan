@@ -140,6 +140,7 @@ public class Player {
         }
         return resources;
     }
+
     public void setResource(int index, int value) {
         this.resources[index]=value;
     }
@@ -158,6 +159,8 @@ public class Player {
     Color getPlayerColor() {
         return playerColor;
     }
+
+
 
 
 
