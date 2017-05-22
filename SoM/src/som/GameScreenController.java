@@ -121,9 +121,10 @@ public class GameScreenController implements Initializable {
     
     //bonuses
     int freeRoad;                           //number of free roads the player can place
-    int freeSettlment;                      //number of free settlmenets the player can place
+    int freeSettlement;                      //number of free settlmenets the player can place
     int resourcePass;                       //these skip checking resource requirements. 
-    //Circle selectedCircle=new HexVertex();
+    int ignoreRoadAdjacency;
+//Circle selectedCircle=new HexVertex();
     
     /**
      * Initializes the controller class.
@@ -182,8 +183,9 @@ public class GameScreenController implements Initializable {
         longestRoadValue=5;
         largestArmyValue=3;
         freeRoad=2;
-        freeSettlment=2;
+        freeSettlement=2;
         resourcePass=4;
+        ignoreRoadAdjacency=2;
         // TODO
         
         
@@ -422,7 +424,7 @@ public class GameScreenController implements Initializable {
          if(canBuildSettlement((HexVertex) selectedItem)){
              System.out.println("BUILD SETTLEMENT DIALOG");
              //((HexVertex)selectedItem).addSettlement(thisPlayer);
-            if (freeSettlment<0){                                                                                                               //quick bug fix to see if freeSettlment can work. must change where it decrements.
+            if (freeSettlement<0){                                                                                                               //quick bug fix to see if freeSettlement can work. must change where it decrements.
             resourceBank.bankReturnResource(resourceBank.getResourceCost(((HexVertex)selectedItem).addSettlement(thisPlayer)),thisPlayer);
             }else{
                 ((HexVertex)selectedItem).addSettlement(thisPlayer);
@@ -468,27 +470,38 @@ public class GameScreenController implements Initializable {
      public boolean canBuildSettlement(HexVertex selectedItem){
             boolean result=true;
             //if (thisPlayer.assets.settlements.size()>=1&&thisPlayer.assets.cities.size()>=1){
-            if(freeSettlment>0){
+            if(freeSettlement>0){
     
                 
-                freeSettlment--;
-            }
+                freeSettlement--;
+            } 
                 int localCount=1;
                 System.out.println("ADJACENT VERTICIES: ");
-                for(HexEdge edge: selectedItem.getAdjacentEdge() ){                            //check all adjacent edges
+                for(HexEdge edge: selectedItem.getAdjacentEdge() ){                            //check all adjacent edges' "otherVertex" to see if it is occupied with an asset
                     System.out.println("\n\n "+localCount);
                     localCount++;
                     result= ((HexVertex) (edge.getOtherPoint(((HexVertex)selectedItem)))).getAsset()==null;
                     
                     System.out.println(((HexVertex) (edge.getOtherPoint(((HexVertex)selectedItem)))).getAsset());   
                     System.out.println(result);
-                    if(freeSettlment>0){return result;}
+                    if(freeSettlement>0){return result;}
                     
                     if (!result){return result ;}
 
                 }
-                  //  System.out.println(e.getOtherPoint(selectedItem).getAsset());
-                    /*if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())==null){    //in each edge check if the otherPoint has city or settlement
+                
+                for(HexEdge edge: selectedItem.getAdjacentEdge() ){                            //check all adjacent edges' "otherVertex" to see if it is occupied with an asset
+                    if(ignoreRoadAdjacency>0){
+                        if(edge.isOwned()){
+                            result=true;
+                            break;
+                        }else{
+                            result=false;
+                            continue;
+                        }
+                    }
+                }
+                /*if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())==null){    //in each edge check if the otherPoint has city or settlement
                         result=true;                                                        //only returns true if the otherPoint has no settlement
                     }*/
             

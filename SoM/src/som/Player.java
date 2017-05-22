@@ -129,6 +129,16 @@ public class Player {
     public void setResources(int[] resources) {
         this.resources = resources;
     }
+    public void addResources(int[] resources){
+        for(int i=0; i<this.resources.length;i++){
+            this.resources[i]+=resources[i];
+        }
+    }
+    public void removeResources(int[] resources){
+        for(int i=0; i<this.resources.length;i++){
+            this.resources[i]-=resources[i];
+        }
+    }
     public void setResource(int index, int value) {
         this.resources[index]=value;
     }

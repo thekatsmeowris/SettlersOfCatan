@@ -162,13 +162,18 @@ public class HexEdge extends Line{
         
     }
 
-    void addHex(Hex h) {
+    public void addHex(Hex h) {
         adjacentHex.add(h);
     }
+    
+    
+    
+    
     public Road addRoad(Player player){
         this.owned=true;
         this.owner=player;
         this.asset=new Road(player, this);
+        
        this.setOnMouseEntered(e ->{
             this.setStroke(Color.GREEN);
         });
