@@ -12,15 +12,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.Pane;
@@ -41,7 +38,6 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 
 import javafx.scene.text.Text;
-import som.assets.Asset;
 import som.assets.Settlement;
 
 
@@ -117,7 +113,7 @@ public class GameScreenController implements Initializable {
     int longestRoadValue;
     int largestArmyValue;
     final int SETTLMENT_VP_VALUE=1;
-    ResourceBank resourceBank=new ResourceBank(19);
+    
     
     //bonuses
     int freeRoad;                           //number of free roads the player can place
@@ -138,6 +134,8 @@ public class GameScreenController implements Initializable {
     ArrayList<Player> players;
     HexBoard board; 
     int turnCount;
+    ResourceBank resourceBank=new ResourceBank(19);
+    ResourceGenerator resourceGenerator;
 
     
     //----------------------------------------------------------------//
@@ -145,6 +143,7 @@ public class GameScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         board= new HexBoard();
+        resourceGenerator= new ResourceGenerator(board);
         turnCount=1;
         sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
@@ -191,7 +190,21 @@ public class GameScreenController implements Initializable {
         // TODO
         
         
-
+        for (Hex hex: board.hexList){
+            hex.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                setSelectedItem(hex);
+                hex.setFill(Color.YELLOW);
+                System.out.println(
+                        hex.getTokenValue()+"\n"
+                        +hex.getVerticies()+"\n+---------+\n"
+                );
+                for (HexVertex hexVertex: hex.getVerticies()){
+                    System.out.println(hexVertex);
+                }
+                
+        });
+        }
+                    
         for(HexVertex hexVertex: board.vertexList)
         {
             hexVertex.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
@@ -304,6 +317,10 @@ public class GameScreenController implements Initializable {
         
        
     }
+    public void callGenerateResources(){
+        generateResources(rollDice());
+
+    }
     public void gameLoop(){
         int gameState=1;
         
@@ -315,8 +332,7 @@ public class GameScreenController implements Initializable {
         boolean endGame=false;
         while (!endGame){
         btnRollDice.setDisable(false);
-        diceValue=rollDice();
-        //ResourceGenerator.generateResources(diceValue);
+        //ResourceGenerator.generateResourcesiceValue);
         
         //Player actions
         
@@ -344,6 +360,7 @@ public class GameScreenController implements Initializable {
         
         
     }
+
     public boolean getWinCondition(){
         for (Player player: players){
             if(player.getVictoryPoints()>=10){
@@ -675,8 +692,13 @@ public class GameScreenController implements Initializable {
          
      }
 
-    private void generateResources(int diceValue1) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void generateResources(int diceValue) {
+        resourceGenerator.generateResources(diceValue);
+
+
+
+
+
     }
     public void createTestPlayers(){
         players=new ArrayList<>();

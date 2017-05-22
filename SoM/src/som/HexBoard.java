@@ -6,13 +6,9 @@
 package som;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.Stack;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -21,7 +17,6 @@ import javafx.scene.shape.Line;
 import java.util.Collections;
 import java.util.List;
 
-import javafx.scene.shape.Shape;
 
 /**
  *
@@ -226,22 +221,17 @@ public class HexBoard {
                 //check if vertexList contains the vertex already
                 //check item
                 
-                System.out.println(vertexList.contains(hV));
 
                 boolean inList=vertexList.contains(hV);
                 
                 
                 
-                System.out.println("check 0");
                 if (inList){
-                    System.out.println(hV+" already exists");
                     vertexList.get(vertexList.indexOf(hV)).addAdjacentHex(h);
                     
                 }else{
-                    System.out.println("adding vertex: "+hV+"\n");
                     vertexList.add(hV);
                     //vertexPane.getChildren().add(new Circle(hV.position.getX(),hV.position.getX(),5,Color.BLACK));
-                    System.out.println(vertexPane);
                     
                     //Circle c= new Circle(hV.position.getX(), hV.position.getY(),5,Color.BLACK);
                     
@@ -255,10 +245,13 @@ public class HexBoard {
         //boardPane.getChildren().add(vertexPane);
         
    }
-        System.out.println("Verticies: ");
-        System.out.print(vertexList);
-        System.out.println("Hex List: ");
-        System.out.println(hexList);
+        //update hex vertices now
+         for (Hex hex: hexList){
+             for(HexVertex vertex: hex.getVerticies()){
+                 vertex=vertexList.get(vertexList.indexOf(vertex));
+             }
+         }   
+        
 
 }
        
@@ -323,15 +316,11 @@ public class HexBoard {
                 
                 
                 
-                System.out.println("check 0");
                 if (inList){
-                    System.out.println(hE+" already exists");
                     edgeList.get(edgeList.indexOf(hE)).addHex(h);
                     
                 }else{
-                    System.out.print(h);
 
-                    System.out.println("adding edge: "+hE+"\n");
                     edgeList.add(hE);
                 
                     
@@ -387,9 +376,6 @@ public class HexBoard {
             
             
             
-            System.out.println(vertexList.indexOf(h)+": "
-            +h+"\n"
-            +h.getAdjacentEdge());
             
         }
         for(HexEdge h: edgeList){
@@ -397,12 +383,9 @@ public class HexBoard {
             HexVertex start,end;
             start=new HexVertex(h.getStartPoint());
             end=new HexVertex(h.getEndPoint());
-            System.out.println("CHECKING IF THE POINT EXISTS IN VERTEXLIST");
             if(vertexList.contains(start)){
                 h.addAdjacentVertex(vertexList.get(vertexList.indexOf(start)));
-                System.out.print("!!!!!!!!:   \t"+ vertexList.get(vertexList.indexOf(start)));
                 h.addStartVertex(vertexList.get(vertexList.indexOf(start)));
-                System.out.println(h.getStartVertex());
             }
             if(vertexList.contains(end)){
                 h.addAdjacentVertex(vertexList.get(vertexList.indexOf(end)));

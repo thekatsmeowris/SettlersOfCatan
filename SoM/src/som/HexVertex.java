@@ -23,7 +23,7 @@ public class HexVertex extends Circle {
     private ArrayList<Hex> adjacentHex;
     private ArrayList<HexEdge> adjacentEdge;
     private Asset asset;
-    private Hex parentHex;
+    private Hex parentHex;                  //should have at most 3 so change this to an arrayList or array
     
     public Point2D getPosition() {
         return position;

@@ -25,9 +25,20 @@ public class ResourceGenerator {
     private int diceValue;
     private HexBoard board;
     private ResourceBank resourceBank = new ResourceBank();
+
+    public ResourceGenerator( HexBoard board) {
+        this.players = new ArrayList<>();
+        this.hexes = new ArrayList<>();
+        this.diceValue = 0;
+        this.board = board;
+    }
+
+
+
     
     void generateResources(int diceValue) {
-            
+            System.out.println("GENERATE RESOURCE FUNC");
+            System.out.println(board);
         //1 get dice value
         //2 find all hexes with correspondinge dice value
         //3 get all players adjacent to that hex
@@ -36,7 +47,12 @@ public class ResourceGenerator {
         //6 distribute resources
         
         hexes=checkHexWithDiceValue(diceValue);
+        System.out.println("\n\n\t\t HEXES: \t\n\n"+ hexes);
+        
         players=getPlayersOnHex(hexes);
+        System.out.println("PLAYERS: \t"+ players);
+
+
         //for each hex
         
     }
@@ -53,11 +69,14 @@ public class ResourceGenerator {
          */
         public ArrayList<Hex> checkHexWithDiceValue(int diceValue) 
         {
+            System.out.println(board.hexList);
 		ArrayList<Hex>listOfHexes= new ArrayList<>();
                 for (Hex hex: board.hexList)
                 {
                     if(hex.getTokenValue()==diceValue)
                     {
+                                            hex.setFill(Color.GOLD);
+
                         listOfHexes.add(hex);
                     }
                 }
@@ -72,12 +91,13 @@ public class ResourceGenerator {
 	public ArrayList<Player> getPlayersOnHex(ArrayList<Hex> listOfHexes)
 	{
 		ArrayList<Player>listOfplayers= new ArrayList<>();
-		for(Hex Hex:listOfHexes)
+		for(Hex hex:listOfHexes)
                 {
-                    for(int eachVertex=0;eachVertex<6;eachVertex++){
-                        if(Hex.getVerticies().get(eachVertex).getAsset()!=null)
+                    for(HexVertex hexVertex: hex.getVerticies()){
+                        System.out.println(hexVertex+"\n\n");
+                        if(hexVertex.getAsset()!=null)
                         {
-                            listOfplayers.add(Hex.getVerticies().get(eachVertex).getAsset().getPlayer());
+                            listOfplayers.add(hexVertex.getAsset().getPlayer());
                         }
                     }
                 }
