@@ -103,13 +103,13 @@ public class HexVertex extends Circle {
     }
     public Settlement addSettlement(Player player){
          this.asset= new Settlement(player,this);
-       this.setOnMouseEntered(e ->{
             this.setStroke(Color.GREEN);
             this.setFill(Color.GREEN);
+
+         this.setOnMouseEntered(e ->{
             System.out.println("THIS ASSET: "+ this.asset);
         });
        this.setOnMouseExited(e ->{
-            //this.setStroke(Color.TRANSPARENT);
         });
         return (Settlement) this.asset;
     }

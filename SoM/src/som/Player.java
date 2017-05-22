@@ -134,10 +134,11 @@ public class Player {
             this.resources[i]+=resources[i];
         }
     }
-    public void removeResources(int[] resources){
+    public int[] removeResources(int[] resources){
         for(int i=0; i<this.resources.length;i++){
             this.resources[i]-=resources[i];
         }
+        return resources;
     }
     public void setResource(int index, int value) {
         this.resources[index]=value;
