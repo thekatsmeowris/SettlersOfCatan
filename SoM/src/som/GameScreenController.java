@@ -447,8 +447,9 @@ public class GameScreenController implements Initializable {
                 System.out.println("//");
                 try{
                     System.out.println("Startpoint for edge: "+edge.getStartVertex());
-                 System.out.println("!!"+(HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem))));
-                ((HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem)))).setFill(Color.GOLDENROD);
+                    System.out.println("!!"+(HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem))));
+                    
+                    ((HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem)))).setFill(Color.GOLDENROD);
 
                 }catch(NullPointerException nullPointer){
                     System.out.println("FAIL");
@@ -461,34 +462,41 @@ public class GameScreenController implements Initializable {
          }
      }
      public void getSelectedItemInfo(){
-         System.out.println((HexVertex)selectedItem);
+            System.out.println((HexEdge)selectedItem);
+            System.out.println((HexVertex)selectedItem);
      }
      public boolean canBuildSettlement(HexVertex selectedItem){
-            boolean result=false;
+            boolean result=true;
             //if (thisPlayer.assets.settlements.size()>=1&&thisPlayer.assets.cities.size()>=1){
-            if(freeSettlment<=0){
+            if(freeSettlment>0){
     
-                for(HexEdge e: selectedItem.getAdjacentEdge() ){                            //check all adjacent edges
-                    System.out.println("ADJACENT VERTICIES: ");
-                    for(HexEdge edge: ((HexVertex) selectedItem).getAdjacentEdge()){
-                        
-                    result= ((HexVertex) (edge.getOtherPoint(((HexVertex)selectedItem)))).getAsset()!=null;
-                    if (result){return false;}
+                
+                freeSettlment--;
+            }
+                int localCount=1;
+                System.out.println("ADJACENT VERTICIES: ");
+                for(HexEdge edge: selectedItem.getAdjacentEdge() ){                            //check all adjacent edges
+                    System.out.println("\n\n "+localCount);
+                    localCount++;
+                    result= ((HexVertex) (edge.getOtherPoint(((HexVertex)selectedItem)))).getAsset()==null;
+                    
+                    System.out.println(((HexVertex) (edge.getOtherPoint(((HexVertex)selectedItem)))).getAsset());   
+                    System.out.println(result);
+                    if(freeSettlment>0){return result;}
+                    
+                    if (!result){return result ;}
+
                 }
                   //  System.out.println(e.getOtherPoint(selectedItem).getAsset());
                     /*if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())==null){    //in each edge check if the otherPoint has city or settlement
                         result=true;                                                        //only returns true if the otherPoint has no settlement
                     }*/
-                }
             
 
                 //check resource requirements
 
  
-            }else{
-                freeSettlment--;
-                return true;
-            }  
+              
                
          return result;
      }

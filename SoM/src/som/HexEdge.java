@@ -139,9 +139,7 @@ public class HexEdge extends Line{
         
     }
     public HexVertex getOtherPoint(HexVertex hexVertex){
-        System.out.println("\n\n\n|||||||||||||||||||||||||||||||");
-        System.out.println(hexVertex+"\n");
-        if(hexVertex.equals(endVertex)){
+         if(hexVertex.equals(endVertex)){
             System.out.println("END VERTEX IN START VERTEX OUT "+ startVertex);
             
             return startVertex;
