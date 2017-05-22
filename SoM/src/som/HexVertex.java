@@ -100,7 +100,7 @@ public class HexVertex extends Circle {
     public Hex getHex(){
         return parentHex;
     }
-    public void addSettlement(Player player){
+    public Settlement addSettlement(Player player){
          this.asset= new Settlement(player,this);
        this.setOnMouseEntered(e ->{
             this.setStroke(Color.GREEN);
@@ -110,7 +110,7 @@ public class HexVertex extends Circle {
        this.setOnMouseExited(e ->{
             //this.setStroke(Color.TRANSPARENT);
         });
-        
+        return (Settlement) this.asset;
     }
     public Asset getAsset(){
         return asset;
@@ -132,7 +132,7 @@ public class HexVertex extends Circle {
         if (getClass() != o.getClass()) return false;
         HexVertex hV = (HexVertex) o;
         // field comparison
-    
+        System.out.println("...");
         return Objects.equals(position, hV.position);
     }
    
@@ -146,6 +146,6 @@ public class HexVertex extends Circle {
 
     @Override
     public String toString() {
-        return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge + ", asset=" + asset + ", \n\tparentHex=" + parentHex + '}';
+        return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge + ", asset=" + asset + ", \n\tparentHex=" + parentHex + "Color= \n\t" +this.getFill()+ '}';
     }
 }

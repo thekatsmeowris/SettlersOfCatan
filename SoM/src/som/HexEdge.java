@@ -122,11 +122,20 @@ public class HexEdge extends Line{
         return null;
         
     }
-    public HexVertex getOtherPoint(HexVertex hexVertex){
-        if(hexVertex.getPosition()==startPoint){
-            return new HexVertex(endPoint);
+    public Point2D getOtherPoint(HexVertex hexVertex){
+        HexVertex sVertex=new HexVertex(startPoint);
+        HexVertex eVertex=new HexVertex(endPoint);
+        System.out.println(hexVertex+"\n"+sVertex+"\t"+eVertex);
+        if(hexVertex.equals(sVertex)){
+            System.out.println("START POS\t in: \n"+startPoint+"\t out: \t "+endPoint);
+            return endPoint;
+        }else if (hexVertex.equals(eVertex)){
+            System.out.println("END POS\t in: \n"+endPoint+"\t out:\t "+startPoint);
+
+            return startPoint;
         }else{
-            return new HexVertex(startPoint);
+            System.out.println("NO MATCH FOR GETOTHERPOINT");
+            return null;
         }
         
         

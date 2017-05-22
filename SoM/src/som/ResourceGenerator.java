@@ -43,6 +43,7 @@ public class ResourceGenerator {
 
 
 
+
 	
         /**
          * this method check and find every Hex on the board that correspond to the dice number
@@ -98,8 +99,9 @@ public class ResourceGenerator {
       4 = plastic = lumber
       */
       int resourceNumber = 0;
-      boolean boolBank = false;      
+      boolean boolBank = resourceBank.resources[resource]>=1;      
          //needs to be changed   
+
       
         if(resourceBank.resources[resource] >= 0)
             boolBank = true;
@@ -137,6 +139,7 @@ public class ResourceGenerator {
                              for(int i = 0; i < 6 ; i++) {
                                  if(hex.getVerticies().get(i).getAsset()!=null)
                                   hex.getVerticies().get(i).getAsset().getPlayer().resources[HEMP]++;
+
                              }
                              break;
                         
@@ -154,6 +157,7 @@ public class ResourceGenerator {
                              for(int i = 0; i < 6 ; i++) {
                                  if(hex.getVerticies().get(i).getAsset()!=null)
                                   hex.getVerticies().get(i).getAsset().getPlayer().resources[STEEL]++;
+
                              }
                              break;
                              
@@ -226,7 +230,6 @@ public class ResourceGenerator {
          * @param hexes the list of Hexes find by the method retrieveHex()
          */
     
-
     public ResourceBank getResourceBank() {
         return resourceBank;
     }
@@ -237,5 +240,4 @@ public class ResourceGenerator {
         
 }
   
-
 

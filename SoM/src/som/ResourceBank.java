@@ -50,7 +50,6 @@ public class ResourceBank {
           resourceList.add(hemp); //Value 2 in ArrayList
           resourceList.add(soy);  //Value 3 in ArrayList
           resourceList.add(plastic);  //Value 4 in arrayList
-                    
       }
             public ResourceBank(int qty)
       {
@@ -70,7 +69,7 @@ public class ResourceBank {
           resourceList.add(plastic);  //Value 4 in arrayList
                     
       }
-           
+
       public void bankDrawResource(int resourceNumber, int amount){
           
           if((resources[resourceNumber]-amount)>=0){
@@ -89,6 +88,7 @@ public class ResourceBank {
       { 
           //String resourceName = new String(); //String variable to keep track of resource Name
           System.out.println(resources);
+
 
       }
     
