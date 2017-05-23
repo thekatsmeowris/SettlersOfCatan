@@ -8,6 +8,7 @@ package som;
 import java.util.ArrayList;
 
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
@@ -17,6 +18,7 @@ import javafx.scene.shape.*;
  * @author makogenq
  */
 public class Hex extends Polygon {
+    
 
    // double inRadius, circumRadius, centralAngle, interiorAngle, side;
 
