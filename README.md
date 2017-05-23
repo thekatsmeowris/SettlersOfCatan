@@ -11,7 +11,7 @@ Usage
 
 TODO: Write usage instructions
 
-Contributing
+testing the new branch and merge stuff
 
 TODO: Explain how to contribute
 Fork it!
