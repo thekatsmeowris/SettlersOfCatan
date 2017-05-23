@@ -656,13 +656,7 @@ public class GameScreenController implements Initializable {
                 //5 lblResourcesAvailable
                 ((Label)(((AnchorPane)n).getChildren().get(5))).setText(""+thisPlayer.resources[anchors.indexOf(n)]);
                         //thisPlayer.resources[]
-                
-                
-                
-                
-                
-                
-                
+          
             }
             
             
