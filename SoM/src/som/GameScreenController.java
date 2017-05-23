@@ -318,10 +318,8 @@ public class GameScreenController implements Initializable {
        
     }
     public void function(){
-        //        generateResources(rollDice());
-        	ObjectServer s = new ObjectServer();
-		s.start();
-
+                generateResources(rollDice());
+        	
     }
 
     public void gameLoop(){
