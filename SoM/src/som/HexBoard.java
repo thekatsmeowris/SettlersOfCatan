@@ -5,6 +5,8 @@
  */
 package som;
 
+import java.io.IOException;
+import static java.lang.System.gc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -20,6 +22,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import java.util.Collections;
 import java.util.List;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 
 import javafx.scene.shape.Shape;
 
@@ -28,6 +34,9 @@ import javafx.scene.shape.Shape;
  * @author makogenq
  */
 public class HexBoard {
+    
+   Image image;
+    
 
     public Color[] getColorPallete() {
         return colorPallete;
@@ -54,7 +63,8 @@ public class HexBoard {
     Pane vertexPane;                        //this contains the vertices once they're each drawn
     Pane edgePane;                          //this contains the edges once they're each drawn
     Pane popUpDialog=new Pane();            //this is the pane that appears once a vertex or edge is clicked.
-
+    final Canvas canvas ;
+    
     int columnMax;                          //this is the maximum number of columns for a row...this is incremented and decremented to yield the 3,4,5,4,3 row pattern
     double hexRadius, inRadius;             //this is the default circumradius and inradius of all hexes
     float centerX, centerY;                 //this is the center of each hex when it is drawn
@@ -99,8 +109,16 @@ public class HexBoard {
     Stack terrainStack= new Stack();
     
    public HexBoard() {
-        //int[] boardBoundaries = new int[]{0.0,2,3,4};
-        //800x600
+        canvas = new Canvas(790, 790);
+        final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+        //initDraw(graphicsContext);
+        //graphicsContext.drawImage(image, 100, 0, 50, 50);
+        //graphicsContext.drawImage(image, 70, 70, 50, 50);
+        //Group root = new Group();
+        //VBox vBox = new VBox();
+        //vBox.getChildren().addAll(canvas);
+        //root.getChildren().add(vBox);
+       
         columnMax=maxColumns-2;                                 //this sets the max columns of the first row to 2 less than the longest (median) row
                                                                 //i needed this because i had a hard time generating the radii of each in the constructor
         Hex modelHex= new Hex(0,400,300,50, 50*0.87, Color.ALICEBLUE, 0, 5);           //this generates a hex as a model to generate the rest of the board hexes from
@@ -109,6 +127,7 @@ public class HexBoard {
         inRadius= modelHex.getLayoutBounds().getWidth()/2;      //this makes the inRadius which is roughly the circumradius * (sqrt(3)/2) but 1/2*getwidth is the same and it's prettier
         boardPane= new Pane();                                  //creates new board for boardpane
         vertexPane= new Pane();                                 //creates new board for vertexpane
+        
         
         centerX= (float) (boardPane.getWidth()/2);              //assigns the center of the pane a value
         centerY= (float) (boardPane.getHeight()/2);                          
@@ -128,9 +147,9 @@ public class HexBoard {
 
         vertexPane.setPickOnBounds(false);                      //sets property to false so that the circle (vertex point) is selectable and the bounding shape around it is not
         edgePane.setPickOnBounds(false);
-        
-        
-        boardShell.getChildren().addAll(boardPane,edgePane,vertexPane);     //adds the 3 panes to the stackpane and so publishes the constructed board.
+        image = new Image(getClass().getResourceAsStream("graphics/MapAr.jpg"));
+        graphicsContext.drawImage(image, 130, 110, 480, 480);
+        boardShell.getChildren().addAll(canvas,edgePane,vertexPane);     //adds the 3 panes to the stackpane and so publishes the constructed board.
 
     }
     
@@ -181,7 +200,7 @@ public class HexBoard {
                }
                 
                 hexCounter++;
-                boardPane.getChildren().add(h);
+                boardPane.getChildren().addAll(h);
                 
                 hexList.add(h);
             }
