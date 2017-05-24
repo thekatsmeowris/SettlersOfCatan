@@ -707,7 +707,7 @@ public class GameScreenController implements Initializable {
 
     private void generateResources(int diceValue) {
         resourceGenerator.generateResources(diceValue);
-
+        updateResources();
 
 
 
@@ -866,6 +866,8 @@ public class GameScreenController implements Initializable {
         }
 
     }
+    
+    
     @FXML
     public void tradeDialogYes(){
             acceptTrade(thisPlayer.getTradePack());
