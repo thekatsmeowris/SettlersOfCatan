@@ -41,6 +41,9 @@ import javafx.scene.shape.Circle;
 
 import javafx.scene.text.Text;
 import som.assets.Settlement;
+import som.ResourceBank;
+
+
 
 /*
                                                                                                                                               
@@ -80,9 +83,11 @@ public class GameScreenController implements Initializable {
             popupDialog,
             dicePane,
             pnTradeDialog,
+            pnBuild,
             pnPlayerLeft, 
             pnPlayerMid, 
             pnPlayerRight,
+          
             pnAcceptTradeDialog;
 
     
@@ -155,6 +160,8 @@ public class GameScreenController implements Initializable {
     Player thisPlayer=new Player("mark",new int[]{5,5,5,5,5});
     TradePack thisPlayerTradePack;
     ArrayList<Player> players;
+    DevelopmentDeck thisDevelopmentDeck;
+    DevelopmentCard thisCard;
     HexBoard board; 
 
     
@@ -579,6 +586,7 @@ public class GameScreenController implements Initializable {
             return (isGreater(thisPlayer.getResources(), new int[]{1,0,1,1,0}));
 
         }
+       
     private boolean isAdjacentEdgeOwned(HexEdge hexEdge, Player player){
         for(HexEdge edge: hexEdge.getAdjacentEdge()){
             if(edge.isOwned()){
@@ -900,6 +908,45 @@ public class GameScreenController implements Initializable {
                 txtThisPlayerName.setText(p.nickname);
             }
         }
+    }
+    
+    public void openBuild(){
+        
+        pnBuild.setVisible(true);
+        pnBuild.setMouseTransparent(false);
+        pnBuild.getParent().setMouseTransparent(false);
+        
+    }
+    public void buildDev(ActionEvent e) throws IOException{
+        System.out.println("You clicked me");
+      
+        if(canBuyDev(thisPlayer)){//check if player has the requirements to buy dev card
+            if(thisDevelopmentDeck.hasCard()){//check there is a dev card to take
+               resourceBank.bankReturnResource(2,1);//return 1 hemp to bank
+               resourceBank.bankReturnResource(3, 1);//return 1 soy to bank 
+               resourceBank.bankReturnResource(0, 1);//return 1 steel to bank 
+               System.out.println("RETURNED TO BANK");
+               thisPlayer.setResources(subtractTwoResourceSets(thisPlayer.getResources(), new int[]{1,0,1,1,0}));//subtract resources used from player's resources
+               System.out.println("SUBTRACTED RESOURCES");
+               thisCard=thisDevelopmentDeck.drawCard();//take development card from deck
+               System.out.println("SAVED CARD FROM DECK");
+               thisPlayer.add(thisCard);
+               System.out.println("YOU'VE BUILT A DEV CARD");
+            }
+        }
+    }
+    private boolean canBuyDev(Player player){
+        if(checkRequirements(player)){
+            return true;
+           }
+        return false;
+    }
+    
+    public void closeBuild(){
+        pnBuild.setVisible(false);
+        pnBuild.setMouseTransparent(true);
+        pnBuild.getParent().setMouseTransparent(true);
+        
     }
 
     private boolean winCondition() {
