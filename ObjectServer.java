@@ -10,9 +10,9 @@ public class ObjectServer {
 
 
 	// Create a server connection
-	public ObjectServer(){
+	public ObjectServer(int p){
 		try {
-			port = 8888;
+			port = p;
 			server = new ServerSocket(port);
 		}
 		catch (IOException e) {
@@ -55,7 +55,7 @@ public class ObjectServer {
 	}
 
 	public static void main(String[] args) {
-		ObjectServer s = new ObjectServer();
+		ObjectServer s = new ObjectServer(8888);
 		s.start();
 	}
 }
