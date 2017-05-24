@@ -687,6 +687,15 @@ public class GameScreenController implements Initializable {
      }
      public void buildCity(){
          System.out.println("BUILD CITY DIALOG");
+         if(canBuildCity((HexVertex) selectedItem)){
+             System.out.println("BUILD SETTLEMENT DIALOG");
+            resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexVertex)selectedItem).addCity(thisPlayer))));         //remove resources from a player and give them to the bank
+            }
+            ((HexVertex) selectedItem).setStroke(Color.GOLD);                                //set fill to color the vertex the player's color (indicating a settlement
+            thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));                                            //add this new asset to the player's list of assets
+            thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE+1);                        //increase the vp of the player
+            pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));                               //adjust the progress bar for vp for thisPlayer
+            updateResources();
          
      }
 
@@ -716,14 +725,16 @@ public class GameScreenController implements Initializable {
         //set Resource Values
         //1) get hbox with tradeTrackers in it
         ObservableList<Node> trackers, anchors;
-        trackers = tradeResourceTrackers.getChildren();
+        trackers = tradeResourceTrackers.getChildren();                         //get the resource trackers frmo the TradeResourceTrackers HBox
         for(Node node: trackers){
             anchors=((VBox) node).getChildren();
             ((TradeResourceTracker)node).setResourcesAvailable(thisPlayer.resources[trackers.indexOf(node)]);
             for(Node n: anchors){
                 System.out.println(((AnchorPane)n).getChildren());
                 //0 Circle
-                ((AnchorPane)n).getChildren().get(0);
+                ((Circle)((AnchorPane)n).getChildren().get(0)).setFill(board.getColorPallete()[anchors.indexOf(n)]); 
+                //((Circle)((AnchorPane)n).getChildren().get(0)).setFill(board.getColorPallete()[anchors.indexOf(n)]);
+
                 //1 lblResourceGiveValue
                 //2 lblResourceReqValue
                 //3 Button ^
@@ -982,6 +993,10 @@ public class GameScreenController implements Initializable {
     }
 
     private boolean winCondition() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private boolean canBuildCity(HexVertex hexVertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
