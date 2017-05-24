@@ -160,7 +160,9 @@ public class HexBoard {
         
         final ImageView imageView = new ImageView(spriteImage);
         imageView.setViewport(new Rectangle2D(SPRITE_OFFSET_X, SPRITE_OFFSET_Y, SPRITE_WIDTH, SPRITE_HEIGHT));
-
+        imageView.setRotate(270);
+        imageView.setFitHeight(50);
+        imageView.setFitWidth(50);
         final Animation animation = new SpriteAnimation(
                 imageView,
                 Duration.millis(500),
