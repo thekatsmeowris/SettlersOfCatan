@@ -561,6 +561,8 @@ public class GameScreenController implements Initializable {
                 resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexEdge)selectedItem).addRoad(thisPlayer))));
              }
             thisPlayer.assets.add(thisPlayer,((HexEdge)selectedItem));
+            ((HexEdge) selectedItem).setStroke((Paint)thisPlayer.getPlayerColor());                                //set fill to color the vertex the player's color (indicating a settlement
+
 
             updateResources();
             
