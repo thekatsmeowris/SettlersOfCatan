@@ -34,7 +34,7 @@ public class AI implements Runnable{
             {
 
                 Player thisPlayer = null;
-                
+
                 if(hex.getVerticies().get(i).getAsset().getPlayer()==thisPlayer)
                 {
                     listOfPlayerVertexToUpgrade.add(hex.getVerticies().get(i));

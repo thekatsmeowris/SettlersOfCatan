@@ -296,6 +296,7 @@ public class HexBoard {
                         new Point2D((double) points.get(p3),(double) points.get(p4))
                         
                         );
+                
                ((Line) (hE)).setOnMouseEntered(e ->{
                     hE.setStroke(Color.BLACK);
                 });
@@ -399,9 +400,13 @@ public class HexBoard {
             System.out.println("CHECKING IF THE POINT EXISTS IN VERTEXLIST");
             if(vertexList.contains(start)){
                 h.addAdjacentVertex(vertexList.get(vertexList.indexOf(start)));
+                System.out.print("!!!!!!!!:   \t"+ vertexList.get(vertexList.indexOf(start)));
+                h.addStartVertex(vertexList.get(vertexList.indexOf(start)));
+                System.out.println(h.getStartVertex());
             }
             if(vertexList.contains(end)){
                 h.addAdjacentVertex(vertexList.get(vertexList.indexOf(end)));
+                h.addEndVertex(vertexList.get(vertexList.indexOf(end)));
             }
             //now that adjacent vertices are attached, get the adjacent edges from each
             

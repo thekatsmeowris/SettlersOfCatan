@@ -64,10 +64,12 @@ public class SoM extends Application {
         
     }
     
-     //<editor-fold defaultstate="collapsed" desc="comment">
-    private void loadAudioAssets(){
+       
+    
+        //Test comment
+     private void loadAudioAssets(){
         
-        
+        //comment
         
         /*musicURL1 = getClass().getResource("/WASTELAND1.wav");
         aMusic1 = new AudioClip(musicURL1.toString());
@@ -90,7 +92,16 @@ public class SoM extends Application {
         mediaPlayer.setCycleCount(AudioClip.INDEFINITE);
         mediaPlayer.play();
     }
-//</editor-fold>
+
+    /*
+     public AudioClip getaMusic1() {
+     return aMusic1;
+     }
+     
+     public AudioClip getaMusic2() {
+     return aMusic2;
+     }*/
+
     
     
     public void TestDeck() {

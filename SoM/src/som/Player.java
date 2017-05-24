@@ -7,6 +7,8 @@ package som;
 
 import java.util.ArrayList;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 
 
@@ -27,7 +29,8 @@ public class Player {
     int[] resources;
     ResourceManager resourceManager= new ResourceManager(); 
     private int victoryPoints;
-
+    
+    Color playerColor;
     String nickname;
     Assets assets;
     Player(){
@@ -38,19 +41,19 @@ public class Player {
         
     }
 
-    Player(String name) {
+    Player(String name, Color playerColor) {
         assets=new Assets();
             nickname=name;
+            this.playerColor=playerColor;
        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    Player(String name, int[] resources) {
+    Player(String name, int[] resources, Color playerColor) {
         this.nickname=name;
         this.resources=resources;
         victoryPoints=4;
         assets=new Assets();
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  
+        this.playerColor=playerColor;
     }
     public void setVictoryPoints(int value){
         victoryPoints=value;
@@ -126,6 +129,18 @@ public class Player {
     public void setResources(int[] resources) {
         this.resources = resources;
     }
+    public void addResources(int[] resources){
+        for(int i=0; i<this.resources.length;i++){
+            this.resources[i]+=resources[i];
+        }
+    }
+    public int[] removeResources(int[] resources){
+        for(int i=0; i<this.resources.length;i++){
+            this.resources[i]-=resources[i];
+        }
+        return resources;
+    }
+
     public void setResource(int index, int value) {
         this.resources[index]=value;
     }
@@ -140,6 +155,14 @@ public class Player {
         }
         return counter;
     }
+
+    Color getPlayerColor() {
+        return playerColor;
+    }
+
+
+
+
 
 
  
