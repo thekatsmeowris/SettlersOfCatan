@@ -373,7 +373,7 @@
                                           </Pane>
                                           <Pane fx:id="pnStatusPane" layoutX="167.0" layoutY="-10.0" prefHeight="101.0" prefWidth="274.0">
                                              <children>
-                                                <Label fx:id="txtCurrentStatus" layoutX="75.0" layoutY="51.0" text="Status">
+                                                <Label fx:id="lblCurrentStatus" layoutX="75.0" layoutY="51.0" text="Status">
                                                    <font>
                                                       <Font size="22.0" />
                                                    </font>

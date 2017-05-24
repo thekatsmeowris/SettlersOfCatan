@@ -72,35 +72,7 @@ public class Player {
 		// resources.printResourceList();
 	}
 
-	// Trade to another player with resources
-	public void trade(Player p, String giveResourceName, int amountGive, String recieveResourceName, int amountRecieve){
-		System.out.println("Before Trade:");
-		System.out.println("YOU:");
-		System.out.println(resourceManager);
-		System.out.println();
-		System.out.println("Player:");
-		System.out.println(p.resourceManager);
-		System.out.println("------------------");
-		
-		resourceManager.give(giveResourceName, amountGive);
-		p.resourceManager.recieve(giveResourceName, amountGive);
-		p.resourceManager.give(recieveResourceName, amountRecieve);
-		resourceManager.recieve(recieveResourceName, amountRecieve);
 
-		System.out.println("After Trade:");
-		System.out.println("YOU:");
-		System.out.println(resourceManager);
-		System.out.println();
-		System.out.println("Player:");
-		System.out.println(p.resourceManager);
-		System.out.println("------------------");
-	}
-
-	public static void driver(){
-		Player p1 = new Player();
-		Player p2 = new Player();
-		p1.trade(p2,"SOY",4,"STEEL",5);
-	}
 
 
     int getVictoryPoints() {
