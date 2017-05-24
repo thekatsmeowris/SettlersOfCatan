@@ -32,7 +32,7 @@ public class ObjectServer {
 			while (isOn) {
 				// Get client connection 
 				Socket socket = server.accept();
-				System.out.println(socket.getLocalAddress().getHostName() + ": " + socket.getPort());
+				System.out.println(socket.getInetAddress().getHostName() + ": " + socket.getPort());
 				// Read from socket to ObjectInputStream object
 				in = new ObjectInputStream(socket.getInputStream());
 				// Create ObjectOutputStream object
