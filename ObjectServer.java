@@ -7,6 +7,7 @@ import java.io.*;
 public class ObjectServer {
 	private int port;
 	private ServerSocket server;
+	private Boolean isOn;
 
 
 	// Create a server connection
@@ -14,6 +15,8 @@ public class ObjectServer {
 		try {
 			port = p;
 			server = new ServerSocket(port);
+			isOn = true;
+
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -21,9 +24,9 @@ public class ObjectServer {
 
 	}
 
-	public void start(){
+	public void start() {
 		try {
-			while (true) {
+			while (isOn) {
 				// Get client connection 
 				Socket socket = server.accept();
 				System.out.println(socket.getLocalAddress().getHostName() + ": " + socket.getPort());
@@ -31,27 +34,39 @@ public class ObjectServer {
 				ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 				// Create ObjectOutputStream object
 				ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-				// Convert ObjectInputStream object to String
-				String str = (String) in.readObject();
-				System.out.println(str);
-				out.writeObject(str);
+				listen();
+				// out.writeObject(str);
 
 				//Close all connection
-				in.close();
-	            out.close();
-	            socket.close();
+				// in.close();
+	   //          out.close();
+	   //          socket.close();
 
 			}
 			
 			
 		}
 
-		catch (IOException | ClassNotFoundException e) {
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		
 
+	}
+
+	public void listen(){
+		while (isOn){
+			Object inObject = in.readObject();
+
+			// Convert ObjectInputStream object to String
+			if (inObject instanceof String){
+				String str = (String) inObject;
+				System.out.println(str);
+			}
+
+			else;
+		}
 	}
 
 	public static void main(String[] args) {

@@ -30,7 +30,7 @@ public class SoM extends Application {
     static MediaPlayer mediaPlayer;
     MediaView  mediaView;
     // Connect to Online
-    ObjectClient client;
+    static ObjectClient client;
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -42,6 +42,8 @@ public class SoM extends Application {
         loadAudioAssets();      
         
         Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
+
+
         ResourceBank resourceBank= new ResourceBank();
         resourceBank.printResourceList();
         Scene scene = new Scene(root);
@@ -52,7 +54,6 @@ public class SoM extends Application {
         stage.setTitle("Title Screen");
         stage.setScene(scene);
         stage.show();
-
 
     }
 

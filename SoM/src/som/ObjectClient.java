@@ -5,33 +5,42 @@ import java.io.*;
 
 public class ObjectClient{
 	private Socket s;
-	ObjectOutputStream out;
-	ObjectInputStream in;
+	private ObjectOutputStream out;
+	private ObjectInputStream in;
 
 	public ObjectClient(String ip, int port){
 		try{
-			Socket s = new Socket(ip,port);
+			s = new Socket(ip,port);
 			out = new ObjectOutputStream(s.getOutputStream());
 			in = new ObjectInputStream(s.getInputStream());
-			out.writeObject(""+123);
+			
 			// String str = (String) in.readObject();
 			// System.out.println(str);
 	    }
+
+	    catch (ConnectException ce){
+	    	ce.printStackTrace();
+	    }
+
 		catch (IOException e){
 	    	e.printStackTrace();
 	    }
 
 	}
-
-	public Boolean isConnected(){
-		return s.isConnected();
+	public void write(Object o) throws IOException{
+		out.writeObject(o);
 	}
 
+	public Boolean hasConnection(){
+		return s!=null;
+	}
+	
 	public void close(){
 		try{
 			out.close();
 			in.close();
 			s.close();
+			s = null;
 		}
 	    catch (IOException e){
 	    	e.printStackTrace();

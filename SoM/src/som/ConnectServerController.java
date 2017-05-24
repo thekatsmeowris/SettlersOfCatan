@@ -21,7 +21,6 @@ import javafx.stage.Stage;
 public class ConnectServerController implements Initializable {
 	@FXML
 	private TextField ip, port;
-    protected ObjectClient client;
 	
 
 	@Override
@@ -49,11 +48,26 @@ public class ConnectServerController implements Initializable {
         });
     }    
 	
+
 	public void handleConnectServer(ActionEvent e) throws IOException {
 		ip.setText((ip.getText().trim().isEmpty()) ? "localhost" : ip.getText());
         port.setText((port.getText().trim().isEmpty()) ? "8888" : port.getText());
-        client = new ObjectClient(ip.getText().trim(), Integer.parseInt(port.getText().trim()));
-        System.out.println(ip.getText().trim() + ": " + port.getText().trim());
+        SoM.client = new ObjectClient(ip.getText().trim(), Integer.parseInt(port.getText().trim()));
+
+        if (SoM.client.hasConnection()){
+            SoM.client.write("Successfully Connect to Server");
+            Parent game_room_parent = FXMLLoader.load(getClass().getResource("GameScreen.fxml"));
+            Scene game_room_scene = new Scene(game_room_parent);
+            Stage a_stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            a_stage.setScene(game_room_scene);
+            a_stage.show();
+            SoM.client.write("Now begin the game.");
+
+        }
+        // client.close();
+        // System.out.println("Connected to server: " + client.hasConnection());
+
+
 
     }
 }

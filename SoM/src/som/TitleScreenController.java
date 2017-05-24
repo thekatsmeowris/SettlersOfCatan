@@ -42,14 +42,14 @@ public class TitleScreenController implements Initializable {
     }
 
     public void handlePlayOnline(ActionEvent e) throws IOException {
-        Parent game_room_parent = FXMLLoader.load(getClass().getResource("ServerPort.fxml"));
-        Scene game_room_scene = new Scene(game_room_parent);
+        Parent serverPort = FXMLLoader.load(getClass().getResource("ServerPort.fxml"));
+        Scene serverPortScene = new Scene(serverPort);
         Stage a_stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        a_stage.setScene(game_room_scene);
+        a_stage.setScene(serverPortScene);
         a_stage.show();
     }
 
-    
+
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

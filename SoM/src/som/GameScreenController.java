@@ -467,12 +467,12 @@ public class GameScreenController implements Initializable {
          }
      }
      
-     // public void getSelectedItemInfo(){
+     public void getSelectedItemInfo(){
      //        System.out.println((HexEdge)selectedItem);
      //        System.out.println((HexVertex)selectedItem);
      //        offerTrade(new tp(thisPlayer));
 
-     // }
+     }
      public boolean canBuildSettlement(HexVertex selectedItem){
             boolean result=true;
             //if (thisPlayer.assets.settlements.size()>=1&&thisPlayer.assets.cities.size()>=1){
