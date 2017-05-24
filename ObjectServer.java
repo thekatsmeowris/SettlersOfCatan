@@ -56,16 +56,21 @@ public class ObjectServer {
 	}
 
 	public void listen(){
-		while (isOn){
-			Object inObject = in.readObject();
+		try{
+			while (isOn){
+				Object inObject = in.readObject();
 
-			// Convert ObjectInputStream object to String
-			if (inObject instanceof String){
-				String str = (String) inObject;
-				System.out.println(str);
+				// Convert ObjectInputStream object to String
+				if (inObject instanceof String){
+					String str = (String) inObject;
+					System.out.println(str);
+				}
+
+				else;
 			}
-
-			else;
+		}
+		catch (Exception e){
+			e.printStackTrace();
 		}
 	}
 
