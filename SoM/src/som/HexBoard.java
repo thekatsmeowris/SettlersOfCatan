@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -22,12 +22,16 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import java.util.Collections;
 import java.util.List;
+import javafx.animation.Animation;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 /**
  *
@@ -36,6 +40,14 @@ import javafx.scene.shape.Shape;
 public class HexBoard {
     
    Image image;
+   Image spriteImage;
+     
+    private static final int SPRITE_COLUMNS  =   5;
+    private static final int SPRITE_COUNT    =  5;
+    private static final int SPRITE_OFFSET_X =  0;
+    private static final int SPRITE_OFFSET_Y =  2;
+    private static final int SPRITE_WIDTH    = 95;
+    private static final int SPRITE_HEIGHT   = 168;
     
 
     public Color[] getColorPallete() {
@@ -63,6 +75,7 @@ public class HexBoard {
     Pane vertexPane;                        //this contains the vertices once they're each drawn
     Pane edgePane;                          //this contains the edges once they're each drawn
     Pane popUpDialog=new Pane();            //this is the pane that appears once a vertex or edge is clicked.
+    Pane spritePane;
     final Canvas canvas ;
     
     int columnMax;                          //this is the maximum number of columns for a row...this is incremented and decremented to yield the 3,4,5,4,3 row pattern
@@ -127,7 +140,7 @@ public class HexBoard {
         inRadius= modelHex.getLayoutBounds().getWidth()/2;      //this makes the inRadius which is roughly the circumradius * (sqrt(3)/2) but 1/2*getwidth is the same and it's prettier
         boardPane= new Pane();                                  //creates new board for boardpane
         vertexPane= new Pane();                                 //creates new board for vertexpane
-        
+        spritePane= new Pane();   
         
         centerX= (float) (boardPane.getWidth()/2);              //assigns the center of the pane a value
         centerY= (float) (boardPane.getHeight()/2);                          
@@ -143,13 +156,27 @@ public class HexBoard {
 //        addAdjacentVerticies();
         //  addAdjacentHexes();
         //
-                                                                
+         spriteImage = new Image(getClass().getResourceAsStream("graphics/Tornado.png"));
+        
+        final ImageView imageView = new ImageView(spriteImage);
+        imageView.setViewport(new Rectangle2D(SPRITE_OFFSET_X, SPRITE_OFFSET_Y, SPRITE_WIDTH, SPRITE_HEIGHT));
+
+        final Animation animation = new SpriteAnimation(
+                imageView,
+                Duration.millis(500),
+                SPRITE_COUNT, SPRITE_COLUMNS,
+                SPRITE_OFFSET_X, SPRITE_OFFSET_Y,
+                SPRITE_WIDTH, SPRITE_HEIGHT
+        );
+        animation.setCycleCount(Animation.INDEFINITE);
+        animation.play();                                                       
 
         vertexPane.setPickOnBounds(false);                      //sets property to false so that the circle (vertex point) is selectable and the bounding shape around it is not
         edgePane.setPickOnBounds(false);
         image = new Image(getClass().getResourceAsStream("graphics/MapAr.jpg"));
         graphicsContext.drawImage(image, 130, 110, 480, 480);
-        boardShell.getChildren().addAll(canvas,edgePane,vertexPane);     //adds the 3 panes to the stackpane and so publishes the constructed board.
+        //graphicsContext.drawImage(image, 130, 110, 480, 480);
+        boardShell.getChildren().addAll(boardPane,canvas,edgePane,vertexPane,imageView);     //adds the 3 panes to the stackpane and so publishes the constructed board.
 
     }
     
