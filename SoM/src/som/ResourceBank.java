@@ -84,6 +84,13 @@ public class ResourceBank {
           }
           else System.out.println("Too many of desired resource");
       }
+        public void bankReturnResource(int[] resources){
+          //if((resources[resourceNumber]-amount)>=0){
+          for (int i=0; i<this.resources.length;i++){
+                    this.resources[i]+=resources[i];
+          }
+          //}
+      }
       public void printResourceList() //method to print out resourceList
       { 
           //String resourceName = new String(); //String variable to keep track of resource Name
