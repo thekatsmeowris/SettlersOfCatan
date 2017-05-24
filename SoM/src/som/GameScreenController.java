@@ -195,12 +195,24 @@ public class GameScreenController implements Initializable {
                 setSelectedItem(hex);
                 hex.setFill(Color.YELLOW);
                 System.out.println(
-                        hex.getTokenValue()+"\n"
-                        +hex.getVerticies()+"\n+---------+\n"
+                        //hex.getTokenValue()+"\n"
+                        //+hex.getVerticies()+"\n+---------+\n"
                 );
-                for (HexVertex hexVertex: hex.getVerticies()){
-                    System.out.println(hexVertex);
-                }
+                int vertexCounter=0;
+             //System.out.println("[\t\t\t\t\t"+hexCounter+"\t\t\t\t\t]");
+             for(HexVertex vertex: hex.getVerticies()){
+                 System.out.print(vertexCounter+"\t\t");
+                 System.out.print("BEFORE ASSN: \t"+vertex +"\n" );                 
+                 System.out.println("it's in the list on at index: "+board.vertexList.indexOf(vertex));
+                 System.out.println("BEFORE ASSN: "+ ((boolean)(vertex==board.vertexList.get(board.vertexList.indexOf(vertex)))));
+                 vertex=board.vertexList.get(board.vertexList.indexOf(vertex));
+                System.out.println("AFTER ASSN: "+ ((boolean)(vertex==board.vertexList.get(board.vertexList.indexOf(vertex)))));
+                 System.out.print("AFTER ASSN: \t"+vertex +"\n\n\n" );                 
+                               
+                
+
+                 vertexCounter++;
+             }
                 
         });
         }

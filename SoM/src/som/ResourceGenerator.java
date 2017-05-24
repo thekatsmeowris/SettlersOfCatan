@@ -93,13 +93,26 @@ public class ResourceGenerator {
 		ArrayList<Player>listOfplayers= new ArrayList<>();
 		for(Hex hex:listOfHexes)
                 {
-                    for(HexVertex hexVertex: hex.getVerticies()){
-                        System.out.println(hexVertex+"\n\n");
-                        if(hexVertex.getAsset()!=null)
+                            //update hex vertices now
+                    int hexCounter=0;
+                         int vertexCounter=0;
+                         System.out.println("[\t\t\t\t\t"+hexCounter+"\t\t\t\t\t]");
+                         for(HexVertex vertex: hex.getVerticies()){
+                            vertex=board.vertexList.get(board.vertexList.indexOf(vertex));
+                            
+                             if(vertex.getAsset()!=null)
                         {
-                            listOfplayers.add(hexVertex.getAsset().getPlayer());
+                            listOfplayers.add(vertex.getAsset().getPlayer());
+                            System.out.println("adding player: "+(vertex.getAsset().getPlayer().getNickname()));
                         }
-                    }
+                             
+                             
+                             System.out.println("AFTER ASSN: "+ ((boolean)(vertex==board.vertexList.get(board.vertexList.indexOf(vertex)))));
+
+                             vertexCounter++;
+                         }
+                         hexCounter++;
+                   
                 }
 		return listOfplayers;
 	}

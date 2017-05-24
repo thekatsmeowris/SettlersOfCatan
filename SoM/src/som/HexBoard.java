@@ -198,7 +198,9 @@ public class HexBoard {
             for (int i=0; i< h.getPoints().size(); i=i+2){
                 Point2D p= new Point2D(h.getPoints().get(i), h.getPoints().get(i+1));
                 
-                HexVertex hV= new HexVertex(p, h);
+//                HexVertex hV= new HexVertex(p, h);
+                HexVertex hV= new HexVertex(p);
+                
                 h.addVertex(hV);
                 //hV.setFill(colorPallete[j]);
                 //j++;
@@ -227,7 +229,8 @@ public class HexBoard {
                 
                 
                 if (inList){
-                    vertexList.get(vertexList.indexOf(hV)).addAdjacentHex(h);
+                    vertexList.get(vertexList.indexOf(hV)).addAdjacentHex(h);           //adds each hex that shares a vertex to the adjacentHex arrayList within this hexVertex
+    
                     
                 }else{
                     vertexList.add(hV);
@@ -245,12 +248,7 @@ public class HexBoard {
         //boardPane.getChildren().add(vertexPane);
         
    }
-        //update hex vertices now
-         for (Hex hex: hexList){
-             for(HexVertex vertex: hex.getVerticies()){
-                 vertex=vertexList.get(vertexList.indexOf(vertex));
-             }
-         }   
+
         
 
 }
@@ -333,14 +331,25 @@ public class HexBoard {
                 
 
             }
-   
-   
-   
-   
-   
-   
-   }
-}
+        }
+                //update hex vertices now
+        int hexCounter=0;
+         for (Hex hex: hexList){
+             int vertexCounter=0;
+             System.out.println("[\t\t\t\t\t"+hexCounter+"\t\t\t\t\t]");
+             for(HexVertex vertex: hex.getVerticies()){
+                 System.out.print(vertexCounter+"\t\t");
+                 System.out.print(vertex +"\n" );                 
+                 System.out.println("it's in the list on at index: "+vertexList.indexOf(vertex));
+                 System.out.println("BEFORE ASSN: "+ ((boolean)(vertex==vertexList.get(vertexList.indexOf(vertex)))));
+                 vertex=vertexList.get(vertexList.indexOf(vertex));
+                System.out.println("AFTER ASSN: "+ ((boolean)(vertex==vertexList.get(vertexList.indexOf(vertex)))));
+
+                 vertexCounter++;
+             }
+             hexCounter++;
+         }   
+    }
     
    public Pane getBoardPane(){
        return boardShell;
