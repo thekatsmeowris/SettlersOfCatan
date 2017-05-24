@@ -31,6 +31,7 @@ public class Settlement extends Asset {
         
 
     }
+    @Override
     public int getType(){
         return 1;
     }

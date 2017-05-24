@@ -55,6 +55,10 @@ public abstract class Asset {
 	public Player getPlayer() {
 		return player;
 	}
+        
+        public int getType(){
+            return 0;
+        }
         /*
         public HexBoard getHexBoard() {
         return board;

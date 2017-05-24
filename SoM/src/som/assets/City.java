@@ -19,6 +19,8 @@ public class City extends Asset{
         
 
     }
+    
+    @Override
         public int getType(){
         return 2;
     }
