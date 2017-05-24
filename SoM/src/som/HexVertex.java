@@ -23,7 +23,7 @@ public class HexVertex extends Circle {
     private ArrayList<Hex> adjacentHex;
     private ArrayList<HexEdge> adjacentEdge;
     private Asset asset;
-    private Hex parentHex;
+    private Hex parentHex;                  //should have at most 3 so change this to an arrayList or array
     
     public Point2D getPosition() {
         return position;
@@ -74,18 +74,18 @@ public class HexVertex extends Circle {
     
     // hex vertex takes a location p and a hex h, 
     // the hex is the hex that the vertex belongs to
-    public HexVertex(Point2D position, Hex hex) {
-        super(position.getX(),position.getY(),10, Color.TRANSPARENT);
-        this.position=position;
-
-        //adjacentHex.add(h);
-        asset=null;
-        adjacentHex=new ArrayList<>();
-        adjacentEdge= new ArrayList<>();
-        parentHex=hex;
-
+    /* public HexVertex(Point2D position, Hex hex) {
+    super(position.getX(),position.getY(),10, Color.TRANSPARENT);
+    this.position=position;
+    
+    //adjacentHex.add(h);
+    asset=null;
+    adjacentHex=new ArrayList<>();
+    adjacentEdge= new ArrayList<>();
+    parentHex=hex;
+    
     }
-    public void setVertex(Point2D p){
+    */  public void setVertex(Point2D p){
         
     }
     public void setEdge(Point2D p, Point2D q){
