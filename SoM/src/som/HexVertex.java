@@ -68,6 +68,7 @@ public class HexVertex extends Circle {
         adjacentHex=new ArrayList<>();
         adjacentEdge= new ArrayList<>();
         parentHex=null;
+        
 
     }
     
@@ -96,19 +97,19 @@ public class HexVertex extends Circle {
         adjacentHex.add(h);
         
     }
-    
+
     public Hex getHex(){
         return parentHex;
     }
     public Settlement addSettlement(Player player){
          this.asset= new Settlement(player,this);
-       this.setOnMouseEntered(e ->{
             this.setStroke(Color.GREEN);
             this.setFill(Color.GREEN);
+
+         this.setOnMouseEntered(e ->{
             System.out.println("THIS ASSET: "+ this.asset);
         });
        this.setOnMouseExited(e ->{
-            //this.setStroke(Color.TRANSPARENT);
         });
         return (Settlement) this.asset;
     }
@@ -132,7 +133,6 @@ public class HexVertex extends Circle {
         if (getClass() != o.getClass()) return false;
         HexVertex hV = (HexVertex) o;
         // field comparison
-        System.out.println("...");
         return Objects.equals(position, hV.position);
     }
    
@@ -146,6 +146,7 @@ public class HexVertex extends Circle {
 
     @Override
     public String toString() {
-        return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge + ", asset=" + asset + ", \n\tparentHex=" + parentHex + "Color= \n\t" +this.getFill()+ '}';
+        return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge + ", asset=" + asset + ", parentHex=" + parentHex + '}';
     }
+
 }
