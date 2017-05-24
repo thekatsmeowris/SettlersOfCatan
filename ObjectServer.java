@@ -8,6 +8,9 @@ public class ObjectServer {
 	private int port;
 	private ServerSocket server;
 	private Boolean isOn;
+	private ObjectInputStream in;
+	private ObjectOutputStream out;
+
 
 
 	// Create a server connection
@@ -31,9 +34,9 @@ public class ObjectServer {
 				Socket socket = server.accept();
 				System.out.println(socket.getLocalAddress().getHostName() + ": " + socket.getPort());
 				// Read from socket to ObjectInputStream object
-				ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+				in = new ObjectInputStream(socket.getInputStream());
 				// Create ObjectOutputStream object
-				ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+				out = new ObjectOutputStream(socket.getOutputStream());
 				listen();
 				// out.writeObject(str);
 
