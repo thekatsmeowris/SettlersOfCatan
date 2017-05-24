@@ -71,7 +71,7 @@ public class SoM extends Application {
         
     }
     
-     //<editor-fold defaultstate="collapsed" desc="comment">
+    
     private void loadAudioAssets(){
         
         
@@ -96,15 +96,14 @@ public class SoM extends Application {
         //aMusic2.setCycleCount(AudioClip.INDEFINITE);
         //aMusic2.play();
         
-        //mediaPlayer1.setCycleCount(AudioClip.INDEFINITE);
+        mediaPlayer2.setCycleCount(AudioClip.INDEFINITE);
         //mediaPlayer1.play();
         
         mediaPlayer2.play();
         if(mediaPlayer1.getStatus().equals(Status.PLAYING))
             mediaPlayer1.stop();
     }
-//</editor-fold>
-    
+
     
     public void TestDeck() {
 		Knight k = new Knight();
