@@ -14,34 +14,72 @@ import java.util.Arrays;
 class TradePack {
     private Player sender, receiver;
     Boolean tradeBank;
-    int [] resourcesOffered;
-    int [] resourcesRequested;
+    private int [] resourcesOffered;
+    private int [] resourcesRequested;
     
         TradePack(){
-            tradeBank=false;
-            resourcesOffered=new int[]{0,0,0,0,0};
-            resourcesRequested=new int[]{0,0,0,0,0};
+            this.sender=null;
+            this.receiver=null;
+            this.tradeBank=null;
+            this.resourcesOffered=null;
+            this.resourcesRequested=null;
+        }
+
+    public int[] getResourcesOffered() {
+        return resourcesOffered;
+    }
+
+    public void setResourcesOffered(int[] resourcesOffered) {
+        this.resourcesOffered = resourcesOffered;
+    }
+
+    public int[] getResourcesRequested() {
+        return resourcesRequested;
+    }
+
+    public void setResourcesRequested(int[] resourcesRequested) {
+        this.resourcesRequested = resourcesRequested;
+    }
+        TradePack(Player sender){
+            this.sender=sender;
+            this.receiver=null;
+            this.tradeBank=null;
+            this.resourcesOffered=null;
+            this.resourcesRequested=null;
 
         }
-        TradePack(Player p1, Player p2, int[] resourcesOffered, int[] resourcesRequested){
-            sender=p1;
-            receiver=p2;
+        TradePack(Player sender, Player receiver, int[] resourcesOffered, int[] resourcesRequested){
+            this.sender=sender;
+            this.receiver=receiver;
             this.resourcesOffered=resourcesOffered;
             this.resourcesRequested=resourcesRequested;
             
         }
-        TradePack(Player p1, int[] resourcesOffered, int[] resourcesRequested){
-            sender=p1;
+        TradePack(Player sender, int[] resourcesOffered, int[] resourcesRequested){
+            this.sender=sender;
             receiver=null;
             this.resourcesOffered=resourcesOffered;
             this.resourcesRequested=resourcesRequested;
         }
+        TradePack(TradePack tp){
+            this.sender=tp.sender;
+            this.receiver=tp.receiver;
+            this.resourcesOffered=tp.resourcesOffered;
+            this.resourcesRequested=tp.resourcesRequested;
+            
+        }
     @Override
     public String toString(){
-        return "SENDER: "+ sender.nickname
+/*        return "SENDER: "+ sender.nickname
         +"RECEIVER: "+ receiver.nickname
         +"OFFERING: "+ Arrays.toString(resourcesOffered)
-        +"Requesting: "+ Arrays.toString(resourcesRequested);
+        +"Requesting: "+ Arrays.toString(resourcesRequested);*/
+        String string="";
+        string+="SENDER: "+ sender.nickname;
+        string+="RECEIVER: "+ receiver.nickname;
+        string+="OFFERING: "+ Arrays.toString(resourcesOffered);
+        string+="Requesting: "+ Arrays.toString(resourcesRequested);
+    return string;
     }
 
 

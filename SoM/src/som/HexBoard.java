@@ -28,8 +28,16 @@ import javafx.scene.shape.Shape;
  * @author makogenq
  */
 public class HexBoard {
+
+    public Color[] getColorPallete() {
+        return colorPallete;
+    }
+
     //get longest row
     //build board based on longest row
+    public void setColorPallete(Color[] colorPallete) {
+        this.colorPallete = colorPallete;
+    }
     //ie 5 builds 5 rows of 3,4,5,4,3
 
 
@@ -50,15 +58,29 @@ public class HexBoard {
     int columnMax;                          //this is the maximum number of columns for a row...this is incremented and decremented to yield the 3,4,5,4,3 row pattern
     double hexRadius, inRadius;             //this is the default circumradius and inradius of all hexes
     float centerX, centerY;                 //this is the center of each hex when it is drawn
+    
+    
+    
+    //This is the palette for colors to be used in the generation of the board.
+    //Also, below this color palette should be a secondary one used for debugging the board
     Color[]  colorPallete= new Color[]{
-            Color.web("#7EA6C4"),               //light blueish color           0
-            Color.web("#C16161"),               //abse REDDISH Color            1
-            Color.web("#EED79B"),               //pale yellow                   2
-            Color.web("#BDB7A2"),               //greenish GRAY                 3 
-            Color.web("#AE9C9E"),               //reddish GRAY                  4
-            Color.web("#000000")};              //black null color              5
-    List<Integer> possibleTokens= new ArrayList<Integer>();
-    int[] temp= new int[]{                      //tokenValue numbers possible
+    Color.web("#7EA6C4"),               //light blueish color           0
+    Color.web("#C16161"),               //abse REDDISH Color            1
+    Color.web("#EED79B"),               //pale yellow                   2
+    Color.web("#BDB7A2"),               //greenish GRAY                 3
+    Color.web("#AE9C9E"),               //reddish GRAY                  4
+    Color.web("#000000")};              //black null color              5
+    /*    Color[]  colorPallete= new Color[]{
+    Color.VIOLET,
+    Color.BLUE,
+    Color.GREEN,
+    Color.YELLOW,
+    Color.ORANGE,
+    Color.web("#000000")};              //black null color              5*/    
+    
+    
+    List<Integer> possibleTokens= new ArrayList<Integer>();                     //array of possible values for each hex's dice value
+    int[] temp= new int[]{                                                      //tokenValue numbers possible
         2,3,3,
         4,4,5,5,
         6,6,8,8,9,
@@ -67,28 +89,29 @@ public class HexBoard {
     int[] possibleTerrainTypes= new int[]{
         3,3,3,                                  //hemp = grain distribution
         3,4,4,4,                                //plastic = lumber distribution
-        4,2,2,2,2,                               //soy = pasture
-        0,0,0,1,                                  //steel = ore
-        1,1};                                        //brick = glass
+        4,2,2,2,2,                              //soy = pasture
+        0,0,0,1,                                //steel = ore
+        1,1};                                   //brick = glass
 
 
 
     Stack tokenStack= new Stack();
     Stack terrainStack= new Stack();
     
-    public HexBoard() {
+   public HexBoard() {
         //int[] boardBoundaries = new int[]{0.0,2,3,4};
         //800x600
         columnMax=maxColumns-2;                                 //this sets the max columns of the first row to 2 less than the longest (median) row
                                                                 //i needed this because i had a hard time generating the radii of each in the constructor
-                                                                //since i needed to call super() before determining any of the hex's values
+        Hex modelHex= new Hex(0,400,300,50, 50*0.87, Color.ALICEBLUE, 0, 5);           //this generates a hex as a model to generate the rest of the board hexes from
+                                                        //since i needed to call super() before determining any of the hex's values
         hexRadius=modelHex.getLayoutBounds().getHeight()/2;     //this makes the circumradius which is half the height (of a pointy top hexagon)
         inRadius= modelHex.getLayoutBounds().getWidth()/2;      //this makes the inRadius which is roughly the circumradius * (sqrt(3)/2) but 1/2*getwidth is the same and it's prettier
         boardPane= new Pane();                                  //creates new board for boardpane
         vertexPane= new Pane();                                 //creates new board for vertexpane
         
         centerX= (float) (boardPane.getWidth()/2);              //assigns the center of the pane a value
-        centerY= (float) (boardPane.getHeight()/2);             
+        centerY= (float) (boardPane.getHeight()/2);                          
                     
         hexList = new ArrayList<>();                            //initializes the hex,vertex, and edge lists
         vertexList = new ArrayList<>();
@@ -97,70 +120,51 @@ public class HexBoard {
         makeBoard();                                            //generates a board of hexes using random distribution of terrain (does not assign dice values yet)
         makeVertices();                                         //generates a set of verticies based on the hexes and vertexList
         makeEdges();                                            //generates a set of edges based on the hexes, vertexList and edgeList
-        //allows for mouseclicks through layers above
+        addAdjacentEdges();                                     
+//        addAdjacentVerticies();
+        //  addAdjacentHexes();
+        //
+                                                                
+
         vertexPane.setPickOnBounds(false);                      //sets property to false so that the circle (vertex point) is selectable and the bounding shape around it is not
         edgePane.setPickOnBounds(false);
         
         
         boardShell.getChildren().addAll(boardPane,edgePane,vertexPane);     //adds the 3 panes to the stackpane and so publishes the constructed board.
-//        boardShell.getChildren().addAll(edgePane,vertexPane);
 
     }
     
-    private void makeBoard(){
-        int hexCounter=0;
-        Hex h;
-        double hexStartingPointY=0;
+   private void makeBoard(){                                               //makes the board with the hexes,
+        int hexCounter=0;                                       //hexCounter keeps track of which hex is being genrated
+        Hex h;                                                  //a model hex to build the rest on
+        double hexStartingPointY=0;                             //the hex tarting point, to determine the verticies of the hex
         //MAKE number tokens
-    for(int j=0; j< temp.length; j++){
+    for(int j=0; j< temp.length; j++){                          //adding the diceNumber values and the terrain types to stacks for distribution
         tokenStack.push(temp[j]);
         terrainStack.push(possibleTerrainTypes[j]);
     }
-    System.out.println(tokenStack);
-    Collections.shuffle(tokenStack);
+    Collections.shuffle(tokenStack);                            //shuffle the stacks for randomness
     Collections.shuffle(terrainStack);
     
-    System.out.println(tokenStack);
 
         
         
         for(int i=0; i<numberOfRows;i++){
              if (i>0){
-                   
-
-                    h=(Hex) boardPane.getChildren().get(hexCounter-1);
+                    h=(Hex) boardPane.getChildren().get(hexCounter-1);      
                     
                     hexStartingPointY=h.getPoints().get(5)+hexRadius;
                 }else{
                      hexStartingPointY=200+((inRadius/2)+hexRadius)*i;
                 }
             for (int j=0;j<columnMax;j++){
-            
-            Color hexColor;
-
-            hexColor=colorPallete[(int)terrainStack.peek()];
-/*          
-            if(randomNum>8&&randomNum<10){
-                hexColor=colorPallete[0];
-            }else if(randomNum>6&&randomNum<8){
-                hexColor=colorPallete[1];
-            }else if(randomNum>4&&randomNum<6){
-                hexColor=colorPallete[0];
-            }else if(randomNum>2&&randomNum<4){
-                hexColor=colorPallete[0];
-             //   hexColor=(Color.MOSSGREEN);
-            }else if(randomNum>0&&randomNum<2){
-                hexColor=Color.web("#AE9C9E");
-             //   hexColor=(Color.CHOCOLATE);
-            }else{
-                hexColor=Color.web("#000000");
-             //   hexColor=Color.BLACK;
-            }*/
-            //h.setHexColor(hexColor);
-    
                 
+            Color hexColor;                                    //Declare the variable for the color of each hex
 
-               if(i==2&&j==2){
+            hexColor=colorPallete[(int)terrainStack.peek()];    //get the color based on the type of terrain the hex will be
+
+
+               if(i==2&&j==2){                                  //the center hex is the "desert hex"
                 h= new Hex(hexCounter,
                         200+(inRadius*(maxColumns-columnMax))+(inRadius*j*2),
                        hexStartingPointY,
@@ -189,31 +193,30 @@ public class HexBoard {
     }
     
 }
-   private void makeVertices(){
+   private void makeVertices(){                                                 //makes the vertices for the board
       
-       Double[] points;
+       Double[] points;                                                         //declare an array for the points for the vertices
         //these are simply two different types of forEach loops
         
         for(Hex h:  hexList){
+            int j=0;
             for (int i=0; i< h.getPoints().size(); i=i+2){
                 Point2D p= new Point2D(h.getPoints().get(i), h.getPoints().get(i+1));
                 
                 HexVertex hV= new HexVertex(p, h);
                 h.addVertex(hV);
+                //hV.setFill(colorPallete[j]);
+                //j++;
                 ((Circle) (hV)).setOnMouseEntered(e ->{
                     hV.setFill(Color.RED);
                 });
              ((Circle) (hV)).setOnMouseExited(e ->{
-                 /*  if(popUpDialog.isVisible()){
-                 hV.setFill(Color.MAGENTA);
-                 
-                 }else{
-                 hV.setFill(Color.TRANSPARENT);
-                 }*/
+         
                 hV.setFill(Color.TRANSPARENT);
+               
 
                 });
-             
+                
                 
                 //
                     //hV.setFill(Color.TRANSPARENT);
@@ -270,7 +273,7 @@ public class HexBoard {
         
             points=h.getPoints();
             int p3,p4;
-            
+            int j=0;
 //            for (int i=0; i< points.size(); i=i+2){
             for (int i=0; i<points.size(); i=i+2){
                 p3=i+2;
@@ -287,6 +290,7 @@ public class HexBoard {
                     p3=0;
                     p4=1;
                 }
+                
                 HexEdge hE = new HexEdge(
                         new Point2D((double) points.get(i),(double) points.get(i+1)),
                         new Point2D((double) points.get(p3),(double) points.get(p4))
@@ -299,7 +303,10 @@ public class HexBoard {
                ((Line) (hE)).setOnMouseExited(e ->{
                     hE.setStroke(Color.TRANSPARENT);
                 });
-                   
+                //hE.setStroke(colorPallete[j]);
+                
+                //j++;
+                h.addEdge(hE);
             
              
                 
@@ -350,6 +357,122 @@ public class HexBoard {
        return boardShell;
        
    }
+
+    private void addAdjacentEdges() {
+        for(HexVertex h: vertexList){
+            ArrayList<Hex> hexes=new ArrayList<>();
+            for(Hex hex: hexList){
+                if(hex.getVerticies().contains(h)){
+                    int vertexIndex, vertexIndexNext, vertexIndexPrev;
+                    vertexIndex=hex.getVerticies().indexOf(h);
+                    /*if(vertexIndex+1>5){
+                        vertexIndexNext=0;
+                    }else{
+                        vertexIndexNext=vertexIndex+1;
+                    }*/
+                    if(vertexIndex-1<0){
+                        vertexIndexPrev=5;
+                    }else{
+                        vertexIndexPrev=vertexIndex-1;
+                    }
+                    if(!h.getAdjacentEdge().contains(hex.getEdges().get(vertexIndex))){
+                        h.addAdjacentEdge(hex.getEdges().get(vertexIndex));
+                    }
+                    if(!h.getAdjacentEdge().contains(hex.getEdges().get(vertexIndexPrev))){
+                        h.addAdjacentEdge(hex.getEdges().get(vertexIndexPrev));
+                    }
+                }
+            }
+         
+            
+            
+            
+            System.out.println(vertexList.indexOf(h)+": "
+            +h+"\n"
+            +h.getAdjacentEdge());
+            
+        }
+        for(HexEdge h: edgeList){
+            //1) hexEdge.AdjaentVertices
+            HexVertex start,end;
+            start=new HexVertex(h.getStartPoint());
+            end=new HexVertex(h.getEndPoint());
+            System.out.println("CHECKING IF THE POINT EXISTS IN VERTEXLIST");
+            if(vertexList.contains(start)){
+                h.addAdjacentVertex(vertexList.get(vertexList.indexOf(start)));
+                System.out.print("!!!!!!!!:   \t"+ vertexList.get(vertexList.indexOf(start)));
+                h.addStartVertex(vertexList.get(vertexList.indexOf(start)));
+                System.out.println(h.getStartVertex());
+            }
+            if(vertexList.contains(end)){
+                h.addAdjacentVertex(vertexList.get(vertexList.indexOf(end)));
+                h.addEndVertex(vertexList.get(vertexList.indexOf(end)));
+            }
+            //now that adjacent vertices are attached, get the adjacent edges from each
+            
+            for(HexVertex v: h.getAdjacentVertex()){
+                for(HexEdge edge: v.getAdjacentEdge()){
+                    if(!h.getAdjacentEdge().contains(edge)){
+                        if(edge!=h){
+                        h.addAdjacentEdge(edge);
+                        }
+                    }
+                }
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            /*                    for(Hex hex: hexList){
+                        if(hex.getEdges().contains(h)){
+                            int edgeIndex, edgeIndexNext, edgeIndexPrev;
+                            edgeIndex=hex.getEdges().indexOf(h);
+  */                          
+                            /*if(edgeIndex+1>5){
+                                edgeIndexNext=0;
+                            }else{
+                                edgeIndexNext=edgeIndex+1;
+                            }
+                            if(edgeIndex-1<0){
+                                edgeIndexPrev=5;
+                            }else{
+                                edgeIndexPrev=edgeIndex-1;
+                            }*/
+                           /* if(!h.getAdjacentEdge().contains(hex.getEdges().get(edgeIndex))){
+                                h.addAdjacentEdge(hex.getEdges().get(edgeIndex));
+                            }*//*
+                            if(!h.getAdjacentEdge().contains(hex.getEdges().get(edgeIndexPrev))){
+                                h.addAdjacentEdge(edgeList.get(edgeList.indexOf(hex.getEdges().get(edgeIndexPrev))));
+                            }
+                            if(!h.getAdjacentEdge().contains(hex.getEdges().get(edgeIndexNext))){
+                                h.addAdjacentEdge(edgeList.get(edgeList.indexOf(hex.getEdges().get(edgeIndexNext))));
+                            System.out.println(edgeIndexPrev+" "+edgeIndex+" "+edgeIndexNext+" ");
+*/
+    //                        }
+      //                  }
+        //            }
+
+
+
+
+        /*          System.out.println(vertexList.indexOf(h)+": "
+        +h+"\n"
+        +h.getAdjacentEdge());*/
+        }
+
+    }
+
+
+    private void addAdjacentHexes() {
+
+
+    }
     
     
     
