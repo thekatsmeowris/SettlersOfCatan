@@ -45,13 +45,12 @@ public class Player {
         assets=new Assets();
             nickname=name;
             this.playerColor=playerColor;
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     Player(String name, int[] resources, Color playerColor) {
         this.nickname=name;
         this.resources=resources;
-        victoryPoints=4;
+        victoryPoints=0;
         assets=new Assets();
         this.playerColor=playerColor;
     }
@@ -121,6 +120,11 @@ public class Player {
             this.resources[i]-=resources[i];
         }
         return resources;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" + "VICTORY_POINT_MAX=" + VICTORY_POINT_MAX + ", pnPlayerInfo=" + pnPlayerInfo + ", victoryPointGauge=" + victoryPointGauge + ", resources=" + resources + ", resourceManager=" + resourceManager + ", victoryPoints=" + victoryPoints + ", playerColor=" + playerColor + ", nickname=" + nickname + ", assets=" + assets + '}';
     }
 
 

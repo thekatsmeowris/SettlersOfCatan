@@ -73,7 +73,6 @@ public class Hex extends Polygon {
        //         super.getPoints().add(hexPoints[i]);
        //     }
       // System.out.println(this.getPoints());
-        System.out.println("width: "+ this.getLayoutBounds().getWidth());
        
         
       

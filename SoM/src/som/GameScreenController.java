@@ -39,6 +39,7 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 
 import javafx.scene.text.Text;
+import static som.assets.Asset.SETTLEMENT;
 import som.assets.Settlement;
 
 
@@ -154,6 +155,9 @@ public class GameScreenController implements Initializable {
                         System.out.println(((Math.round((new_val.floatValue()))))+"  "+ p.victoryPointGauge.getLength());
                         
                     }
+                        thisPlayer.setVictoryPoints((Math.round((new_val.floatValue()))));
+                        pgbVictoryPoints.setProgress(new_val.floatValue()/10.0);
+
             }
         });
         
@@ -202,16 +206,7 @@ public class GameScreenController implements Initializable {
                 int vertexCounter=0;
              //System.out.println("[\t\t\t\t\t"+hexCounter+"\t\t\t\t\t]");
              for(HexVertex vertex: hex.getVerticies()){
-                 System.out.print(vertexCounter+"\t\t");
-                 System.out.print("BEFORE ASSN: \t"+vertex +"\n" );                 
-                 System.out.println("it's in the list on at index: "+board.vertexList.indexOf(vertex));
-                 System.out.println("BEFORE ASSN: "+ ((boolean)(vertex==board.vertexList.get(board.vertexList.indexOf(vertex)))));
                  vertex=board.vertexList.get(board.vertexList.indexOf(vertex));
-                System.out.println("AFTER ASSN: "+ ((boolean)(vertex==board.vertexList.get(board.vertexList.indexOf(vertex)))));
-                 System.out.print("AFTER ASSN: \t"+vertex +"\n\n\n" );                 
-                               
-                
-
                  vertexCounter++;
              }
                 
@@ -222,6 +217,11 @@ public class GameScreenController implements Initializable {
         {
             hexVertex.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                 setSelectedItem(hexVertex);
+                //if popup is clicked on an empty vertex, disable build road
+                //if popup is clicked on an occupied vertex, make build settlement -> build city
+                //if popup is clicked on an empty edge, only show build road
+                
+                
             if(!popupDialog.isVisible()){
                 popupDialog.setVisible(true);
                 //board.popUpDialog.setVisible(true);
@@ -332,7 +332,8 @@ public class GameScreenController implements Initializable {
     }
     public void function(){
                 generateResources(rollDice());
-                lblCurrentStatus.setText(Arrays.toString(resourceBank.resources));
+                //lblCurrentStatus.setText(Arrays.toString(resourceBank.resources));
+                System.out.println(thisPlayer.toString());
         	
     }
 
@@ -352,6 +353,7 @@ public class GameScreenController implements Initializable {
         //Player actions
         
         //build
+        
         
 
         //trade
@@ -469,9 +471,9 @@ public class GameScreenController implements Initializable {
             pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));                               //adjust the progress bar for vp for thisPlayer
             updateResources();
             for(HexEdge edge:((HexVertex)selectedItem).getAdjacentEdge() ){
-                edge.setStroke(Color.WHITE);
+                //edge.setStroke(Color.WHITE);
                 if(((HexEdge)edge).isOwned()){
-                    edge.setFill(Color.GREENYELLOW);
+                    //edge.setFill(Color.GREENYELLOW);
                 }
             }
             //test
@@ -480,10 +482,9 @@ public class GameScreenController implements Initializable {
             int index=board.vertexList.indexOf(hv);
             for(HexEdge edge: ((HexVertex) selectedItem).getAdjacentEdge()){
                 
-                System.out.println("//");
                 try{
                     
-                    ((HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem)))).setFill(Color.GOLDENROD);
+                    //((HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem)))).setFill(Color.GOLDENROD);
 
                 }catch(NullPointerException nullPointer){
                     System.out.println("FAIL");
@@ -569,14 +570,12 @@ public class GameScreenController implements Initializable {
 
                                                                                                 //put resources back to the bank
          System.out.println("BUILD ROAD DIALOG");
-         System.out.println(((HexEdge)selectedItem).getAdjacentEdge());
           checkForLongestRoad();
 
           System.out.println("PRogress: " + thisPlayer.assets.roads.size());
           //System.out.println(((HexEdge) selectedItem).getType().toString());
         for(HexEdge edge:((HexEdge)selectedItem).getAdjacentEdge() ){
-             edge.setStroke(Color.WHITE);
-             System.out.println(edge.isOwned());
+             //edge.setStroke(Color.WHITE);                                                     //highlight adjacent edge
          }
           closeParentPane();
          } 
@@ -665,7 +664,7 @@ public class GameScreenController implements Initializable {
         
         return false;
     }
-    private boolean isGreater(int[] a, int[] b){                                //checks if the contents of int[]a are greater than int[] b
+    private boolean isGreater(int[] a, int[] b){                                                                    //checks if the contents of int[]a are greater than int[] b
         for(int i=0; i<a.length; i++){
             if(a[i]>=b[i]){
                continue; 
@@ -675,32 +674,41 @@ public class GameScreenController implements Initializable {
         }
         return true;
     }
-     public void checkForLongestRoad(){
-         if(thisPlayer.assets.roads.size()>longestRoadValue) longestRoadValue=thisPlayer.assets.roads.size();
+     public void checkForLongestRoad(){                                                                              //this only counts the total number of roads, not the number onf continuous roads
+         if(thisPlayer.assets.roads.size()>longestRoadValue) longestRoadValue=thisPlayer.assets.roads.size();       //need to count continuous roads
          
          pgbLongestRoad.progressProperty().set((double)(thisPlayer.assets.roads.size())/longestRoadValue);
          if (pgbLongestRoad.progressProperty().doubleValue()>=100.0){
              pgbLongestRoad.getStyleClass().add("gold-bar");
+
          }else{
             pgbLongestRoad.getStyleClass().add("basic-bar");
 
          }
          
      }
-     public void buildCity(){
+     public void buildCity(ActionEvent e) throws IOException{
          System.out.println("BUILD CITY DIALOG");
-         if(canBuildCity((HexVertex) selectedItem)){
+         if(canBuildCity((HexVertex) selectedItem)){                                                                  //ensure that the selected vertex has a settlement already
              System.out.println("BUILD SETTLEMENT DIALOG");
+             
             resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexVertex)selectedItem).addCity(thisPlayer))));         //remove resources from a player and give them to the bank
             }
-            ((HexVertex) selectedItem).setStroke(Color.GOLD);                                //set fill to color the vertex the player's color (indicating a settlement
-            thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));                                            //add this new asset to the player's list of assets
+            //((HexVertex) selectedItem).setStroke(Color.GOLD);                                                         //set fill to color the vertex the player's color (indicating a settlement
+            thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));                                              //add this new asset to the player's list of assets
             thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE+1);                        //increase the vp of the player
-            pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));                               //adjust the progress bar for vp for thisPlayer
+            pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));                                 //adjust the progress bar for vp for thisPlayer
             updateResources();
          
      }
 
+    private boolean canBuildCity(HexVertex hexVertex) {
+      if(hexVertex.getAsset()!= null && hexVertex.getAsset().getType()==SETTLEMENT){                                    //ensure that the selected vertex has a settlement already
+          return true;
+      }else{
+      return false;
+      }
+    }
     private void generateResources(int diceValue) {
         resourceGenerator.generateResources(diceValue);
         updateResources();
@@ -998,9 +1006,7 @@ public class GameScreenController implements Initializable {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private boolean canBuildCity(HexVertex hexVertex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 
     
 }
