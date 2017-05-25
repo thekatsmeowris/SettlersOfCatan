@@ -21,8 +21,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import customcontrols.TradeResourceTracker?> 
-<!-- <?import customcontrols.TradeResourceTracker?> -->
-
 <AnchorPane id="AnchorPane" fx:id="lastAnchorPane" minHeight="600.0" minWidth="800.0" prefHeight="720.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="som.GameScreenController">
    <children>
       <StackPane prefHeight="720.0" prefWidth="1300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -385,7 +383,7 @@
                                           </Pane>
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                    <AnchorPane mouseTransparent="true" prefHeight="200.0" prefWidth="200.0">
                                        <children>
                                           <Pane id="pnBuild" fx:id="pnBuild" layoutX="5.0" layoutY="22.0" mouseTransparent="true" prefHeight="521.0" prefWidth="1300.0" style="-fx-background-color: #c0c0c0;" visible="false">
                                              <children>
