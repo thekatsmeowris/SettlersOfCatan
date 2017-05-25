@@ -25,7 +25,8 @@ public class SoM extends Application {
     
     //private static URL musicURL1, musicURL2;
     //static AudioClip aMusic1, aMusic2;
-     String music1Path = "WASTELAND1.wav";
+    String music1Path = "WASTELAND1.wav";
+
     Media mMusic1 = new Media(new File(music1Path).toURI().toString());
     static MediaPlayer mediaPlayer;
     MediaView  mediaView;

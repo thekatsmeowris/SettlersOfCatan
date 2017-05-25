@@ -125,15 +125,25 @@ public class Player {
     public int[] getResources() {
         return resources;
     }
-
+    
+    public void setResource(int index, int value) {
+        this.resources[index]=value;
+    }
+    
     public void setResources(int[] resources) {
         this.resources = resources;
     }
+    
+    public void addResource(int resourceType, int qty){
+            this.resources[resourceType]+=qty;
+    }
+    
     public void addResources(int[] resources){
         for(int i=0; i<this.resources.length;i++){
             this.resources[i]+=resources[i];
         }
     }
+ 
     public int[] removeResources(int[] resources){
         for(int i=0; i<this.resources.length;i++){
             this.resources[i]-=resources[i];
@@ -141,9 +151,7 @@ public class Player {
         return resources;
     }
 
-    public void setResource(int index, int value) {
-        this.resources[index]=value;
-    }
+
     
     public int countResources()
     {
