@@ -149,4 +149,8 @@ public class HexVertex extends Circle {
         return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge + ", asset=" + asset + ", parentHex=" + parentHex + '}';
     }
 
+    Settlement addCity(Player thisPlayer) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
