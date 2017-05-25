@@ -750,7 +750,7 @@ public class GameScreenController implements Initializable {
         players.add(lisa);
         players.add(mew);
         thisPlayer=mark;
-//        return mark;
+//      return mark;
         
     }
     public void openTradeDialog(){
@@ -764,8 +764,9 @@ public class GameScreenController implements Initializable {
             for(Node n: anchors){
                 System.out.println(((AnchorPane)n).getChildren());
                 //0 Circle
-                ((Circle)((AnchorPane)n).getChildren().get(0)).setFill(board.getColorPallete()[anchors.indexOf(n)]); 
-                //((Circle)((AnchorPane)n).getChildren().get(0)).setFill(board.getColorPallete()[anchors.indexOf(n)]);
+                System.out.println(anchors.size()+"!!!!"+ anchors.indexOf(n));
+                ((Circle)((AnchorPane)n).getChildren().get(0)).setFill((Paint)board.getColorPallete()[trackers.indexOf(node)]); 
+                //((Circle)((AnchorPane)n).getChildren().get(0)).setFill(Color.); 
 
                 //1 lblResourceGiveValue
                 //2 lblResourceReqValue
