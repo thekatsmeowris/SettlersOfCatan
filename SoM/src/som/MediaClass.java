@@ -5,15 +5,11 @@
  */
 package som;
 
-import com.sun.javafx.iio.ImageLoader;
 import java.io.File;
-import java.io.InputStream;
-import javafx.scene.image.Image;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import static som.SoM.mediaPlayer1;
 
 /**
  *
