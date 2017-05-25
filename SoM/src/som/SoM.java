@@ -26,25 +26,15 @@ import javafx.stage.Stage;
 public class SoM extends Application {
     
     //private static URL musicURL1, musicURL2;
-    //static AudioClip aMusic1, aMusic2;
-     String music1Path = "src/som/music/WASTELAND2melody.wav";
-    Media mMusic1 = new Media(new File(music1Path).toURI().toString());
-     String music2Path = "src/som/music/EDGEofAWARE1wbrass.wav";
-    Media mMusic2 = new Media(new File(music2Path).toURI().toString());
-    static MediaPlayer mediaPlayer1;
-    static MediaPlayer mediaPlayer2;
+    //static AudioClip aMusic1, aMusic2;    
+    static MediaPlayer mediaPlayer1,mediaPlayer2; 
     MediaView  mediaView;
     
     @Override
     public void start(Stage stage) throws Exception {
         
-        mediaPlayer1 = new MediaPlayer(mMusic1); //mediaPlayer
-        mediaPlayer2 = new MediaPlayer(mMusic2); //mediaPlayer
-        mediaView = new MediaView(mediaPlayer1);
-        mediaView.setMediaPlayer(mediaPlayer1);
-        
-        loadAudioAssets();      
-        
+        MediaClass mediaClass = new MediaClass();
+       
         Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
         ResourceBank resourceBank= new ResourceBank();
         resourceBank.printResourceList();
@@ -57,7 +47,7 @@ public class SoM extends Application {
         stage.setScene(scene);
         stage.show();
 
-        playMusic1();
+        
     }
 
     /**
@@ -72,37 +62,7 @@ public class SoM extends Application {
     }
     
     
-    private void loadAudioAssets(){
-        
-        
-        
-        /*musicURL1 = getClass().getResource("/WASTELAND1.wav");
-        aMusic1 = new AudioClip(musicURL1.toString());
-        musicURL2 = getClass().getResource("/WASTELAND2.wav");
-        aMusic2 = new AudioClip(musicURL2.toString());*/
-    }
     
-    public static void playMusic1() {
-        //aMusic1.setCycleCount(AudioClip.INDEFINITE);
-        //aMusic1.play();
-        
-       mediaPlayer1.setCycleCount(AudioClip.INDEFINITE);
-        mediaPlayer1.play();
-        //if(mediaPlayer2.getStatus().equals(Status.PLAYING))
-           // mediaPlayer2.stop();
-    }
-    
-    public static void playMusic2() {
-        //aMusic2.setCycleCount(AudioClip.INDEFINITE);
-        //aMusic2.play();
-        
-        mediaPlayer2.setCycleCount(AudioClip.INDEFINITE);
-        //mediaPlayer1.play();
-        
-        mediaPlayer2.play();
-        if(mediaPlayer1.getStatus().equals(Status.PLAYING))
-            mediaPlayer1.stop();
-    }
 
     
     public void TestDeck() {
