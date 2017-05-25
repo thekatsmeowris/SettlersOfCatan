@@ -157,7 +157,7 @@ public class GameScreenController implements Initializable {
     
 //-----------------------------------------------------//
     
-    Player thisPlayer=new Player("mark",new int[]{0,0,0,0,0}, Color.GREEN);
+    Player thisPlayer=new Player("mark",new int[]{5,5,5,5,5}, Color.GREEN);
     TradePack thisPlayerTradePack;
     ArrayList<Player> players;
     DevelopmentDeck thisDevelopmentDeck;
@@ -1036,10 +1036,15 @@ public class GameScreenController implements Initializable {
         System.out.println("You clicked me");
       
         if(canBuyDev(thisPlayer)){//check if player has the requirements to buy dev card
+            System.out.println("You have enough resources");
             if(thisDevelopmentDeck.hasCard()){//check there is a dev card to take
+                System.out.println("There are enough Development Cards");
                resourceBank.bankReturnResource(2,1);//return 1 hemp to bank
-               resourceBank.bankReturnResource(3, 1);//return 1 soy to bank 
+               System.out.println("You returned Hemp");
+               resourceBank.bankReturnResource(3, 1);//return 1 soy to bank
+               System.out.println("You Returned Soy");
                resourceBank.bankReturnResource(0, 1);//return 1 steel to bank 
+               System.out.println("You Returned Steel");
                System.out.println("RETURNED TO BANK");
                thisPlayer.setResources(subtractTwoResourceSets(thisPlayer.getResources(), new int[]{1,0,1,1,0}));//subtract resources used from player's resources
                System.out.println("SUBTRACTED RESOURCES");

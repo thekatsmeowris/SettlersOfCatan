@@ -33,14 +33,14 @@ public class Player {
     
     Color playerColor;
     String nickname;
-    String n, d, imgName;
+    //String n, d, imgName;
     Assets assets;
-    DevelopmentCard card;
+    DevelopmentCard card;//Creates an object instance of the card from the development deck
     Player(){
 
         assets=new Assets();
         resources= new int[]{0,0,0,0,0}; 
-        developmentCards=new ArrayList<>();
+        developmentCards=new ArrayList<>();//new development card ArrayList to hold Player's development Cards
         
         victoryPoints=0;
         
@@ -69,9 +69,11 @@ public class Player {
         developmentCards=new ArrayList<>();
              
     }
-    public void add(DevelopmentCard card){
+    public void add(DevelopmentCard card){//add a development card to the Player's ArrayList
         developmentCards.add(card);
     }
+    //need to add remove development card from Player's ArrayList
+    //need to add victory point increase for Player if the development card is a VP
     public void setVictoryPoints(int value){
         victoryPoints=value;
         victoryPointGauge.setLength(((double)value/(double)VICTORY_POINT_MAX)*360);     //3.6 is 360 divided by the 100 for the 100 we would have multiplied the value/vpMax to get a percentage.
