@@ -1,6 +1,7 @@
 // ObjectServer.java
 import java.net.*;
 import java.io.*;
+import javafx.scene.Scene;
 
 
 
@@ -69,7 +70,11 @@ public class ObjectServer {
 					System.out.println(str);
 				}
 
-				else;
+				else{
+					System.out.println(inObject.getClass().getName());
+				}
+					
+				
 			}
 		}
 		catch (Exception e){

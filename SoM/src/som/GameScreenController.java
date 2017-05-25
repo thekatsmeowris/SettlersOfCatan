@@ -133,7 +133,8 @@ public class GameScreenController implements Initializable {
     
 //-----------------------------------------------------//
     
-    Player thisPlayer=new Player("mark",new int[]{5,5,5,5,5}, Color.GREEN);
+    Player thisPlayer;
+    // =new Player("mark",new int[]{5,5,5,5,5}, Color.GREEN);
     TradePack thisPlayerTradePack;
     ArrayList<Player> players;
     HexBoard board; 
@@ -144,6 +145,9 @@ public class GameScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        createTestPlayers();
+        
+
         board= new HexBoard();
         turnCount=1;
         sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
@@ -228,8 +232,7 @@ public class GameScreenController implements Initializable {
 
         }
         
-                for(HexEdge hexEdge: board.edgeList)
-        {
+        for(HexEdge hexEdge: board.edgeList){
             hexEdge.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                 setSelectedItem(hexEdge);
             if(!popupDialog.isVisible()){
@@ -243,18 +246,20 @@ public class GameScreenController implements Initializable {
                 }
                 
             }
-                if(gameBoard.getRotate()>0){
+                
+            if(gameBoard.getRotate()>0){
                 popupDialog.relocate(Math.abs(hexEdge.getStartPoint().getY()-hexEdge.getEndPoint().getY()),Math.abs(hexEdge.getStartPoint().getX()-hexEdge.getEndPoint().getX()));
                     
-                }else{
+            }
+            else{
                 txtPopUpText.setText("Old: \n"+ popupDialog.getLayoutX()+", "+popupDialog.getLayoutY()
                             +"Current: "+
                             Math.abs(hexEdge.getStartPoint().getX()-hexEdge.getEndPoint().getX())
                             +","+
                             Math.abs(hexEdge.getStartPoint().getY()-hexEdge.getEndPoint().getY())
-                );
+                            );
                 popupDialog.relocate(Math.abs(hexEdge.getStartPoint().getX()-hexEdge.getEndPoint().getX()),Math.abs(hexEdge.getStartPoint().getY()-hexEdge.getEndPoint().getY()));
-                }
+            }
                 /*
                 popupDialog.setLayoutX(v.getLayoutX());
                 popupDialog.setLayoutY(v.getLayoutY());*/                
@@ -270,12 +275,11 @@ public class GameScreenController implements Initializable {
 
      
         
-        gameBoard.getChildren().add(board.getBoardPane());
+    gameBoard.getChildren().add(board.getBoardPane());
         
-//Player GUI Stuff
-    makeResources();
-    createTestPlayers();
-    fillPlayerInfo();
+    //Player GUI Stuff
+        makeResources();
+        fillPlayerInfo();
  
       
      
@@ -440,7 +444,7 @@ public class GameScreenController implements Initializable {
             for(HexEdge edge:((HexVertex)selectedItem).getAdjacentEdge() ){
                 edge.setStroke(Color.WHITE);
                 if(((HexEdge)edge).isOwned()){
-                    edge.setFill(Color.GREENYELLOW);
+                    edge.setFill(thisPlayer.getPlayerColor());
                 }
             }
             //test
@@ -691,7 +695,7 @@ public class GameScreenController implements Initializable {
         players.add(dek);
         players.add(lisa);
         players.add(mew);
-        
+        thisPlayer = dek;
 //        return mark;
         
     }
@@ -948,7 +952,7 @@ public class GameScreenController implements Initializable {
         playerBlocks.add(pnPlayerRight);
         int counter=0;
         for(Player p: players){
-            if(p.nickname!="Mark"){
+            if(p.nickname!=thisPlayer.nickname){
                 p.pnPlayerInfo=playerBlocks.get(counter);
                 ((Label) playerBlocks.get(counter).getChildren().get(6)).setText(p.nickname);
                  p.victoryPointGauge=(Arc) playerBlocks.get(counter).getChildren().get(1);
