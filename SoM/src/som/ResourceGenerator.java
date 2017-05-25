@@ -7,10 +7,12 @@ import javafx.scene.paint.Color;
  * it will get resources from the bank if the banks has available resources. 
  * @author David Kapanga
  * @author Chadwick J Davis
+
  * @version 1.0
  */
 
 public class ResourceGenerator {
+
     //set resource constants
     private static final int STEEL=0;
     private static final int GLASS=1;
@@ -39,6 +41,7 @@ public class ResourceGenerator {
         
         
     }
+
 
 
 
@@ -85,7 +88,7 @@ public class ResourceGenerator {
 		return listOfPlayers;
 	}
         /**
-         * this method check if there is enoungh resources in the bank and return true if the bank has it.
+         * this method check if there is enough resources in the bank and return true if the bank has it.
          * @return boolean value.
          */
 	public boolean checkBank(int resource) 
@@ -100,41 +103,13 @@ public class ResourceGenerator {
       4 = plastic = lumber
       */
       int resourceNumber = 0;
-      boolean boolBank = false;      
+      boolean boolBank = resourceBank.resources[resource]>=1;      
          //needs to be changed   
-      switch(resource){
-            
-            case SOY :                
-                 resourceNumber = 0;
-                 if (resourceBank.resourceList.get(resourceNumber).getResourceAmount() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
-                    boolBank = true; 
-                 break;
-             case HEMP :
-                 resourceNumber = 1;
-                 if (resourceBank.resourceList.get(resourceNumber).getResourceAmount() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
-                    boolBank = true; 
-                 break;
-              case PLASTIC :
-                 resourceNumber = 2;
-                 if (resourceBank.resourceList.get(resourceNumber).getResourceAmount() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
-                    boolBank = true; 
-                 break;
-             case GLASS :
-                 resourceNumber = 3;
-                 if (resourceBank.resourceList.get(resourceNumber).getResourceAmount() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
-                    boolBank = true; 
-                 break;
-             case STEEL :
-                 resourceNumber = 4;
-                 if (resourceBank.resourceList.get(resourceNumber).getResourceAmount() >= 1) //goes through resourceBank->resourceList->specific resourceNumber-> getResource Method
-                    boolBank = true; 
-                 break;
-             default:
-                 System.out.println("INVALID RESOURCE");
-                 break;                
-         }
+
       
-      
+        if(resourceBank.resources[resource] >= 0)
+            boolBank = true;
+        
       return boolBank;
   }
 	/**
@@ -145,7 +120,7 @@ public class ResourceGenerator {
 	public void assignValue(ArrayList<Hex> listOfHexes)
 	{
             int resourceNumber;
-            //geting valeu from hex
+            //geting value from hex
             for(Hex hex:listOfHexes)
             {
                 hex.setFill(Color.WHITE);
@@ -155,36 +130,38 @@ public class ResourceGenerator {
                     switch(hex.getTerrainType())
                     {             
                         case SOY : 
-                             resourceNumber = 0;
-                             resourceBank.resourceList.get(resourceNumber).drawResource(0);
+                             
+                             resourceBank.resourceList.get(SOY).drawResource(0);
                              for(int i = 0; i < 6 ; i++) {
                                  if(hex.getVerticies().get(i).getAsset()!=null)
-                                  hex.getVerticies().get(i).getAsset().getPlayer().resources[resourceNumber]++;
+                                  hex.getVerticies().get(i).getAsset().getPlayer().resources[SOY]++;
                              }
                              break;
                         case HEMP : 
-                             resourceNumber = 1;
-                             resourceBank.resourceList.get(resourceNumber).drawResource(0);
+                             
+                             resourceBank.resourceList.get(HEMP).drawResource(0);
                              for(int i = 0; i < 6 ; i++) {
                                  if(hex.getVerticies().get(i).getAsset()!=null)
-                                  hex.getVerticies().get(i).getAsset().getPlayer().resources[resourceNumber]++;
+                                  hex.getVerticies().get(i).getAsset().getPlayer().resources[HEMP]++;
+
                              }
                              break;
                         
                         case PLASTIC : 
-                             resourceNumber = 1;
-                             resourceBank.resourceList.get(resourceNumber).drawResource(0);
+                             
+                             resourceBank.resourceList.get(PLASTIC).drawResource(0);
                              for(int i = 0; i < 6 ; i++) {
                                  if(hex.getVerticies().get(i).getAsset()!=null)
-                                  hex.getVerticies().get(i).getAsset().getPlayer().resources[resourceNumber]++;
+                                  hex.getVerticies().get(i).getAsset().getPlayer().resources[PLASTIC]++;
                              }
                              break;
                         case STEEL : 
-                             resourceNumber = 1;
-                             resourceBank.resourceList.get(resourceNumber).drawResource(0);
+                             
+                             resourceBank.resourceList.get(STEEL).drawResource(0);
                              for(int i = 0; i < 6 ; i++) {
                                  if(hex.getVerticies().get(i).getAsset()!=null)
-                                  hex.getVerticies().get(i).getAsset().getPlayer().resources[resourceNumber]++;
+                                  hex.getVerticies().get(i).getAsset().getPlayer().resources[STEEL]++;
+
                              }
                              break;
                              
@@ -200,7 +177,9 @@ public class ResourceGenerator {
             }
             
 	}
-            public int getDiceValue() {        
+
+        
+    public int getDiceValue() {        
         return diceValue;
     }
 
@@ -208,7 +187,53 @@ public class ResourceGenerator {
         //will get the value of the static dice variable    
         this.diceValue = diceValue;
     }
+         
+    /**
+     * this method return a list of players around an Hex
+     * @return Player a list of player object
+     */
+    public ArrayList<Player> getPlayers() {
+            return players;
+    }
+    /**
+     * this method set the list of players find around a specific Hex, take an ArrayList of Player type
+     * @param players parameter players is a ArrayList of players around the Hex
+     */
+    public void setPlayers(ArrayList<Player> players) {
+            this.players = players;
+    }
+    /**
+     * this method return an arrayList of Hexes that has been set with the dice number
+     * @return hexes the list of hex to find players in
+     */public void setHexes(ArrayList<Hex> hexes) {
+            this.hexes = hexes;
+    }	
+    /**
+     * this method check and find every Hex on the board that correspond to the dice number
+     * and put them in a list
+     * @param dn the dice number
+     * @return a list of hexes
+     */
+    public ArrayList<Hex> getProducingHexes(){
+            ArrayList<Hex>listOfHexes= new ArrayList<>();
+            for(int i=0;i<25;i++)
+            {
+                if(board.hexList.get(i).getTokenValue()==diceValue)
+                {
+                    listOfHexes.add(board.hexList.get(i));
+                }
+            }
 
+            return listOfHexes;
+    }    
+    public ArrayList<Hex> getHexes() {
+            return hexes;
+    }
+/**
+         * this method will set the Hexes list find by retrieveHex() to the variable Hex 
+         * @param hexes the list of Hexes find by the method retrieveHex()
+         */
+    
     public ResourceBank getResourceBank() {
         return resourceBank;
     }
@@ -217,37 +242,6 @@ public class ResourceGenerator {
         this.resourceBank = resourceBank;
     }
         
-        
-                
-	/**
-         * this method return a list of players around an Hex
-         * @return Player a list of player object
-         */
-	public ArrayList<Player> getPlayers() {
-		return players;
-	}
-        /**
-         * this method set the list of players find around a specific Hex, take an ArrayList of Player type
-         * @param players parameter players is a ArrayList of players around the Hex
-         */
-	public void setPlayers(ArrayList<Player> players) {
-		this.players = players;
-	}
-        /**
-         * this method return an arrayList of Hexes that has been set with the dice number
-         * @return hexes the list of hex to find players in
-         */
-	public ArrayList<Hex> getHexes() {
-		return hexes;
-	}
-        /**
-         * this method will set the Hexes list find by retrieveHex() to the variable Hex 
-         * @param hexes the list of Hexes find by the method retrieveHex()
-         */
-	public void setHexes(ArrayList<Hex> hexes) {
-		this.hexes = hexes;
-	}
 }
-
-
+  
 

@@ -25,32 +25,35 @@ import som.assets.Settlement;
 
 
 public class ResourceBank {
-    private static int STEEL=0;
-    private static int GLASS=1;
-    private static int HEMP=2;
-    private static int SOY=3;
-    private static int PLASTIC=4;
+    private final static int STEEL=0;
+    private final static int GLASS=1;
+    private final static int HEMP=2;
+    private final static int SOY=3;
+    private final static int PLASTIC=4;
+    private int bankQuantity;
     ArrayList<Resource> resourceList = new ArrayList<>(); //creating an ArrayList of Resource objects
     int [] resources;
+    
+   
       public ResourceBank()
       {
+          bankQuantity = 19;
           resources=new int[]{19,19,19,19,19};
           Resource soy = new Resource();    //creating objects from Resource class
           Resource hemp = new Resource();
           Resource plastic = new Resource();
           Resource glass = new Resource();
-          Resource steel = new Resource();          
-                              
-          //Adding Resource objects to resourceList
-          resourceList.add(soy);  //Value 0 in arrayList
-          resourceList.add(hemp); //Value 1 in arrayList
-          resourceList.add(plastic); //Value 2 in ArrayList
-          resourceList.add(glass);  //Value 3 in ArrayList
-          resourceList.add(steel);  //Value 4 in arrayList
-                    
+          Resource steel = new Resource();   
+          
+          resourceList.add(steel);  //Value 0 in arrayList
+          resourceList.add(glass); //Value 1 in arrayList
+          resourceList.add(hemp); //Value 2 in ArrayList
+          resourceList.add(soy);  //Value 3 in ArrayList
+          resourceList.add(plastic);  //Value 4 in arrayList
       }
             public ResourceBank(int qty)
       {
+          bankQuantity = qty;
           resources=new int[]{qty,qty,qty,qty,qty};
           Resource soy = new Resource();    //creating objects from Resource class
           Resource hemp = new Resource();
@@ -59,124 +62,42 @@ public class ResourceBank {
           Resource steel = new Resource();          
                               
           //Adding Resource objects to resourceList
-          resourceList.add(soy);  //Value 0 in arrayList
-          resourceList.add(hemp); //Value 1 in arrayList
-          resourceList.add(plastic); //Value 2 in ArrayList
-          resourceList.add(glass);  //Value 3 in ArrayList
-          resourceList.add(steel);  //Value 4 in arrayList
+          resourceList.add(steel);  //Value 0 in arrayList
+          resourceList.add(glass); //Value 1 in arrayList
+          resourceList.add(hemp); //Value 2 in ArrayList
+          resourceList.add(soy);  //Value 3 in ArrayList
+          resourceList.add(plastic);  //Value 4 in arrayList
                     
       }
-    
-      public void bankDrawResource(String resourceName, int amount) //Method requires a correct string variable: "SOY", "HEMP", "PLASTIC", "GLASS", or "STEEL" and an int variable to control how many of said resource
-      {                                                             ////Method uses resourceList to call Resource.returnResource(amount) with correct Resource name
-         int resourceNumber;
-         
-         switch(resourceName) //Switch statment to control resource name: The number corresponding to the resources in the arrayList are mentioned above
-         {
-             case "SOY" :
-                 resourceNumber = 0;
-                 resourceList.get(resourceNumber).drawResource(amount);
-                 break;
-             case "HEMP" :
-                 resourceNumber = 1;
-                 resourceList.get(resourceNumber).drawResource(amount);
-                 break;
-              case "PLASTIC" :
-                 resourceNumber = 2;
-                 resourceList.get(resourceNumber).drawResource(amount);
-                 break;
-             case "GLASS" :
-                 resourceNumber = 3;
-                 resourceList.get(resourceNumber).drawResource(amount);
-                 break;
-             case "STEEL" :
-                 resourceNumber = 4;
-                 resourceList.get(resourceNumber).drawResource(amount);
-                 break;
-             default:
-                 System.out.println("INVALID RESOURCE");
-                 break;                
-         }
-       }
-      
+
       public void bankDrawResource(int resourceNumber, int amount){
           
           if((resources[resourceNumber]-amount)>=0){
                     resources[resourceNumber]-=amount;
           }
+          else System.out.println("No more of desired resource");
       }
-      public void bankReturnResource(String resourceName,int amount) //Method requires a correct string variable: "SOY", "HEMP", "PLASTIC", "GLASS", or "STEEL" and an int variable to control how many of said resource
-      {                                                              //Method uses resourceList to call Resource.returnResource(amount) with correct Resource name
-          int resourceNumber;
-         switch(resourceName) //Switch statment to control resource name: The number corresponding to the resources int the arrayList are mentioned assigned above
-         {
-             case "SOY" :
-                 resourceNumber = 0;
-                 resourceList.get(resourceNumber).returnResource(amount);
-                 break;
-             case "HEMP" :
-                 resourceNumber = 1;
-                 resourceList.get(resourceNumber).returnResource(amount);
-                 break;
-              case "PLASTIC" :
-                 resourceNumber = 2;
-                 resourceList.get(resourceNumber).returnResource(amount);
-                 break;
-             case "GLASS" :
-                 resourceNumber = 3;
-                 resourceList.get(resourceNumber).returnResource(amount);
-                 break;
-             case "STEEL" :
-                 resourceNumber = 4;
-                 resourceList.get(resourceNumber).returnResource(amount);
-                 break;
-             default:
-                 System.out.println("INVALID RESOURCE:"+ resourceName);
-                 break;                
-         }
-      }
+      
       public void bankReturnResource(int resourceNumber, int amount){
-          //if((resources[resourceNumber]-amount)>=0){
+          if((resources[resourceNumber]+amount)<=bankQuantity){
                     resources[resourceNumber]+=amount;
+          }
+          else System.out.println("Too many of desired resource");
+      }
+        public void bankReturnResource(int[] resources){
+          //if((resources[resourceNumber]-amount)>=0){
+          for (int i=0; i<this.resources.length;i++){
+                    this.resources[i]+=resources[i];
+          }
           //}
       }
       public void printResourceList() //method to print out resourceList
       { 
-          String resourceName = new String(); //String variable to keep track of resource Name
+          //String resourceName = new String(); //String variable to keep track of resource Name
           System.out.println(resources);
-          
-          
-          /*
-          for(int i =0; i < 5; i++)          
-          {
-              switch(i)
-              {
-                  case 0:
-                      resourceName = "Soy";
-                      break;
-                  case 1:
-                      resourceName = "Hemp";
-                      break;     
-                  case 2:
-                      resourceName = "Plastic";
-                      break;
-                  case 3:
-                      resourceName = "Glass";
-                      break;
-                  case 4:
-                      resourceName = "Steel";
-                      break; 
-              }
-            */   
-        //      System.out.println(resourceName+": "+resourceList.get(i).getResource()); //arrayList uses object Resource to call method getResource()
 
-     //     }
-          
-          
+
       }
-    
-
-    
     
     public static void driver() {
         
@@ -212,10 +133,10 @@ public class ResourceBank {
 
     void bankReturnResource(int[] resourceCost, Player player) {
         for (int i=0; i<resources.length; i++){
-            player.setResource(i,player.getResources()[i]-resourceCost[i]);
+            player.setResource(i,(int)(player.getResources()[i]-resourceCost[i]));
             resources[i]+=resourceCost[i];
             
         }
     }
-}  
+} 
 

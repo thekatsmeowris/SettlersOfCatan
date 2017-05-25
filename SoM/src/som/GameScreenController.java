@@ -69,7 +69,7 @@ public class GameScreenController implements Initializable {
     Slider sldVictoryPoints;
     
     @FXML
-    Label   lblCurrentStatus;
+    Label   txtCurrentStatus;
 
    
     
@@ -149,6 +149,7 @@ public class GameScreenController implements Initializable {
     public final static int PLAY_KNIGHT = 17;
     public final static int PLAY_VICTORY_POINT = 18;
     
+    private static int currentPlayerNumber;
     /*
      * public final static int DISTR_RESOURCES = 20;
      * public final static int DISCARDING = 21;
@@ -180,6 +181,7 @@ public class GameScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+    	currentPlayerNumber = 0;
         board= new HexBoard();
         System.out.println("HELLO" +board.hexList);
         sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
@@ -225,11 +227,6 @@ public class GameScreenController implements Initializable {
         freeSettlment=2;
         resourcePass=4;
         
-        // TODO
-        
-//        diceRoller.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-//        	openBuildDialog();
-//        });
 
         for(HexVertex hexVertex: board.vertexList)
         {
@@ -405,8 +402,6 @@ public class GameScreenController implements Initializable {
 		
 	}
 	
-	
-	
 //@#$!@#$!#@$!@#$!@#$!#$!@#$!@#$!@#$!@#$!@#$!#$$!@##$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$
 //@#$!@#$!@#$!@#$$!@##$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@
 //@#$!@#$!#@$!@#$!@#$!#$!@#$!@#$!@#$!@#$!@#$!#$$!@##$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$!@#$
@@ -417,28 +412,15 @@ public class GameScreenController implements Initializable {
 		currentPlayer = players.get(0);
 		System.out.println(currentPlayer.toString());
 		System.out.println("GAME STARTED");
-		System.out.println(gameState);
 	}
-//    public void gameLoop(){
-	public void nextTurn(){
-    	
-        // Game Setup Phase:
-    	// Need to take this out of gameLoop(), and into game initialization
 
-    	
-    	
-    	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    	// TODO: -Need to set currentPlayer = to players.get(0);
-    	//		 -Need to set initial game phase as well as create an initializing portion
-    	//
-     
-        
-        
-        //is Player's turn
-        //if so,
-//        btnRollDice.setDisable(false);
-//        
-//        generateResources(diceValue);   
+	public void nextTurn(){
+		++currentPlayerNumber;
+		if (currentPlayerNumber == players.size()) {
+			currentPlayerNumber = 0;
+		}
+    	currentPlayer = players.get(currentPlayerNumber);
+         
     }
 	
 	public void setUIFromGameState() {
@@ -1066,6 +1048,7 @@ public class GameScreenController implements Initializable {
     
     public void printPrettyGameState() {
     	System.out.println("Game State ==> "+gameStateToString());
+    	txtCurrentStatus.setText("Game State: "+gameStateToString());
     }
 
     
