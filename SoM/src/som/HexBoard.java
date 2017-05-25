@@ -42,10 +42,7 @@ import javafx.util.Duration;
  */
 public class HexBoard {
     
-   Image image;
-   Image spriteImage;
-   
-     
+   Image marsImage,spriteImage; //Image of Mars and sprite sheet of tornado
     private static final int SPRITE_COLUMNS  =   5;
     private static final int SPRITE_COUNT    =  5;
     private static final int SPRITE_OFFSET_X =  0;
@@ -79,8 +76,8 @@ public class HexBoard {
     Pane vertexPane;                        //this contains the vertices once they're each drawn
     Pane edgePane;                          //this contains the edges once they're each drawn
     Pane popUpDialog=new Pane();            //this is the pane that appears once a vertex or edge is clicked.
-    Pane spritePane;
-    final Canvas canvas ;
+    
+    final Canvas MarsCanvas; //canvas for Mars Image
     
     int columnMax;                          //this is the maximum number of columns for a row...this is incremented and decremented to yield the 3,4,5,4,3 row pattern
     double hexRadius, inRadius;             //this is the default circumradius and inradius of all hexes
@@ -126,15 +123,8 @@ public class HexBoard {
     Stack terrainStack= new Stack();
     
    public HexBoard() {
-        canvas = new Canvas(790, 790);
-        final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-        //initDraw(graphicsContext);
-        //graphicsContext.drawImage(image, 100, 0, 50, 50);
-        //graphicsContext.drawImage(image, 70, 70, 50, 50);
-        //Group root = new Group();
-        //VBox vBox = new VBox();
-        //vBox.getChildren().addAll(canvas);
-        //root.getChildren().add(vBox);
+        MarsCanvas = new Canvas(790, 790);
+        final GraphicsContext graphicsContext = MarsCanvas.getGraphicsContext2D();
        
         columnMax=maxColumns-2;                                 //this sets the max columns of the first row to 2 less than the longest (median) row
                                                                 //i needed this because i had a hard time generating the radii of each in the constructor
@@ -144,7 +134,7 @@ public class HexBoard {
         inRadius= modelHex.getLayoutBounds().getWidth()/2;      //this makes the inRadius which is roughly the circumradius * (sqrt(3)/2) but 1/2*getwidth is the same and it's prettier
         boardPane= new Pane();                                  //creates new board for boardpane
         vertexPane= new Pane();                                 //creates new board for vertexpane
-        spritePane= new Pane();   
+       
         
         centerX= (float) (boardPane.getWidth()/2);              //assigns the center of the pane a value
         centerY= (float) (boardPane.getHeight()/2);                          
@@ -160,15 +150,14 @@ public class HexBoard {
 //        addAdjacentVerticies();
         //  addAdjacentHexes();
         //
-         spriteImage = new Image(getClass().getResourceAsStream("graphics/Tornado.png"));
-        
-        final ImageView imageView = new ImageView(spriteImage);
-        imageView.setViewport(new Rectangle2D(SPRITE_OFFSET_X, SPRITE_OFFSET_Y, SPRITE_WIDTH, SPRITE_HEIGHT));
-        imageView.setRotate(270);
-        imageView.setFitHeight(50);
-        imageView.setFitWidth(50);
+         spriteImage = new Image(getClass().getResourceAsStream("graphics/Tornado.png"));   
+        final ImageView spriteImageView = new ImageView(spriteImage);
+        spriteImageView.setViewport(new Rectangle2D(SPRITE_OFFSET_X, SPRITE_OFFSET_Y, SPRITE_WIDTH, SPRITE_HEIGHT));
+        spriteImageView.setRotate(270);
+        spriteImageView.setFitHeight(50);
+        spriteImageView.setFitWidth(50);
         final Animation animation = new SpriteAnimation(
-                imageView,
+                spriteImageView,
                 Duration.millis(500),
                 SPRITE_COUNT, SPRITE_COLUMNS,
                 SPRITE_OFFSET_X, SPRITE_OFFSET_Y,
@@ -180,12 +169,14 @@ public class HexBoard {
 
         vertexPane.setPickOnBounds(false);                      //sets property to false so that the circle (vertex point) is selectable and the bounding shape around it is not
         edgePane.setPickOnBounds(false);
-        image = new Image(getClass().getResourceAsStream("graphics/MapAr.jpg"));
-        graphicsContext.drawImage(image, 130, 110, 480, 480);
+        
+        marsImage = new Image(getClass().getResourceAsStream("graphics/MapAr.jpg"));
+        graphicsContext.drawImage(marsImage, 130, 110, 480, 480);
        
-       imageView.setTranslateX(-30.0);
-       imageView.setTranslateY(-50.0);     
-        boardShell.getChildren().addAll(boardPane,canvas,edgePane,vertexPane,imageView);     //adds the 3 panes to the stackpane and so publishes the constructed board.
+       spriteImageView.setTranslateX(-30.0);
+       spriteImageView.setTranslateY(-50.0);
+       
+        boardShell.getChildren().addAll(boardPane,MarsCanvas,edgePane,vertexPane,spriteImageView);     //adds the 3 panes and an imageview to the stackpane and so publishes the constructed board.
 
     }
     
