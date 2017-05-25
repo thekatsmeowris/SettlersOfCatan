@@ -18,6 +18,7 @@ import javafx.scene.shape.Arc;
  */
 public class Player {
     final int VICTORY_POINT_MAX=10;
+    static int currentLeaderVP;
     
     private TradePack tradePack= new TradePack(this);
 
