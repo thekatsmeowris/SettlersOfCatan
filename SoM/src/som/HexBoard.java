@@ -5,6 +5,7 @@
  */
 package som;
 
+import java.awt.Point;
 import java.io.IOException;
 import static java.lang.System.gc;
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ import javafx.scene.shape.Line;
 import java.util.Collections;
 import java.util.List;
 import javafx.animation.Animation;
+import javafx.geometry.Pos;
+import static javafx.geometry.Pos.CENTER;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -41,6 +44,7 @@ public class HexBoard {
     
    Image image;
    Image spriteImage;
+   
      
     private static final int SPRITE_COLUMNS  =   5;
     private static final int SPRITE_COUNT    =  5;
@@ -171,13 +175,16 @@ public class HexBoard {
                 SPRITE_WIDTH, SPRITE_HEIGHT
         );
         animation.setCycleCount(Animation.INDEFINITE);
-        animation.play();                                                       
+        animation.play();
+        
 
         vertexPane.setPickOnBounds(false);                      //sets property to false so that the circle (vertex point) is selectable and the bounding shape around it is not
         edgePane.setPickOnBounds(false);
         image = new Image(getClass().getResourceAsStream("graphics/MapAr.jpg"));
         graphicsContext.drawImage(image, 130, 110, 480, 480);
-        //graphicsContext.drawImage(image, 130, 110, 480, 480);
+       
+       imageView.setTranslateX(-30.0);
+       imageView.setTranslateY(-50.0);     
         boardShell.getChildren().addAll(boardPane,canvas,edgePane,vertexPane,imageView);     //adds the 3 panes to the stackpane and so publishes the constructed board.
 
     }
