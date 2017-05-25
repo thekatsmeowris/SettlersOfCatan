@@ -27,16 +27,21 @@ public class Player {
     
     
     int[] resources;
+    ArrayList<DevelopmentCard> developmentCards;
     ResourceManager resourceManager= new ResourceManager(); 
     private int victoryPoints;
     
     Color playerColor;
     String nickname;
+    String n, d, imgName;
     Assets assets;
+    DevelopmentCard card;
     Player(){
 
         assets=new Assets();
         resources= new int[]{0,0,0,0,0}; 
+        developmentCards=new ArrayList<>();
+        
         victoryPoints=0;
         
     }
@@ -46,7 +51,10 @@ public class Player {
             nickname=name;
             this.playerColor=playerColor;
        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
+    
+    
 
     Player(String name, int[] resources, Color playerColor) {
         this.nickname=name;
@@ -54,6 +62,15 @@ public class Player {
         victoryPoints=4;
         assets=new Assets();
         this.playerColor=playerColor;
+    }
+    Player(ArrayList<DevelopmentCard> developmentCards){
+        
+        this.developmentCards=developmentCards;
+        developmentCards=new ArrayList<>();
+             
+    }
+    public void add(DevelopmentCard card){
+        developmentCards.add(card);
     }
     public void setVictoryPoints(int value){
         victoryPoints=value;
@@ -70,6 +87,7 @@ public class Player {
 	public void buy(){
 		// resources.bankDrawResource("SOY", 10);
 		// resources.printResourceList();
+                
 	}
 
 	// Trade to another player with resources
