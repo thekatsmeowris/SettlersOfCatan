@@ -724,6 +724,8 @@ public class GameScreenController implements Initializable {
            resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexVertex)selectedItem).addCity(thisPlayer))));         //remove resources from a player and give them to the bank
            }
            ((HexVertex) selectedItem).setStroke(Color.GOLD);                                //set fill to color the vertex the player's color (indicating a settlement
+           ((HexVertex) selectedItem).setStrokeWidth(5.0);                                //set fill to color the vertex the player's color (indicating a settlement
+           
            thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));                                            //add this new asset to the player's list of assets
            thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE+1);                        //increase the vp of the player
            pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));                               //adjust the progress bar for vp for thisPlayer
@@ -1069,7 +1071,9 @@ public class GameScreenController implements Initializable {
     }
 
     private boolean canBuildCity(HexVertex hexVertex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+        return true;
+    
     }
 
     
