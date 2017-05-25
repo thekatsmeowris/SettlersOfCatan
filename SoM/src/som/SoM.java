@@ -5,18 +5,10 @@
  */
 package som;
 
-import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaPlayer.Status;
-import javafx.scene.media.MediaView;
-
 import javafx.stage.Stage;
 
 /**
@@ -25,16 +17,10 @@ import javafx.stage.Stage;
  */
 public class SoM extends Application {
     
-    //private static URL musicURL1, musicURL2;
-    //static AudioClip aMusic1, aMusic2;    
-    static MediaPlayer mediaPlayer1,mediaPlayer2; 
-    MediaView  mediaView;
-    
     @Override
     public void start(Stage stage) throws Exception {
         
-        MediaClass mediaClass = new MediaClass();
-       
+        
         Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
         ResourceBank resourceBank= new ResourceBank();
         resourceBank.printResourceList();
@@ -47,7 +33,8 @@ public class SoM extends Application {
         stage.setScene(scene);
         stage.show();
 
-        
+        MediaClass mediaClass = new MediaClass();
+       
     }
 
     /**
@@ -56,14 +43,9 @@ public class SoM extends Application {
     
     public static void main(String[] args) {
         launch(args);
-        
-      
-        
+             
     }
     
-    
-    
-
     
     public void TestDeck() {
 		Knight k = new Knight();
