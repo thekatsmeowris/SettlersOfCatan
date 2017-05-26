@@ -7,13 +7,11 @@ import java.io.*;
 
 
 
-public class ObjectServer extends Thread{
+public class ObjectServer{
 	private int port;
 	private ServerSocket server;
 	private boolean isOn;
-	private ObjectInputStream in;
-	private ObjectOutputStream out;
-
+	
 
 	//Logic
 	private int player;
@@ -32,36 +30,52 @@ public class ObjectServer extends Thread{
 		}
 
 	}
-
-	public void start() {
+	
+	public void runServer(){
 		try {
 			System.out.println("Server is on!!!");
 
-
-			listen(server.accept());
-			out.writeObject(player);
-			
-			
+			while (isOn){
+				new Thread(new ClientThread(server.accept(), player++)).start();	
+				
+			}
 		}
 
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		
-
 	}
 
-	public void listen(Socket socket){
+	public static void main(String[] args) {
+		new ObjectServer(8888).runServer();
+	}
+}
+
+class ClientThread implements Runnable{
+	private Socket socket;
+	private int player;
+
+	public ClientThread(Socket s, int p){
+		socket = s;
+		player = p;
+		System.out.println("#Player: " + player);	
+	}
+
+	public void run(){
+		ObjectInputStream in = null;
+		ObjectOutputStream out = null;
+
 		try{
 			System.out.println(socket.getInetAddress().getHostName() + "("+ socket.getInetAddress().getHostAddress() + "): " + socket.getPort());
 			// Read from socket to ObjectInputStream object
 			in = new ObjectInputStream(socket.getInputStream());
+
+
 			// Create ObjectOutputStream object
 			out = new ObjectOutputStream(socket.getOutputStream());
 	
 
-			while (isOn){
+			while (true){
 				Object inObject = in.readObject();
 
 				// Convert ObjectInputStream object to String
@@ -76,21 +90,24 @@ public class ObjectServer extends Thread{
 					
 				
 			}
-			player++;
-			System.out.println("#Player: " + player);
+			
 
 		}
 
 		catch (Exception e){
-			out.close();
-			in.close();
 			e.printStackTrace();
 		}
 
-	}
+		finally{
+			try{
+				in.close();
+				out.close();
+				socket.close();
+			}
+			catch (IOException e){
+				e.printStackTrace();
+			}
+		}
 
-	public static void main(String[] args) {
-		ObjectServer s = new ObjectServer(8888);
-		s.start();
 	}
 }
