@@ -35,9 +35,8 @@ public class ObjectServer{
 		try {
 			System.out.println("Server is on!!!");
 
-			while (isOn){
-				new Thread(new ClientThread(server.accept(), player++)).start();	
-				
+			while (player < 4){
+				new Thread(new ClientThread(server.accept(), player++)).start();		
 			}
 		}
 
@@ -58,7 +57,6 @@ class ClientThread implements Runnable{
 	public ClientThread(Socket s, int p){
 		socket = s;
 		player = p;
-		System.out.println("#Player: " + player);	
 	}
 
 	public void run(){
@@ -66,6 +64,7 @@ class ClientThread implements Runnable{
 		ObjectOutputStream out = null;
 
 		try{
+			System.out.println("#Player: " + player);	
 			System.out.println(socket.getInetAddress().getHostName() + "("+ socket.getInetAddress().getHostAddress() + "): " + socket.getPort());
 			// Read from socket to ObjectInputStream object
 			in = new ObjectInputStream(socket.getInputStream());
@@ -74,7 +73,7 @@ class ClientThread implements Runnable{
 			// Create ObjectOutputStream object
 			out = new ObjectOutputStream(socket.getOutputStream());
 	
-
+			out.writeObject(player);
 			while (true){
 				Object inObject = in.readObject();
 
