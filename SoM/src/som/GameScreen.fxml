@@ -37,9 +37,11 @@
                                 	<Button id="gameStateBtn" fx:id="gameStateBtn" layoutX="144.0" layoutY="10.0" mnemonicParsing="false" onAction="#printPrettyGameState" prefHeight="27.0" prefWidth="96.0" text="Game State?" />
                                     <Button id="diceRoller" fx:id="diceRoller" layoutX="144.0" layoutY="40.0" mnemonicParsing="false" onAction="#rollDice" prefHeight="27.0" prefWidth="96.0" text="Roll Dice" />
                                     <Button id="buildBtn" fx:id="buildBtn" layoutX="144.0" layoutY="70.0" mnemonicParsing="false" onAction="#openBuildDialog" prefHeight="27.0" prefWidth="96.0" text="Build" />
+                                    <Button id="cancelBuildBtn" fx:id="cancelBuildBtn" layoutX="144.0" layoutY="70.0" mnemonicParsing="false" onAction="#cancelBuild" prefHeight="27.0" prefWidth="96.0" text="Cancel" />
                                     <Button id="startGameBtn" fx:id="startGameBtn" layoutX="144.0" layoutY="100.0" mnemonicParsing="false" onAction="#startGame" prefHeight="27.0" prefWidth="96.0" text="Start Game" />
-                                    <Button id="tradeBtn" fx:id="tradeBtn" mnemonicParsing="false" onAction="#openTradeDialog" prefHeight="47.0" prefWidth="96.0" text="TRADE" />
-                                    <Button id="devBtn" fx:id="devBtn" layoutX="14.0" layoutY="34.0" mnemonicParsing="false" onAction="#openDevelopDialog" prefHeight="54.0" prefWidth="96.0" text="DEVELOP CARD" />
+                                    <Button id="tradeBtn" fx:id="tradeBtn" layoutX="14.0" layoutY="10" mnemonicParsing="false" onAction="#openTradeDialog" prefHeight="24.0" prefWidth="96.0" text="TRADE" />
+                                    <Button id="devBtn" fx:id="devBtn" layoutX="14.0" layoutY="35.0" mnemonicParsing="false" onAction="#openDevelopDialog" prefHeight="24.0" prefWidth="96.0" text="DEVELOP CARD" />
+                                    <Button id="endBtn" fx:id="endBtn" layoutX="14.0" layoutY="60.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="24.0" prefWidth="96.0" text="ADVANCE TURN" />
                                  </children>
                               </Group>
                               <Group layoutX="1261.0" layoutY="151.0">
@@ -143,9 +145,9 @@
                                     <Pane fx:id="popupDialog" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" onMouseClicked="#handleClick" prefHeight="206.0" prefWidth="172.0" style="-fx-background-color: #c0c0c0;" visible="false">
                                        <children>
                                           <Text id="txtPopUpText" fx:id="txtPopUpText" layoutX="67.0" layoutY="41.0" mouseTransparent="true" onMouseClicked="#handleClick" strokeType="OUTSIDE" strokeWidth="0.0" text="Build (test)" />
-                                          <Button layoutX="25.0" layoutY="68.0" mnemonicParsing="false" mouseTransparent="true" onAction="#buildSettlement" text="BUILD SETTLEMENT" />
-                                          <Button layoutX="21.0" layoutY="104.0" mnemonicParsing="false" mouseTransparent="true" onAction="#buildCity" text="UPGRADE SETTLEMENT" />
-                                          <Button layoutX="45.0" layoutY="135.0" mnemonicParsing="false" mouseTransparent="true" onAction="#buildRoad" text="BUILD ROAD" />
+                                          <Button layoutX="25.0" layoutY="68.0" mnemonicParsing="false" mouseTransparent="true" onAction="#placingSettlement" text="BUILD SETTLEMENT" />
+                                          <Button layoutX="21.0" layoutY="104.0" mnemonicParsing="false" mouseTransparent="true" onAction="#placingCity" text="UPGRADE SETTLEMENT" />
+                                          <Button layoutX="45.0" layoutY="135.0" mnemonicParsing="false" mouseTransparent="true" onAction="#placingRoad" text="BUILD ROAD" />
                                           <Button layoutX="40.0" layoutY="166.0" mnemonicParsing="false" mouseTransparent="true" onAction="#buildDevCard" text="BUY DEV CARD" />
                                           <Button layoutX="145.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeParentPane" text="X" />
                                        </children>
