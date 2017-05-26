@@ -146,7 +146,6 @@ public class GameScreenController implements Initializable {
         createTestPlayers();
 
         board = new HexBoard();
-        System.out.println(getPlayerNum());
 
 
         resourceGenerator= new ResourceGenerator(board);
@@ -731,9 +730,12 @@ public class GameScreenController implements Initializable {
         players.add(dek);
         players.add(lisa);
         players.add(mew);
-        thisPlayer = players.get(0);
-        System.out.println(getPlayerNum());
-        System.out.println(getPlayerNum());
+        int num = getPlayerNum();
+        thisPlayer = players.get(num);
+        System.out.println(num);
+
+        // System.out.println(getPlayerNum());
+        // System.out.println(getPlayerNum());
 //        return mark;
         
     }
@@ -1011,6 +1013,7 @@ public class GameScreenController implements Initializable {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+
     private int getPlayerNum(){
         try{
             return (int) SoM.client.read();
@@ -1019,6 +1022,7 @@ public class GameScreenController implements Initializable {
             return -1;
         }
     }
+
     
 }
 
