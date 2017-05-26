@@ -144,9 +144,11 @@ public class GameScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createTestPlayers();
-        
 
-        board= new HexBoard();
+        board = new HexBoard();
+        System.out.println(getPlayerNum());
+
+
         resourceGenerator= new ResourceGenerator(board);
         turnCount=1;
         sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
@@ -154,10 +156,9 @@ public class GameScreenController implements Initializable {
                 Number old_val, Number new_val) {
                     for (Player p : players){
                         p.setVictoryPoints((Math.round((new_val.floatValue()))));
-                        System.out.println(((Math.round((new_val.floatValue()))))+"  "+ p.victoryPointGauge.getLength());
-                        
+                        System.out.println(((Math.round((new_val.floatValue()))))+"  "+ p.victoryPointGauge.getLength());   
                     }
-            }
+                }
         });
         
         
@@ -307,7 +308,7 @@ public class GameScreenController implements Initializable {
         fillPlayerInfo();
  
       
-     
+  
     //gameLoop();
     }
     public void setSelectedItem(Node o){
@@ -730,7 +731,9 @@ public class GameScreenController implements Initializable {
         players.add(dek);
         players.add(lisa);
         players.add(mew);
-        thisPlayer = dek;
+        thisPlayer = players.get(0);
+        System.out.println(getPlayerNum());
+        System.out.println(getPlayerNum());
 //        return mark;
         
     }
@@ -1008,6 +1011,14 @@ public class GameScreenController implements Initializable {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    private int getPlayerNum(){
+        try{
+            return (int) SoM.client.read();
+        }
+        catch (Exception e){
+            return -1;
+        }
+    }
     
 }
 

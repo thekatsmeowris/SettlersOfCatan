@@ -42,7 +42,7 @@ public class TitleScreenController implements Initializable {
     }
 
     public void handlePlayOnline(ActionEvent e) throws IOException {
-        Parent serverPort = FXMLLoader.load(getClass().getResource("ServerPort.fxml"));
+        Parent serverPort = FXMLLoader.load(getClass().getResource("ConnectServer.fxml"));
         Scene serverPortScene = new Scene(serverPort);
         Stage a_stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         a_stage.setScene(serverPortScene);

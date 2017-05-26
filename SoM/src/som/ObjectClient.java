@@ -25,10 +25,17 @@ public class ObjectClient{
 		catch (IOException e){
 	    	e.printStackTrace();
 	    }
-
 	}
+
 	public void write(Object o) throws IOException{
 		out.writeObject(o);
+	}
+
+	public Object read() throws IOException, ClassNotFoundException{
+
+		return (Object) in.readObject();
+
+
 	}
 
 	public Boolean hasConnection(){

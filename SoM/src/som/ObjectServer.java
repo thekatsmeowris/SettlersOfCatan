@@ -1,18 +1,23 @@
 // ObjectServer.java
+package som;
+
 import java.net.*;
 import java.io.*;
-import javafx.scene.Scene;
 
 
 
-public class ObjectServer {
+
+public class ObjectServer extends Thread{
 	private int port;
 	private ServerSocket server;
-	private Boolean isOn;
+	private boolean isOn;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 
 
+	//Logic
+	private int player;
+	
 
 	// Create a server connection
 	public ObjectServer(int p){
@@ -30,23 +35,11 @@ public class ObjectServer {
 
 	public void start() {
 		try {
-			while (isOn) {
-				// Get client connection 
-				Socket socket = server.accept();
-				System.out.println(socket.getInetAddress().getHostName() + "("+ socket.getInetAddress().getHostAddress() + "): " + socket.getPort());
-				// Read from socket to ObjectInputStream object
-				in = new ObjectInputStream(socket.getInputStream());
-				// Create ObjectOutputStream object
-				out = new ObjectOutputStream(socket.getOutputStream());
-				listen();
-				// out.writeObject(str);
+			System.out.println("Server is on!!!");
 
-				//Close all connection
-				// in.close();
-	   //          out.close();
-	   //          socket.close();
 
-			}
+			listen(server.accept());
+			out.writeObject(player);
 			
 			
 		}
@@ -59,8 +52,15 @@ public class ObjectServer {
 
 	}
 
-	public void listen(){
+	public void listen(Socket socket){
 		try{
+			System.out.println(socket.getInetAddress().getHostName() + "("+ socket.getInetAddress().getHostAddress() + "): " + socket.getPort());
+			// Read from socket to ObjectInputStream object
+			in = new ObjectInputStream(socket.getInputStream());
+			// Create ObjectOutputStream object
+			out = new ObjectOutputStream(socket.getOutputStream());
+	
+
 			while (isOn){
 				Object inObject = in.readObject();
 
@@ -76,10 +76,17 @@ public class ObjectServer {
 					
 				
 			}
+			player++;
+			System.out.println("#Player: " + player);
+
 		}
+
 		catch (Exception e){
+			out.close();
+			in.close();
 			e.printStackTrace();
 		}
+
 	}
 
 	public static void main(String[] args) {
