@@ -1,6 +1,9 @@
-package som;
+package devCards;
 
 // VictoryPoint.java
+
+import som.DevelopmentCard;
+
 public class VictoryPoint extends DevelopmentCard{
 
 	public VictoryPoint(){

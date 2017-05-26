@@ -1,6 +1,9 @@
-package som;
+package devCards;
 
 // Knight.java
+
+import som.DevelopmentCard;
+
 public class Knight extends DevelopmentCard{
 
 	public Knight(){ 

@@ -5,6 +5,11 @@
  */
 package som;
 
+import progressCards.RoadBuilding;
+import devCards.VictoryPoint;
+import progressCards.YearOfPlenty;
+import progressCards.Monopoly;
+import devCards.Knight;
 import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -118,7 +123,7 @@ public class SoM extends Application {
 		// d.addCard(yop);
 		// d.addCard(mp);
 		d.addCard(rb);
-		while (d.hasCard()){
+		while (!d.isEmpty()){
 			DevelopmentCard card = d.drawCard();
 			System.out.println(card);	
 			if (card instanceof RoadBuilding)

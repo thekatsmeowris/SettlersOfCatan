@@ -1,6 +1,9 @@
-package som;
+package devCards;
 
 // ProgressCards.java
+
+import som.DevelopmentCard;
+
 public class ProgressCard extends DevelopmentCard{
 
 	public ProgressCard(){
