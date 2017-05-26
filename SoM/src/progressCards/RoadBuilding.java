@@ -1,6 +1,9 @@
-package som;
+package progressCards;
 
 // RoadBuilding.java
+
+import som.DevelopmentCard;
+
 public class RoadBuilding extends DevelopmentCard{
 
 	

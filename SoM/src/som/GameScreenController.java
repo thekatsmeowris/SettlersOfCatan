@@ -44,29 +44,6 @@ import som.ResourceBank;
 
 
 
-/*
-                                                                                                                                              
-                                                                                                                                              
-TTTTTTTTTTTTTTTTTTTTTTTEEEEEEEEEEEEEEEEEEEEEE   SSSSSSSSSSSSSSS TTTTTTTTTTTTTTTTTTTTTTTIIIIIIIIIINNNNNNNN        NNNNNNNN        GGGGGGGGGGGGG
-T:::::::::::::::::::::TE::::::::::::::::::::E SS:::::::::::::::ST:::::::::::::::::::::TI::::::::IN:::::::N       N::::::N     GGG::::::::::::G
-T:::::::::::::::::::::TE::::::::::::::::::::ES:::::SSSSSS::::::ST:::::::::::::::::::::TI::::::::IN::::::::N      N::::::N   GG:::::::::::::::G
-T:::::TT:::::::TT:::::TEE::::::EEEEEEEEE::::ES:::::S     SSSSSSST:::::TT:::::::TT:::::TII::::::IIN:::::::::N     N::::::N  G:::::GGGGGGGG::::G
-TTTTTT  T:::::T  TTTTTT  E:::::E       EEEEEES:::::S            TTTTTT  T:::::T  TTTTTT  I::::I  N::::::::::N    N::::::N G:::::G       GGGGGG
-        T:::::T          E:::::E             S:::::S                    T:::::T          I::::I  N:::::::::::N   N::::::NG:::::G              
-        T:::::T          E::::::EEEEEEEEEE    S::::SSSS                 T:::::T          I::::I  N:::::::N::::N  N::::::NG:::::G              
-        T:::::T          E:::::::::::::::E     SS::::::SSSSS            T:::::T          I::::I  N::::::N N::::N N::::::NG:::::G    GGGGGGGGGG
-        T:::::T          E:::::::::::::::E       SSS::::::::SS          T:::::T          I::::I  N::::::N  N::::N:::::::NG:::::G    G::::::::G
-        T:::::T          E::::::EEEEEEEEEE          SSSSSS::::S         T:::::T          I::::I  N::::::N   N:::::::::::NG:::::G    GGGGG::::G
-        T:::::T          E:::::E                         S:::::S        T:::::T          I::::I  N::::::N    N::::::::::NG:::::G        G::::G
-        T:::::T          E:::::E       EEEEEE            S:::::S        T:::::T          I::::I  N::::::N     N:::::::::N G:::::G       G::::G
-      TT:::::::TT      EE::::::EEEEEEEE:::::ESSSSSSS     S:::::S      TT:::::::TT      II::::::IIN::::::N      N::::::::N  G:::::GGGGGGGG::::G
-      T:::::::::T      E::::::::::::::::::::ES::::::SSSSSS:::::S      T:::::::::T      I::::::::IN::::::N       N:::::::N   GG:::::::::::::::G
-      T:::::::::T      E::::::::::::::::::::ES:::::::::::::::SS       T:::::::::T      I::::::::IN::::::N        N::::::N     GGG::::::GGG:::G
-      TTTTTTTTTTT      EEEEEEEEEEEEEEEEEEEEEE SSSSSSSSSSSSSSS         TTTTTTTTTTT      IIIIIIIIIINNNNNNNN         NNNNNNN        GGGGGG   GGGG
-
-
-
-*/
 
 /**
  * FXML Controller class
@@ -157,10 +134,10 @@ public class GameScreenController implements Initializable {
     
 //-----------------------------------------------------//
     
-    Player thisPlayer=new Player("mark",new int[]{0,0,0,0,0}, Color.GREEN);
+    Player thisPlayer=new Player("Mark",new int[]{5,5,5,5,5}, Color.GREEN);
     TradePack thisPlayerTradePack;
     ArrayList<Player> players;
-    DevelopmentDeck thisDevelopmentDeck;
+    DevelopmentDeck developmentDeck= new DevelopmentDeck();
     DevelopmentCard thisCard;
     HexBoard board; 
     int turnCount;
@@ -724,8 +701,6 @@ public class GameScreenController implements Initializable {
            resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexVertex)selectedItem).addCity(thisPlayer))));         //remove resources from a player and give them to the bank
            }
            ((HexVertex) selectedItem).setStroke(Color.GOLD);                                //set fill to color the vertex the player's color (indicating a settlement
-           ((HexVertex) selectedItem).setStrokeWidth(5.0);                                //set fill to color the vertex the player's color (indicating a settlement
-           
            thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));                                            //add this new asset to the player's list of assets
            thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE+1);                        //increase the vp of the player
            pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));                               //adjust the progress bar for vp for thisPlayer
@@ -743,7 +718,7 @@ public class GameScreenController implements Initializable {
     }
     public void createTestPlayers(){
         players=new ArrayList<>();
-        Player mark = new Player("Mark", new int[]{0,0,0,0,0}, Color.GREEN);
+        Player mark = thisPlayer;
         Player dek = new Player("Dehkoda", new int[]{0,0,0,0,0}, Color.RED);
         Player lisa = new Player("Lisa", new int[]{0,0,0,0,0}, Color.BLUE);
         Player mew = new Player("Mew", new int[]{0,0,0,0,0}, Color.VIOLET);
@@ -862,7 +837,7 @@ public class GameScreenController implements Initializable {
         return new TradePack(thisPlayer,players.get(3),resourcesOffered, resourcesRequested);         
     }
     
-     void simulateTradeRequest(){
+    public void simulateTradeRequest(){
         offerTrade(new TradePack(players.get(2),thisPlayer,new int[]{0,2,2,0,1}, new int[]{1,0,0,2,0}));
         System.out.println(thisPlayer);
     }
@@ -1038,14 +1013,19 @@ public class GameScreenController implements Initializable {
         System.out.println("You clicked me");
       
         if(canBuyDev(thisPlayer)){//check if player has the requirements to buy dev card
-            if(thisDevelopmentDeck.hasCard()){//check there is a dev card to take
+            System.out.println("You have enough resources");
+            if(!developmentDeck.isEmpty()){//check there is a dev card to take
+                System.out.println("There are enough Development Cards");
                resourceBank.bankReturnResource(2,1);//return 1 hemp to bank
-               resourceBank.bankReturnResource(3, 1);//return 1 soy to bank 
+               System.out.println("You returned Hemp");
+               resourceBank.bankReturnResource(3, 1);//return 1 soy to bank
+               System.out.println("You Returned Soy");
                resourceBank.bankReturnResource(0, 1);//return 1 steel to bank 
+               System.out.println("You Returned Steel");
                System.out.println("RETURNED TO BANK");
                thisPlayer.setResources(subtractTwoResourceSets(thisPlayer.getResources(), new int[]{1,0,1,1,0}));//subtract resources used from player's resources
                System.out.println("SUBTRACTED RESOURCES");
-               thisCard=thisDevelopmentDeck.drawCard();//take development card from deck
+               thisCard=developmentDeck.drawCard();//take development card from deck
                System.out.println("SAVED CARD FROM DECK");
                thisPlayer.add(thisCard);
                System.out.println("YOU'VE BUILT A DEV CARD");
@@ -1053,6 +1033,7 @@ public class GameScreenController implements Initializable {
         }
     }
     private boolean canBuyDev(Player player){
+        System.out.println(Arrays.toString(thisPlayer.getResources()));
         if(checkRequirements(player)){
             return true;
            }
@@ -1071,9 +1052,7 @@ public class GameScreenController implements Initializable {
     }
 
     private boolean canBuildCity(HexVertex hexVertex) {
-    
-        return true;
-    
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     
