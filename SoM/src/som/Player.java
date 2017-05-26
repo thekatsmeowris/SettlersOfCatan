@@ -80,11 +80,7 @@ public class Player {
         System.out.println(pnPlayerInfo.getWidth());
     }
     
-    	public void build(String assetName){
-		if (assetName.equals("SETTLEMENT"));
-		else if (assetName.equals("ROAD"));
-		else if (assetName.equals("CITY"));
-	}
+    	
 
 	public void buy(){
 		// resources.bankDrawResource("SOY", 10);

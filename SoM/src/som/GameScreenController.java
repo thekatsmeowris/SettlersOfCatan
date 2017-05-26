@@ -134,7 +134,7 @@ public class GameScreenController implements Initializable {
     
 //-----------------------------------------------------//
     
-    Player thisPlayer=new Player("mark",new int[]{5,5,5,5,5}, Color.GREEN);
+    Player thisPlayer=new Player("Mark",new int[]{5,5,5,5,5}, Color.GREEN);
     TradePack thisPlayerTradePack;
     ArrayList<Player> players;
     DevelopmentDeck developmentDeck= new DevelopmentDeck();
@@ -718,7 +718,7 @@ public class GameScreenController implements Initializable {
     }
     public void createTestPlayers(){
         players=new ArrayList<>();
-        Player mark = new Player("Mark", new int[]{0,0,0,0,0}, Color.GREEN);
+        Player mark = thisPlayer;
         Player dek = new Player("Dehkoda", new int[]{0,0,0,0,0}, Color.RED);
         Player lisa = new Player("Lisa", new int[]{0,0,0,0,0}, Color.BLUE);
         Player mew = new Player("Mew", new int[]{0,0,0,0,0}, Color.VIOLET);
