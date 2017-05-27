@@ -17,6 +17,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 /**
  *
@@ -49,6 +51,10 @@ public class HexBoard {
 	StackPane boardShell; // this is the stackpane that merges the board, the
 							// vertices, and the edges together
 	Pane boardPane; // this is what contains the hexes once they're each drawn
+
+	static Pane numberPane;
+	Text t1;
+
 	Pane vertexPane; // this contains the vertices once they're each drawn
 	Pane edgePane; // this contains the edges once they're each drawn
 	Pane popUpDialog = new Pane(); // this is the pane that appears once a
@@ -139,6 +145,8 @@ public class HexBoard {
 																// and it's
 																// prettier
 		boardPane = new Pane(); // creates new board for boardpane
+		numberPane = new Pane();
+		numberPane.setRotate(30);
 		vertexPane = new Pane(); // creates new board for vertexpane
 
 		centerX = (float) (boardPane.getWidth() / 2); // assigns the center of
@@ -167,19 +175,23 @@ public class HexBoard {
 											// around it is not
 		edgePane.setPickOnBounds(false);
 
-		boardShell.getChildren().addAll(boardPane, edgePane, vertexPane); // adds
-																			// the
-																			// 3
-																			// panes
-																			// to
-																			// the
-																			// stackpane
-																			// and
-																			// so
-																			// publishes
-																			// the
-																			// constructed
-																			// board.
+		for (int i = 0; i < numberPane.getChildren().size(); i++) {
+			System.out.println(numberPane.getChildren().get(i));
+		}
+
+		boardShell.getChildren().addAll(boardPane, numberPane, edgePane, vertexPane); // adds
+		// the
+		// 3
+		// panes
+		// to
+		// the
+		// stackpane
+		// and
+		// so
+		// publishes
+		// the
+		// constructed
+		// board.
 
 	}
 
@@ -228,9 +240,27 @@ public class HexBoard {
 					h = new Hex(hexCounter, 200 + (inRadius * (maxColumns - columnMax)) + (inRadius * j * 2),
 							hexStartingPointY, hexRadius, inRadius, hexColor, (int) tokenStack.pop(),
 							(int) terrainStack.pop());
+					// *********************************************************
+					// NEW CODE 5/27/2017 for Numbers and Terrain Type on Board
+					// --> Needs cleaning
+					Circle circle = new Circle(25);
+					circle.setFill(Color.ANTIQUEWHITE);
+					circle.setLayoutX(205 + (inRadius * (maxColumns - columnMax)) + (inRadius * j * 2));
+					circle.setLayoutY(hexStartingPointY);
+					numberPane.getChildren().add(circle);
+					t1 = new Text(20, 20, "" + h.terrainTypeToString() + "\n" + h.getTokenValue());
+					t1.setLayoutX(170 + (inRadius * (maxColumns - columnMax)) + (inRadius * j * 2));
+					t1.setLayoutY(hexStartingPointY - inRadius + 20);
+					t1.setRotate(270);
+					t1.setTextAlignment(TextAlignment.CENTER);
+					numberPane.getChildren().add(t1);
+					numberPane.setRotate(0);
+					// End New Code 5/27/2017
+					// **********************************************************
 				}
 
 				hexCounter++;
+
 				boardPane.getChildren().add(h);
 
 				hexList.add(h);
@@ -252,9 +282,11 @@ public class HexBoard {
 
 		for (Hex h : hexList) {
 			int j = 0;
+			h.setOnMouseEntered(e -> {
+				System.out.println("TERRAIN TYPE: " + h.terrainTypeToString() + "; Token Value: " + h.getTokenValue());
+			});
 			for (int i = 0; i < h.getPoints().size(); i = i + 2) {
 				Point2D p = new Point2D(h.getPoints().get(i), h.getPoints().get(i + 1));
-
 				HexVertex hV = new HexVertex(p, h);
 				h.addVertex(hV);
 				// hV.setFill(colorPallete[j]);
