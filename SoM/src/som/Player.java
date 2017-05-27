@@ -6,6 +6,8 @@
 package som;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -18,6 +20,7 @@ import javafx.scene.shape.Arc;
  */
 public class Player {
     final int VICTORY_POINT_MAX=10;
+    static int currentLeaderVP;
     
     private TradePack tradePack= new TradePack(this);
 
@@ -50,8 +53,7 @@ public class Player {
         assets=new Assets();
             nickname=name;
             this.playerColor=playerColor;
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-       
+
     }
     
     
@@ -59,7 +61,7 @@ public class Player {
     Player(String name, int[] resources, Color playerColor) {
         this.nickname=name;
         this.resources=resources;
-        victoryPoints=4;
+        victoryPoints=0;
         assets=new Assets();
         this.playerColor=playerColor;
     }
@@ -78,6 +80,18 @@ public class Player {
         victoryPoints=value;
         victoryPointGauge.setLength(((double)value/(double)VICTORY_POINT_MAX)*360);     //3.6 is 360 divided by the 100 for the 100 we would have multiplied the value/vpMax to get a percentage.
         System.out.println(pnPlayerInfo.getWidth());
+        
+        
+        if (victoryPoints > 6) {
+                MediaClass.playMusic2();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GameRoomSelectController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //SoM.mMusic1.stop();
+            }
+
     }
     
     	
@@ -137,6 +151,11 @@ public class Player {
             this.resources[i]-=resources[i];
         }
         return resources;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" + "VICTORY_POINT_MAX=" + VICTORY_POINT_MAX + ", pnPlayerInfo=" + pnPlayerInfo + ", victoryPointGauge=" + victoryPointGauge + ", resources=" + resources + ", resourceManager=" + resourceManager + ", victoryPoints=" + victoryPoints + ", playerColor=" + playerColor + ", nickname=" + nickname + ", assets=" + assets + '}';
     }
 
 

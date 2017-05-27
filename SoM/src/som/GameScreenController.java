@@ -159,6 +159,9 @@ public class GameScreenController implements Initializable {
                         p.setVictoryPoints((Math.round((new_val.floatValue()))));
                         System.out.println(((Math.round((new_val.floatValue()))))+"  "+ p.victoryPointGauge.getLength());
                         
+                        
+                        //setHighestVictoryPoints(p);
+
                     }
             }
         });
@@ -166,6 +169,7 @@ public class GameScreenController implements Initializable {
         
         
         /*
+        LLLL
         // THIS IS THE SECTON FOR THE ROLL DICE PANE AND FUNCTIONALITY 
         dicePane.setVisible(true);
         dicePane.setMouseTransparent(false);
@@ -313,6 +317,26 @@ public class GameScreenController implements Initializable {
      
     //gameLoop();
     }
+    
+     /*public void setHighestVictoryPoints(Player p) {
+        int oldHighest = currentHighestVictoryPoints;
+        
+        if (p.getVictoryPoints() > currentHighestVictoryPoints) {
+            currentHighestVictoryPoints = p.getVictoryPoints();
+
+            if (p.getVictoryPoints() > 6 && !SoM.aMusic2.isPlaying()) {
+                SoM.playMusic2();
+                SoM.aMusic1.stop();
+            }       
+            else if(oldHighest > currentHighestVictoryPoints && !SoM.aMusic1.isPlaying())
+            {
+                SoM.playMusic1();
+                SoM.aMusic2.stop();
+            }
+        }
+    }*/
+
+    
     public void setSelectedItem(Node o){
         selectedItem=o;
     }
@@ -752,13 +776,7 @@ public class GameScreenController implements Initializable {
                 //5 lblResourcesAvailable
                 ((Label)(((AnchorPane)n).getChildren().get(5))).setText(""+thisPlayer.resources[anchors.indexOf(n)]);
                         //thisPlayer.resources[]
-                
-                
-                
-                
-                
-                
-                
+          
             }
             
             
