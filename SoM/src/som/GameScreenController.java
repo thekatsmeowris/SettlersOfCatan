@@ -19,6 +19,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -29,6 +30,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -53,13 +57,13 @@ public class GameScreenController implements Initializable {
 	Slider sldVictoryPoints;
 
 	@FXML
-	Label txtCurrentStatus;
+	Label txtCurrentStatus, txtLastRoll;
 
 	@FXML
 	Text txtPopUpText, leftDie, rightDie, txtRes00Text, txtRes01Text, txtRes02Text, txtRes03Text, txtRes04Text;
 
 	@FXML
-	AnchorPane lastAnchorPane;
+	AnchorPane lastAnchorPane, playerInfoPane;
 
 	@FXML
 	Button diceRoller, btnRollDice, startGameBtn, tradeBtn, buildBtn, cancelBuildBtn, gameStateBtn, endBtn, devBtn;
@@ -309,6 +313,7 @@ public class GameScreenController implements Initializable {
 		diceValue += r;
 		rightDie.setText(r.toString());
 		System.out.println("total die: " + diceValue);
+		txtLastRoll.setText("Last Dice Roll: " + diceValue);
 		if (diceValue == 7) {
 			System.out.println("ROBBER!!!");
 		}
@@ -348,16 +353,17 @@ public class GameScreenController implements Initializable {
 		setGameState(PRE_ROLL);
 		currentPlayer = players.get(0);
 		System.out.println(currentPlayer.toString());
-
+		fillPlayerInfo();
 		System.out.println("//////////////////////////////////");
 		System.out.println("GAME STARTED");
 		System.out.println("//////////////////////////////////");
 
-		if (currentPlayer.getNickname() != "Mark") {
-			System.out.println("Skipping cpu turn: " + currentPlayer.getNickname());
-			rollDice();
-			endTurn();
-		}
+		// if (currentPlayer.getNickname() != "Mark") {
+		// System.out.println("Skipping cpu turn: " +
+		// currentPlayer.getNickname());
+		// rollDice();
+		// endTurn();
+		// }
 	}
 
 	public void endTurn() {
@@ -365,6 +371,7 @@ public class GameScreenController implements Initializable {
 		if (currentPlayerNumber == players.size()) {
 			currentPlayerNumber = 0;
 		}
+		fillPlayerInfo();
 		newTurn();
 	}
 
@@ -373,11 +380,11 @@ public class GameScreenController implements Initializable {
 		currentPlayer = players.get(currentPlayerNumber);
 		System.out.println("Current Player: " + players.get(currentPlayerNumber).toString());
 		setGameState(PRE_ROLL);
-		if (currentPlayer.getNickname() != "Mark") {
-			System.out.println("Skipping cpu turn...");
-			rollDice();
-			endTurn();
-		}
+		// if (currentPlayer.getNickname() != "Mark") {
+		// System.out.println("Skipping cpu turn...");
+		// rollDice();
+		// endTurn();
+		// }
 	}
 
 	public void setUIFromGameState() {
@@ -492,9 +499,14 @@ public class GameScreenController implements Initializable {
 										// can work. must change where it
 										// decrements.
 				resourceBank.bankReturnResource(
-						resourceBank.getResourceCost(((HexVertex) selectedItem).addSettlement(thisPlayer)), thisPlayer);
+						resourceBank.getResourceCost(
+								((HexVertex) selectedItem).addSettlement(players.get(currentPlayerNumber))),
+						players.get(currentPlayerNumber));
 			} else {
-				((HexVertex) selectedItem).addSettlement(thisPlayer);
+				((HexVertex) selectedItem).addSettlement(players.get(currentPlayerNumber));
+				System.out.println("Current color: " + players.get(currentPlayerNumber).getPlayerColor());
+				System.out.println("For current player: " + players.get(currentPlayerNumber) + " and player number: "
+						+ currentPlayerNumber);
 			}
 			System.out.println("BUILD Settlement DIALOG");
 			thisPlayer.assets.add(thisPlayer, ((HexVertex) selectedItem));
@@ -506,7 +518,8 @@ public class GameScreenController implements Initializable {
 			for (HexEdge edge : ((HexVertex) selectedItem).getAdjacentEdge()) {
 				// edge.setStroke(Color.WHITE);
 				if (((HexEdge) edge).isOwned()) {
-					edge.setFill(Color.GREENYELLOW);
+					edge.setFill(players.get(currentPlayerNumber).getPlayerColor());
+
 				}
 			}
 			closeParentPane();
@@ -570,18 +583,19 @@ public class GameScreenController implements Initializable {
 	}
 
 	public void buildRoad() throws IOException {
-		if (canBuildRoad(((HexEdge) selectedItem), thisPlayer)) {
-			((HexEdge) selectedItem).addRoad(thisPlayer);
-			((HexEdge) selectedItem).setStroke(Color.GREEN);
-			// ((HexEdge) selectedItem).setStroke(thisPlayer.getPlayerColor());
+		if (canBuildRoad(((HexEdge) selectedItem), players.get(currentPlayerNumber))) {
+			((HexEdge) selectedItem).addRoad(players.get(currentPlayerNumber));
+			((HexEdge) selectedItem).setStroke(players.get(currentPlayerNumber).getPlayerColor());
+			// ((HexEdge)
+			// selectedItem).setStroke(players.get(currentPlayerNumber).getPlayerColor());
 			// put resources back to the bank
 			System.out.println("BUILD ROAD DIALOG");
 			System.out.println("ADJACENT EDGES:");
 			// System.out.println(((HexEdge) selectedItem).getAdjacentEdge());
-			thisPlayer.assets.add(thisPlayer, ((HexEdge) selectedItem));
+			players.get(currentPlayerNumber).assets.add(players.get(currentPlayerNumber), ((HexEdge) selectedItem));
 			checkForLongestRoad();
 
-			System.out.println("PRogress: " + thisPlayer.assets.roads.size());
+			System.out.println("PRogress: " + players.get(currentPlayerNumber).assets.roads.size());
 			// System.out.println(((HexEdge)
 			// selectedItem).getType().toString());
 			for (HexEdge edge : ((HexEdge) selectedItem).getAdjacentEdge()) {
@@ -598,7 +612,7 @@ public class GameScreenController implements Initializable {
 		if (checkRequirements(hexEdge, player)) {
 			for (HexEdge edge : hexEdge.getAdjacentEdge()) {
 				if (edge.isOwned()) {
-					if (edge.getOwner() == thisPlayer) {
+					if (edge.getOwner() == players.get(currentPlayerNumber)) {
 						return true;
 					}
 				}
@@ -620,7 +634,7 @@ public class GameScreenController implements Initializable {
 																		// road
 		// road requirements: BRICK AND LUMBER (plastic + glass) 1+4
 
-		return (isGreater(thisPlayer.getResources(), new int[] { 0, 1, 0, 0, 1 }));
+		return (isGreater(players.get(currentPlayerNumber).getResources(), new int[] { 0, 1, 0, 0, 1 }));
 
 	}
 
@@ -630,7 +644,7 @@ public class GameScreenController implements Initializable {
 																			// settlement
 		// road requirements: BRICK AND LUMBER (plastic + glass) 1+4
 
-		return (isGreater(thisPlayer.getResources(), new int[] { 0, 1, 1, 1, 1 }));
+		return (isGreater(players.get(currentPlayerNumber).getResources(), new int[] { 0, 1, 1, 1, 1 }));
 
 	}
 
@@ -639,14 +653,14 @@ public class GameScreenController implements Initializable {
 																									// for
 																									// settlement
 
-		return (isGreater(thisPlayer.getResources(), new int[] { 3, 0, 0, 2, 0 }));
+		return (isGreater(players.get(currentPlayerNumber).getResources(), new int[] { 3, 0, 0, 2, 0 }));
 
 	}
 
 	private boolean checkRequirements(Player player) { // checks requirements
 														// for developmentCards
 
-		return (isGreater(thisPlayer.getResources(), new int[] { 1, 0, 1, 1, 0 }));
+		return (isGreater(players.get(currentPlayerNumber).getResources(), new int[] { 1, 0, 1, 1, 0 }));
 
 	}
 
@@ -674,10 +688,11 @@ public class GameScreenController implements Initializable {
 	}
 
 	public void checkForLongestRoad() {
-		if (thisPlayer.assets.roads.size() > longestRoadValue)
-			longestRoadValue = thisPlayer.assets.roads.size();
+		if (players.get(currentPlayerNumber).assets.roads.size() > longestRoadValue)
+			longestRoadValue = players.get(currentPlayerNumber).assets.roads.size();
 
-		pgbLongestRoad.progressProperty().set((double) (thisPlayer.assets.roads.size()) / longestRoadValue);
+		pgbLongestRoad.progressProperty()
+				.set((double) (players.get(currentPlayerNumber).assets.roads.size()) / longestRoadValue);
 		if (pgbLongestRoad.progressProperty().doubleValue() >= 100.0) {
 			pgbLongestRoad.getStyleClass().add("gold-bar");
 		} else {
@@ -690,9 +705,10 @@ public class GameScreenController implements Initializable {
 	public void buildCity() {
 		if (canBuildCity((HexVertex) selectedItem)) {
 			System.out.println("BUILD SETTLEMENT DIALOG");
-			// resourceBank.bankReturnResource(thisPlayer
+			// resourceBank.bankReturnResource(players.get(currentPlayerNumber)
 			// .removeResources(resourceBank.getResourceCost(((HexVertex)
-			// selectedItem).addCity(thisPlayer)))); // remove
+			// selectedItem).addCity(players.get(currentPlayerNumber))))); //
+			// remove
 			// resources
 			// from
 			// a
@@ -709,30 +725,31 @@ public class GameScreenController implements Initializable {
 															// player's color
 															// (indicating a
 															// settlement
-		thisPlayer.assets.add(thisPlayer, ((HexVertex) selectedItem)); // add
-																		// this
-																		// new
-																		// asset
-																		// to
-																		// the
-																		// player's
-																		// list
-																		// of
-																		// assets
-		thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints()) + SETTLMENT_VP_VALUE + 1); // increase
-																								// the
-																								// vp
-																								// of
-																								// the
-																								// player
-		pgbVictoryPoints.setProgress(((double) thisPlayer.getVictoryPoints() / 10)); // adjust
-																						// the
-																						// progress
-																						// bar
-																						// for
-																						// vp
-																						// for
-																						// thisPlayer
+		players.get(currentPlayerNumber).assets.add(players.get(currentPlayerNumber), ((HexVertex) selectedItem)); // add
+		// this
+		// new
+		// asset
+		// to
+		// the
+		// player's
+		// list
+		// of
+		// assets
+		players.get(currentPlayerNumber)
+				.setVictoryPoints((players.get(currentPlayerNumber).getVictoryPoints()) + SETTLMENT_VP_VALUE + 1); // increase
+		// the
+		// vp
+		// of
+		// the
+		// player
+		pgbVictoryPoints.setProgress(((double) players.get(currentPlayerNumber).getVictoryPoints() / 10)); // adjust
+		// the
+		// progress
+		// bar
+		// for
+		// vp
+		// for
+		// players.get(currentPlayerNumber)
 		updateResources();
 		setGameState(MAIN_PHASE);
 		System.out.println("BUILD CITY DIALOG");
@@ -757,7 +774,7 @@ public class GameScreenController implements Initializable {
 		Player mark = new Player("Mark", new int[] { 5, 5, 5, 5, 5 }, Color.RED);
 		Player dek = new Player("Dehkhoda", new int[] { 5, 5, 5, 5, 5 }, Color.DODGERBLUE);
 		Player lisa = new Player("Lisa", new int[] { 5, 5, 5, 5, 5 }, Color.ORANGE);
-		Player mew = new Player("Mew", new int[] { 5, 5, 5, 5, 5 }, Color.BISQUE);
+		Player mew = new Player("Mew", new int[] { 5, 5, 5, 5, 5 }, Color.DARKMAGENTA);
 		players.add(mark);
 		players.add(dek);
 		players.add(lisa);
@@ -775,7 +792,8 @@ public class GameScreenController implements Initializable {
 		System.out.println("TRACKERS");
 		for (Node node : trackers) {
 			anchors = ((VBox) node).getChildren();
-			((TradeResourceTracker) node).setResourcesAvailable(thisPlayer.resources[trackers.indexOf(node)]);
+			((TradeResourceTracker) node)
+					.setResourcesAvailable(players.get(currentPlayerNumber).resources[trackers.indexOf(node)]);
 			for (Node n : anchors) {
 				System.out.println(((AnchorPane) n).getChildren() + " heh");
 				// 0 Circle
@@ -786,8 +804,8 @@ public class GameScreenController implements Initializable {
 				// 4 Button v
 				// 5 lblResourcesAvailable
 				((Label) (((AnchorPane) n).getChildren().get(5)))
-						.setText("" + thisPlayer.resources[anchors.indexOf(n)]);
-				// thisPlayer.resources[]
+						.setText("" + players.get(currentPlayerNumber).resources[anchors.indexOf(n)]);
+				// players.get(currentPlayerNumber).resources[]
 
 			}
 
@@ -814,7 +832,7 @@ public class GameScreenController implements Initializable {
 		if (tp.getReceiver() == null) {
 			// offer to each player
 			for (Player p : players) {
-				if (p != thisPlayer) {
+				if (p != players.get(currentPlayerNumber)) {
 					tp.setReceiver(p);
 					if (offerTrade(tp)) {
 						((ImageView) (tradeResponses.getChildren().get(players.indexOf(p) + 1)))
@@ -862,13 +880,14 @@ public class GameScreenController implements Initializable {
 			resourcesOffered[trackers.indexOf(node)] = ((TradeResourceTracker) node).getGivingAmount();
 
 		}
-		return new TradePack(thisPlayer, players.get(3), resourcesOffered, resourcesRequested);
+		return new TradePack(players.get(currentPlayerNumber), players.get(3), resourcesOffered, resourcesRequested);
 	}
 
 	@FXML
 	private void simulateTradeRequest() {
-		offerTrade(new TradePack(players.get(2), thisPlayer, new int[] { 0, 2, 2, 0, 1 }, new int[] { 1, 0, 0, 2, 0 }));
-		System.out.println(thisPlayer);
+		offerTrade(new TradePack(players.get(2), players.get(currentPlayerNumber), new int[] { 0, 2, 2, 0, 1 },
+				new int[] { 1, 0, 0, 2, 0 }));
+		System.out.println(players.get(currentPlayerNumber));
 	}
 
 	// offer trade should fire an event with whichever player is being offered a
@@ -876,9 +895,9 @@ public class GameScreenController implements Initializable {
 	// need to find a way to get a response from players
 	private boolean offerTrade(TradePack tp) {
 		boolean response = false;
-		if (tp.getReceiver() == thisPlayer) {
+		if (tp.getReceiver() == players.get(currentPlayerNumber)) {
 			// open trade requested dialog
-			thisPlayer.setTradePack(tp);
+			players.get(currentPlayerNumber).setTradePack(tp);
 			pnAcceptTradeDialog.setVisible(true);
 			pnAcceptTradeDialog.getParent().setMouseTransparent(false);
 
@@ -906,49 +925,57 @@ public class GameScreenController implements Initializable {
 
 	@FXML
 	public void tradeDialogYes() {
-		acceptTrade(thisPlayer.getTradePack());
+		acceptTrade(players.get(currentPlayerNumber).getTradePack());
 		pnAcceptTradeDialog.setVisible(false);
 		pnAcceptTradeDialog.getParent().setMouseTransparent(true);
 	}
 
 	public void tradeDialogNo() {
-		// acceptTrade(thisPlayer.getTradePack());
+		// acceptTrade(players.get(currentPlayerNumber).getTradePack());
 		pnAcceptTradeDialog.setVisible(false);
 		pnAcceptTradeDialog.getParent().setMouseTransparent(true);
 	}
 
 	private void acceptTrade(TradePack tp) {
-		System.out.println("this player is: " + thisPlayer.getNickname());
+		System.out.println("this player is: " + players.get(currentPlayerNumber).getNickname());
 		// System.out.println("this player is:
 		// "+tp.getReceiver().getNickname());
 
 		System.out.println(tp);
-		if (tp.getReceiver() == thisPlayer) {
+		if (tp.getReceiver() == players.get(currentPlayerNumber)) {
 			/*
-			 * for (int i=0;i<thisPlayer.resources.length;i++){
-			 * thisPlayer.resources[i]+=tp.resourcesOffered[i];
-			 * thisPlayer.resources[i]-=tp.resourcesRequested[i]; }
+			 * for (int
+			 * i=0;i<players.get(currentPlayerNumber).resources.length;i++){
+			 * players.get(currentPlayerNumber).resources[i]+=tp.
+			 * resourcesOffered[i];
+			 * players.get(currentPlayerNumber).resources[i]-=tp.
+			 * resourcesRequested[i]; }
 			 */
-			thisPlayer.setResources(addTwoResourceSets(thisPlayer.getResources(), tp.getResourcesOffered()));
-			thisPlayer.setResources(subtractTwoResourceSets(thisPlayer.getResources(), tp.getResourcesRequested()));
+			players.get(currentPlayerNumber).setResources(
+					addTwoResourceSets(players.get(currentPlayerNumber).getResources(), tp.getResourcesOffered()));
+			players.get(currentPlayerNumber).setResources(subtractTwoResourceSets(
+					players.get(currentPlayerNumber).getResources(), tp.getResourcesRequested()));
 			updateResources();
 
-			if (tp.getSender() == thisPlayer) {
-				for (int i = 0; i < thisPlayer.resources.length; i++) {
+			if (tp.getSender() == players.get(currentPlayerNumber)) {
+				for (int i = 0; i < players.get(currentPlayerNumber).resources.length; i++) {
 					/*
-					 * thisPlayer.resources[i]-=tp.resourcesOffered[i];
-					 * thisPlayer.resources[i]+=tp.resourcesRequested[i];
+					 * players.get(currentPlayerNumber).resources[i]-=tp.
+					 * resourcesOffered[i];
+					 * players.get(currentPlayerNumber).resources[i]+=tp.
+					 * resourcesRequested[i];
 					 */
-					thisPlayer.setResources(addTwoResourceSets(thisPlayer.getResources(), tp.getResourcesRequested()));
-					thisPlayer
-							.setResources(subtractTwoResourceSets(thisPlayer.getResources(), tp.getResourcesOffered()));
+					players.get(currentPlayerNumber).setResources(addTwoResourceSets(
+							players.get(currentPlayerNumber).getResources(), tp.getResourcesRequested()));
+					players.get(currentPlayerNumber).setResources(subtractTwoResourceSets(
+							players.get(currentPlayerNumber).getResources(), tp.getResourcesOffered()));
 					updateResources();
 
 				}
 
 			}
 
-			System.out.println(thisPlayer.getResources());
+			System.out.println(players.get(currentPlayerNumber).getResources());
 
 			// open trade requested dialog
 		} else {
@@ -992,17 +1019,17 @@ public class GameScreenController implements Initializable {
 	}
 
 	void updateResources() {
-		txtRes00Text.setText("" + (thisPlayer.getResources())[0]);
-		txtRes01Text.setText("" + (thisPlayer.getResources())[1]);
-		txtRes02Text.setText("" + (thisPlayer.getResources())[2]);
-		txtRes03Text.setText("" + (thisPlayer.getResources())[3]);
-		txtRes04Text.setText("" + (thisPlayer.getResources())[4]);
+		txtRes00Text.setText("" + (players.get(currentPlayerNumber).getResources())[0]);
+		txtRes01Text.setText("" + (players.get(currentPlayerNumber).getResources())[1]);
+		txtRes02Text.setText("" + (players.get(currentPlayerNumber).getResources())[2]);
+		txtRes03Text.setText("" + (players.get(currentPlayerNumber).getResources())[3]);
+		txtRes04Text.setText("" + (players.get(currentPlayerNumber).getResources())[4]);
 
 	}
 
 	private void declineTrade(TradePack tp) {
 		boolean response = false;
-		if (tp.getReceiver() == thisPlayer) {
+		if (tp.getReceiver() == players.get(currentPlayerNumber)) {
 			// open trade requested dialog
 		} else {
 		}
@@ -1016,7 +1043,7 @@ public class GameScreenController implements Initializable {
 
 	public void offerResource(MouseEvent e) {
 		if (pnTradeDialog.isVisible()) {
-			// thisPlayerTradePack.resourcesOffered[0]+=1;
+			// players.get(currentPlayerNumber)TradePack.resourcesOffered[0]+=1;
 		}
 
 	}
@@ -1043,18 +1070,28 @@ public class GameScreenController implements Initializable {
 		playerBlocks.add(pnPlayerRight);
 		int counter = 0;
 		for (Player p : players) {
-			if (p.nickname != "Mark") {
+			if (p.nickname != players.get(currentPlayerNumber).getNickname()) {
 				p.pnPlayerInfo = playerBlocks.get(counter);
 				((Label) playerBlocks.get(counter).getChildren().get(6)).setText(p.nickname);
 				p.victoryPointGauge = (Arc) playerBlocks.get(counter).getChildren().get(1);
 				System.out.println(p.victoryPointGauge);
-
 				counter++;
-
 			} else {
-				txtThisPlayerName.setText(p.nickname);
+				if (gameState != NEW_GAME) {
+					txtThisPlayerName.setText(p.nickname);
+				} else {
+					txtThisPlayerName.setText("New Game");
+				}
 			}
 		}
+		if (gameState != NEW_GAME)
+
+		{
+			playerInfoPane
+					.setBackground(new Background(new BackgroundFill(players.get(currentPlayerNumber).getPlayerColor(),
+							CornerRadii.EMPTY, Insets.EMPTY)));
+		}
+
 	}
 
 	private boolean winCondition() {

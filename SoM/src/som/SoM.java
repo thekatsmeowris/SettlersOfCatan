@@ -6,6 +6,7 @@
 package som;
 
 import java.io.File;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +15,6 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-
 import javafx.stage.Stage;
 
 /**
@@ -22,89 +22,83 @@ import javafx.stage.Stage;
  * @author makogenq
  */
 public class SoM extends Application {
-    
-    //private static URL musicURL1, musicURL2;
-    //static AudioClip aMusic1, aMusic2;
-     String music1Path = "src/WASTELAND1.wav";
-    Media mMusic1 = new Media(new File(music1Path).toURI().toString());
-    static MediaPlayer mediaPlayer;
-    MediaView  mediaView;
-    
-    @Override
-    public void start(Stage stage) throws Exception {
-        
-        mediaPlayer = new MediaPlayer(mMusic1); //mediaPlayer
-        mediaView = new MediaView(mediaPlayer);
-        mediaView.setMediaPlayer(mediaPlayer);
-        
-        loadAudioAssets();      
-        
-        Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
-        ResourceBank resourceBank= new ResourceBank();
-        resourceBank.printResourceList();
-        Scene scene = new Scene(root);
-        
-        stage.setX(300);
-        stage.setY(0);
-        
-        stage.setTitle("Title Screen");
-        stage.setScene(scene);
-        stage.show();
 
-    }
+	// private static URL musicURL1, musicURL2;
+	// static AudioClip aMusic1, aMusic2;
+	String music1Path = "src/WASTELAND1.wav";
+	Media mMusic1 = new Media(new File(music1Path).toURI().toString());
+	static MediaPlayer mediaPlayer;
+	MediaView mediaView;
 
-    /**
-     * @param args the command line arguments
-     */
-    
-    public static void main(String[] args) {
-        launch(args);
-        
-      
-        
-    }
-    
-       
-    
-        //Test comment
-     private void loadAudioAssets(){
-        
-        //comment
-        
-        /*musicURL1 = getClass().getResource("/WASTELAND1.wav");
-        aMusic1 = new AudioClip(musicURL1.toString());
-        musicURL2 = getClass().getResource("/WASTELAND2.wav");
-        aMusic2 = new AudioClip(musicURL2.toString());*/
-    }
-    
-    public static void playMusic1() {
-        //aMusic1.setCycleCount(AudioClip.INDEFINITE);
-        //aMusic1.play();
-        
-       mediaPlayer.setCycleCount(AudioClip.INDEFINITE);
-        mediaPlayer.play();
-    }
-    
-    public static void playMusic2() {
-        //aMusic2.setCycleCount(AudioClip.INDEFINITE);
-        //aMusic2.play();
-        
-        mediaPlayer.setCycleCount(AudioClip.INDEFINITE);
-        mediaPlayer.play();
-    }
+	@Override
+	public void start(Stage stage) throws Exception {
 
-    /*
-     public AudioClip getaMusic1() {
-     return aMusic1;
-     }
-     
-     public AudioClip getaMusic2() {
-     return aMusic2;
-     }*/
+		mediaPlayer = new MediaPlayer(mMusic1); // mediaPlayer
+		mediaView = new MediaView(mediaPlayer);
+		mediaView.setMediaPlayer(mediaPlayer);
 
-    
-    
-    public void TestDeck() {
+		loadAudioAssets();
+
+		Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
+		ResourceBank resourceBank = new ResourceBank();
+		resourceBank.printResourceList();
+		Scene scene = new Scene(root);
+
+		stage.setX(300);
+		stage.setY(0);
+
+		stage.setTitle("Settlers of Mars");
+		stage.setScene(scene);
+		stage.show();
+
+	}
+
+	/**
+	 * @param args
+	 *            the command line arguments
+	 */
+
+	public static void main(String[] args) {
+		launch(args);
+
+	}
+
+	// Test comment
+	private void loadAudioAssets() {
+
+		// comment
+
+		/*
+		 * musicURL1 = getClass().getResource("/WASTELAND1.wav"); aMusic1 = new
+		 * AudioClip(musicURL1.toString()); musicURL2 =
+		 * getClass().getResource("/WASTELAND2.wav"); aMusic2 = new
+		 * AudioClip(musicURL2.toString());
+		 */
+	}
+
+	public static void playMusic1() {
+		// aMusic1.setCycleCount(AudioClip.INDEFINITE);
+		// aMusic1.play();
+
+		mediaPlayer.setCycleCount(AudioClip.INDEFINITE);
+		mediaPlayer.play();
+	}
+
+	public static void playMusic2() {
+		// aMusic2.setCycleCount(AudioClip.INDEFINITE);
+		// aMusic2.play();
+
+		mediaPlayer.setCycleCount(AudioClip.INDEFINITE);
+		mediaPlayer.play();
+	}
+
+	/*
+	 * public AudioClip getaMusic1() { return aMusic1; }
+	 * 
+	 * public AudioClip getaMusic2() { return aMusic2; }
+	 */
+
+	public void TestDeck() {
 		Knight k = new Knight();
 		VictoryPoint vp = new VictoryPoint();
 		YearOfPlenty yop = new YearOfPlenty();
@@ -112,18 +106,17 @@ public class SoM extends Application {
 		RoadBuilding rb = new RoadBuilding();
 		DevelopmentDeck d = new DevelopmentDeck();
 
-		
 		d.addCard(k);
 		d.addCard(vp);
 		// d.addCard(yop);
 		// d.addCard(mp);
 		d.addCard(rb);
-		while (d.hasCard()){
+		while (d.hasCard()) {
 			DevelopmentCard card = d.drawCard();
-			System.out.println(card);	
+			System.out.println(card);
 			if (card instanceof RoadBuilding)
 				card.playCard();
-                }
-        }
-    
+		}
+	}
+
 }

@@ -30,7 +30,7 @@
                <children>
                   <BorderPane prefHeight="720.0" prefWidth="1300.0">
                      <bottom>
-                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="151.0" prefWidth="1311.0" BorderPane.alignment="CENTER">
+                        <AnchorPane id="playerInfoPane" fx:id="playerInfoPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="151.0" prefWidth="1311.0" BorderPane.alignment="CENTER">
                            <children>
                               <Group layoutX="14.0" layoutY="14.0">
                                  <children>
@@ -335,7 +335,7 @@
                                                 </Label>
                                              </children>
                                           </Pane>
-                                          <Pane id="pnPlayerLeft" fx:id="pnPlayerMid" layoutX="620.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.5" prefHeight="80.0" prefWidth="60.0" styleClass="opponentInfo">
+                                          <Pane id="pnPlayerMid" fx:id="pnPlayerMid" layoutX="620.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.5" prefHeight="80.0" prefWidth="60.0" styleClass="opponentInfo">
                                              <children>
                                                 <Circle fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radius="60.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
                                                 <Arc fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radiusX="30.0" radiusY="30.0" startAngle="270.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
@@ -355,7 +355,7 @@
                                                 </Label>
                                              </children>
                                           </Pane>
-                                          <Pane id="pnPlayerLeft" fx:id="pnPlayerRight" layoutX="1209.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.5" prefHeight="80.0" prefWidth="60.0" styleClass="opponentInfo">
+                                          <Pane id="pnPlayerRight" fx:id="pnPlayerRight" layoutX="1209.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.5" prefHeight="80.0" prefWidth="60.0" styleClass="opponentInfo">
                                              <children>
                                                 <Circle fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radius="60.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
                                                 <Arc fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radiusX="30.0" radiusY="30.0" startAngle="270.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
@@ -377,7 +377,12 @@
                                           </Pane>
                                           <Pane fx:id="pnStatusPane" layoutX="167.0" layoutY="-10.0" prefHeight="101.0" prefWidth="274.0">
                                              <children>
-                                                <Label fx:id="txtCurrentStatus" layoutX="75.0" layoutY="51.0" text="Status">
+                                                <Label fx:id="txtCurrentStatus" layoutX="75.0" layoutY="51.0" text="Game State">
+                                                   <font>
+                                                      <Font size="22.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="txtLastRoll" layoutX="75.0" layoutY="81.0" text="">
                                                    <font>
                                                       <Font size="22.0" />
                                                    </font>
