@@ -10,6 +10,7 @@ import customcontrols.TradeResourceTracker;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
@@ -39,6 +40,8 @@ import javafx.scene.shape.Circle;
 
 import javafx.scene.text.Text;
 import som.assets.Settlement;
+import som.ResourceBank;
+
 
 
 
@@ -56,9 +59,11 @@ public class GameScreenController implements Initializable {
             popupDialog,
             dicePane,
             pnTradeDialog,
+            pnBuild,
             pnPlayerLeft, 
             pnPlayerMid, 
             pnPlayerRight,
+          
             pnAcceptTradeDialog;
 
     
@@ -129,9 +134,11 @@ public class GameScreenController implements Initializable {
     
 //-----------------------------------------------------//
     
-    Player thisPlayer=new Player("mark",new int[]{5,5,5,5,5}, Color.GREEN);
+    Player thisPlayer=new Player("Mark",new int[]{5,5,5,5,5}, Color.GREEN);
     TradePack thisPlayerTradePack;
     ArrayList<Player> players;
+    DevelopmentDeck developmentDeck= new DevelopmentDeck();
+    DevelopmentCard thisCard;
     HexBoard board; 
     int turnCount;
     ResourceBank resourceBank=new ResourceBank(19);
@@ -152,6 +159,9 @@ public class GameScreenController implements Initializable {
                         p.setVictoryPoints((Math.round((new_val.floatValue()))));
                         System.out.println(((Math.round((new_val.floatValue()))))+"  "+ p.victoryPointGauge.getLength());
                         
+                        
+                        //setHighestVictoryPoints(p);
+
                     }
             }
         });
@@ -159,6 +169,7 @@ public class GameScreenController implements Initializable {
         
         
         /*
+        LLLL
         // THIS IS THE SECTON FOR THE ROLL DICE PANE AND FUNCTIONALITY 
         dicePane.setVisible(true);
         dicePane.setMouseTransparent(false);
@@ -306,6 +317,26 @@ public class GameScreenController implements Initializable {
      
     //gameLoop();
     }
+    
+     /*public void setHighestVictoryPoints(Player p) {
+        int oldHighest = currentHighestVictoryPoints;
+        
+        if (p.getVictoryPoints() > currentHighestVictoryPoints) {
+            currentHighestVictoryPoints = p.getVictoryPoints();
+
+            if (p.getVictoryPoints() > 6 && !SoM.aMusic2.isPlaying()) {
+                SoM.playMusic2();
+                SoM.aMusic1.stop();
+            }       
+            else if(oldHighest > currentHighestVictoryPoints && !SoM.aMusic1.isPlaying())
+            {
+                SoM.playMusic1();
+                SoM.aMusic2.stop();
+            }
+        }
+    }*/
+
+    
     public void setSelectedItem(Node o){
         selectedItem=o;
     }
@@ -331,6 +362,7 @@ public class GameScreenController implements Initializable {
     }
     public void function(){
                 generateResources(rollDice());
+                lblCurrentStatus.setText(Arrays.toString(resourceBank.resources));
         	
     }
 
@@ -451,222 +483,208 @@ public class GameScreenController implements Initializable {
      
      
      //Buid Family of Functions:
-     
-     public void buildSettlement() throws IOException{
-         if(canBuildSettlement((HexVertex) selectedItem)){
-             System.out.println("BUILD SETTLEMENT DIALOG");
-             //((HexVertex)selectedItem).addSettlement(thisPlayer);
-            if (freeSettlement<=0){                                                                                                               //quick bug fix to see if freeSettlement can work. must change where it decrements.
-            resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexVertex)selectedItem).addSettlement(thisPlayer))));
-            }else{
-                ((HexVertex)selectedItem).addSettlement(thisPlayer);
-                freeSettlement--;
-            }
-            ((HexVertex) selectedItem).setFill((Paint) thisPlayer.getPlayerColor());                                //set fill to color the vertex the player's color (indicating a settlement
-            thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));                                            //add this new asset to the player's list of assets
-            thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE);                        //increase the vp of the player
-            pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));                               //adjust the progress bar for vp for thisPlayer
-            updateResources();
-            for(HexEdge edge:((HexVertex)selectedItem).getAdjacentEdge() ){
-                edge.setStroke(Color.WHITE);
-                if(((HexEdge)edge).isOwned()){
-                    edge.setFill(Color.GREENYELLOW);
-                }
-            }
-            //test
 
-            HexVertex hv=(HexVertex)selectedItem;
-            int index=board.vertexList.indexOf(hv);
-            for(HexEdge edge: ((HexVertex) selectedItem).getAdjacentEdge()){
-                
-                System.out.println("//");
-                try{
-                    System.out.println("Startpoint for edge: "+edge.getStartVertex());
-                    System.out.println("!!"+(HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem))));
-                    
-                    ((HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem)))).setFill(Color.GOLDENROD);
+    public void buildSettlement() throws IOException{
+        if(canBuildSettlement((HexVertex) selectedItem)){
+            System.out.println("BUILD SETTLEMENT DIALOG");
+           if (freeSettlement<=0){                                                                                                               
+           resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexVertex)selectedItem).addSettlement(thisPlayer))));         //remove resources from a player and give them to the bank
+           }else{
+               ((HexVertex)selectedItem).addSettlement(thisPlayer);
+               freeSettlement--;
+           }
+           ((HexVertex) selectedItem).setFill((Paint) thisPlayer.getPlayerColor());                                //set fill to color the vertex the player's color (indicating a settlement
+           thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));                                            //add this new asset to the player's list of assets
+           thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE);                        //increase the vp of the player
+           pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));                               //adjust the progress bar for vp for thisPlayer
+           updateResources();
+           for(HexEdge edge:((HexVertex)selectedItem).getAdjacentEdge() ){
+               edge.setStroke(Color.WHITE);
+               if(((HexEdge)edge).isOwned()){
+                   edge.setFill(Color.GREENYELLOW);
+               }
+           }
+           //test
 
-                }catch(NullPointerException nullPointer){
-                    System.out.println("FAIL");
-                }
-                
-            }
-           closeParentPane();
+           HexVertex hv=(HexVertex)selectedItem;
+           int index=board.vertexList.indexOf(hv);
+           for(HexEdge edge: ((HexVertex) selectedItem).getAdjacentEdge()){
 
-             
-         }
-     }
-     public void getSelectedItemInfo(){
-            System.out.println((HexEdge)selectedItem);
-            System.out.println((HexVertex)selectedItem);
-     }
-     public boolean canBuildSettlement(HexVertex selectedItem){
-            boolean result=true;
-            //if (thisPlayer.assets.settlements.size()>=1&&thisPlayer.assets.cities.size()>=1){
-             
-                int localCount=1;
-                System.out.println("ADJACENT VERTICIES: ");
-                for(HexEdge edge: selectedItem.getAdjacentEdge() ){                            //check all adjacent edges' "otherVertex" to see if it is occupied with an asset
-                    System.out.println("\n\n "+localCount);
-                    localCount++;
-                    result= ((HexVertex) (edge.getOtherPoint(((HexVertex)selectedItem)))).getAsset()==null;         //if any of the "otherVertex"'s are null then continue on
-                    
-                    System.out.println(((HexVertex) (edge.getOtherPoint(((HexVertex)selectedItem)))).getAsset());   
-                    System.out.println(result);                                                 
-                   // if(freeSettlement>0){return result;}
-                    
-                    if (!result){return result ;}                                                                   //if any of the otherVertex's contain an asset return false and player cannot build here
+               System.out.println("//");
+               try{
 
-                }
-                
-                for(HexEdge edge: selectedItem.getAdjacentEdge() ){                                                 //check all adjacent edges for roads, then ensure that road belongs to the building player
-                    if(ignoreRoadAdjacency<=0){
-                        if(edge.isOwned()){
-                            result=true;
-                            break;
-                        }else{
-                            result=false;
-                            continue;
-                        }
-                    }else{
-                        ignoreRoadAdjacency--;
-                        result= true;
-                        break;
-                    }
-                }
-                /*if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())==null){    //in each edge check if the otherPoint has city or settlement
-                        result=true;                                                        //only returns true if the otherPoint has no settlement
-                    }*/
-            
+                   ((HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem)))).setFill(Color.GOLDENROD);
 
-                //check resource requirements
+               }catch(NullPointerException nullPointer){
+                   System.out.println("FAIL");
+               }
 
- 
-              
-               
-         return result;
-     }
-     private boolean checkDistanceRuleSettlement(HexVertex selectedItem){
-             boolean result=false;
-
-         for(HexEdge e: selectedItem.getAdjacentEdge() ){
-             /*    if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())!=null){
-             result=true;
-             }else{
-             return false;
-             }*/
-                   }
-         return result;
-     }
-     public void buildRoad(ActionEvent e) throws IOException{
-         if(canBuildRoad(((HexEdge)selectedItem), thisPlayer)){
-             if(freeRoad>0){
-                ((HexEdge)selectedItem).addRoad(thisPlayer);
-                freeRoad--;
-             }else{
-                resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexEdge)selectedItem).addRoad(thisPlayer))));
-             }
-            thisPlayer.assets.add(thisPlayer,((HexEdge)selectedItem));
-
-            updateResources();
-            
-
-                                                                                                //put resources back to the bank
-         System.out.println("BUILD ROAD DIALOG");
-         System.out.println("ADJACENT EDGES:");
-         System.out.println(((HexEdge)selectedItem).getAdjacentEdge());
-          checkForLongestRoad();
-
-          System.out.println("PRogress: " + thisPlayer.assets.roads.size());
-          //System.out.println(((HexEdge) selectedItem).getType().toString());
-        for(HexEdge edge:((HexEdge)selectedItem).getAdjacentEdge() ){
-             edge.setStroke(Color.WHITE);
-             System.out.println(edge.isOwned());
-         }
+           }
           closeParentPane();
-         } 
-     }
-     private boolean canBuildRoad(HexEdge hexEdge, Player player)   {
-         if(checkRequirements(hexEdge, player)){
-             //check all the adjacent edges to see if at leaset one of them has a road
-             for(HexEdge edge : hexEdge.getAdjacentEdge()){
-                 System.out.println("\n\n EDGE INFORMATON WHILE TRYING TO BUILD A ROAD\n "+edge.isOwned());
-                 
-                 if(edge.isOwned()){
-                     System.out.println(edge.getOwner());
-                     if(edge.getOwner().equals(thisPlayer)){
-                         return true;
-                     }
-                 }
-             }
-                // Check if startpoint or endpoint has an asset on it's vertex
-                try
-                {               
-                    System.out.println(hexEdge.getStartVertex().getAsset()!=null);
-                    if(hexEdge.getStartVertex().getAsset()!=null){
-                        System.out.println("This vertex was not null");
-                        System.out.println(hexEdge.getStartVertex().getAsset().getPlayer());
 
-                        if(hexEdge.getStartVertex().getAsset().getPlayer().equals(thisPlayer)){
+
+        }
+    }
+    public void getSelectedItemInfo(){
+           System.out.println((HexEdge)selectedItem);
+           System.out.println((HexVertex)selectedItem);
+    }
+    public boolean canBuildSettlement(HexVertex selectedItem){
+           boolean result=true;
+           //if (thisPlayer.assets.settlements.size()>=1&&thisPlayer.assets.cities.size()>=1){
+
+               int localCount=1;
+               for(HexEdge edge: selectedItem.getAdjacentEdge() ){                            //check all adjacent edges' "otherVertex" to see if it is occupied with an asset
+                   localCount++;
+                   result= ((HexVertex) (edge.getOtherPoint(((HexVertex)selectedItem)))).getAsset()==null;         //if any of the "otherVertex"'s are null then continue on
+
+
+                   if (!result){return result ;}                                                                   //if any of the otherVertex's contain an asset return false and player cannot build here
+
+               }
+
+               for(HexEdge edge: selectedItem.getAdjacentEdge() ){                                                 //check all adjacent edges for roads, then ensure that road belongs to the building player
+                   if(ignoreRoadAdjacency<=0){
+                       if(edge.isOwned()){
+                           result=true;
+                           break;
+                       }else{
+                           result=false;
+                           continue;
+                       }
+                   }else{
+                       ignoreRoadAdjacency--;
+                       result= true;
+                       break;
+                   }
+               }
+               /*if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())==null){    //in each edge check if the otherPoint has city or settlement
+                       result=true;                                                        //only returns true if the otherPoint has no settlement
+                   }*/
+
+
+               //check resource requirements
+
+
+
+
+        return result;
+    }
+    private boolean checkDistanceRuleSettlement(HexVertex selectedItem){
+            boolean result=false;
+
+        for(HexEdge e: selectedItem.getAdjacentEdge() ){
+            /*    if((((HexVertex)(e.getOtherPoint(selectedItem))).getAsset())!=null){
+            result=true;
+            }else{
+            return false;
+            }*/
+                  }
+        return result;
+    }
+    public void buildRoad(ActionEvent e) throws IOException{
+        if(canBuildRoad(((HexEdge)selectedItem), thisPlayer)){
+            if(freeRoad>0){
+               ((HexEdge)selectedItem).addRoad(thisPlayer);
+               freeRoad--;
+            }else{
+               resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexEdge)selectedItem).addRoad(thisPlayer))));
+            }
+           thisPlayer.assets.add(thisPlayer,((HexEdge)selectedItem));
+           ((HexEdge) selectedItem).setStroke((Paint)thisPlayer.getPlayerColor());                                //set fill to color the vertex the player's color (indicating a settlement
+
+
+           updateResources();
+
+
+                                                                                               //put resources back to the bank
+        System.out.println("BUILD ROAD DIALOG");
+        System.out.println(((HexEdge)selectedItem).getAdjacentEdge());
+         checkForLongestRoad();
+
+         System.out.println("PRogress: " + thisPlayer.assets.roads.size());
+         //System.out.println(((HexEdge) selectedItem).getType().toString());
+       for(HexEdge edge:((HexEdge)selectedItem).getAdjacentEdge() ){
+            edge.setStroke(Color.WHITE);
+            System.out.println(edge.isOwned());
+        }
+         closeParentPane();
+        } 
+    }
+    private boolean canBuildRoad(HexEdge hexEdge, Player player)   {
+
+        if(checkRequirements(hexEdge, player)&&!((HexEdge)selectedItem).isOwned()){
+            //check all the adjacent edges to see if at leaset one of them has a road
+            for(HexEdge edge : hexEdge.getAdjacentEdge()){
+
+                if(edge.isOwned()){
+                    System.out.println(edge.getOwner());
+                    if(edge.getOwner().equals(thisPlayer)){
                         return true;
                     }
                 }
-                }
-                catch (NullPointerException nullPointer)
-                {
-                    System.out.println("FAIL ON START");
-                }   
-                
-                try{
-                    System.out.println("This vertex was not null");
-                        System.out.println(hexEdge.getEndVertex().getAsset().getPlayer());
-                        if(hexEdge.getEndVertex().getAsset().getPlayer().equals(thisPlayer)){
-                            return true;
-                        }
+            }
+               // Check if startpoint or endpoint has an asset on it's vertex
+               try
+               {               
+                   if(hexEdge.getStartVertex().getAsset()!=null){
 
-                    
+                       if(hexEdge.getStartVertex().getAsset().getPlayer().equals(thisPlayer)){
+                       return true;
+                   }
+               }
+               }
+               catch (NullPointerException nullPointer)
+               {
+                   System.out.println("FAIL ON START");
+               }   
 
-                    System.out.println("END VERTEX ASSET: "+hexEdge.getEndVertex().getAsset());
-                    //return true;
-                }
-                catch(NullPointerException nullPointer){
-                    System.out.println("FAIL ON END");
-                }
+               try{
+                   System.out.println("This vertex was not null");
+                       if(hexEdge.getEndVertex().getAsset().getPlayer().equals(thisPlayer)){
+                           return true;
+                       }
 
-/*                if ((((HexEdge)selectedItem).getStartVertex().getAsset()!=null)||(((HexEdge)selectedItem).getEndVertex().getAsset()!=null)) {
-                    return true;
-                }*/ 
-                System.out.println("\n\n\n ADJACENT VERTEX: ");
-                System.out.println(hexEdge.getAdjacentVertex());
-             
-         }
-     return false;
-    }
 
-     private boolean checkRequirements(HexEdge hexEdge, Player player){             //checks requirem   ents for road
-        //road requirements: BRICK AND LUMBER (plastic + glass) 1+4
-        
-        return (isGreater(thisPlayer.getResources(), new int[]{0,1,0,0,1}));
-                
-        
-    }
-        private boolean checkRequirements(HexVertex hexVertex, Player player){      //checks requirements for settlement
-        //road requirements: BRICK AND LUMBER (plastic + glass) 1+4
-        
-        return (isGreater(thisPlayer.getResources(), new int[]{0,1,1,1,1}));
-                
-        
-    }
-        private boolean checkRequirements(HexVertex hexVertex, Player player, Settlement settlement){      //checks requirements for settlement
 
-            return (isGreater(thisPlayer.getResources(), new int[]{3,0,0,2,0}));
+                   //return true;
+               }
+               catch(NullPointerException nullPointer){
+                   System.out.println("FAIL ON END");
+               }
+
+               System.out.println(hexEdge.getAdjacentVertex());
 
         }
-        private boolean checkRequirements(Player player){      //checks requirements for developmentCards
+    return false;
+   }
 
-            return (isGreater(thisPlayer.getResources(), new int[]{1,0,1,1,0}));
+    private boolean checkRequirements(HexEdge hexEdge, Player player){             //checks requirem   ents for road
+       //road requirements: BRICK AND LUMBER (plastic + glass) 1+4
 
-        }
+       return (freeRoad>0||
+               isGreater(thisPlayer.getResources(), new int[]{0,1,0,0,1}));
+
+
+   }
+    private boolean checkRequirements(HexVertex hexVertex, Player player){      //checks requirements for settlement
+    //road requirements: BRICK AND LUMBER (plastic + glass) 1+4
+
+    return (isGreater(thisPlayer.getResources(), new int[]{0,1,1,1,1}));
+
+
+}
+    private boolean checkRequirements(HexVertex hexVertex, Player player, Settlement settlement){      //checks requirements for settlement
+
+        return (isGreater(thisPlayer.getResources(), new int[]{3,0,0,2,0}));
+
+    }
+    private boolean checkRequirements(Player player){      //checks requirements for developmentCards
+
+        return (isGreater(thisPlayer.getResources(), new int[]{1,0,1,1,0}));
+
+    }
+       
     private boolean isAdjacentEdgeOwned(HexEdge hexEdge, Player player){
         for(HexEdge edge: hexEdge.getAdjacentEdge()){
             if(edge.isOwned()){
@@ -688,22 +706,31 @@ public class GameScreenController implements Initializable {
         }
         return true;
     }
-     public void checkForLongestRoad(){
-         if(thisPlayer.assets.roads.size()>longestRoadValue) longestRoadValue=thisPlayer.assets.roads.size();
-         
-         pgbLongestRoad.progressProperty().set((double)(thisPlayer.assets.roads.size())/longestRoadValue);
-         if (pgbLongestRoad.progressProperty().doubleValue()>=100.0){
-             pgbLongestRoad.getStyleClass().add("gold-bar");
-         }else{
-            pgbLongestRoad.getStyleClass().add("basic-bar");
+    public void checkForLongestRoad(){
+        if(thisPlayer.assets.roads.size()>longestRoadValue) longestRoadValue=thisPlayer.assets.roads.size();
 
-         }
-         
-     }
-     public void buildCity(){
-         System.out.println("BUILD CITY DIALOG");
-         
-     }
+        pgbLongestRoad.progressProperty().set((double)(thisPlayer.assets.roads.size())/longestRoadValue);
+        if (pgbLongestRoad.progressProperty().doubleValue()>=100.0){
+            pgbLongestRoad.getStyleClass().add("gold-bar");
+        }else{
+           pgbLongestRoad.getStyleClass().add("basic-bar");
+
+        }
+
+    }
+    public void buildCity(){
+        System.out.println("BUILD CITY DIALOG");
+        if(canBuildCity((HexVertex) selectedItem)){
+            System.out.println("BUILD SETTLEMENT DIALOG");
+           resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexVertex)selectedItem).addCity(thisPlayer))));         //remove resources from a player and give them to the bank
+           }
+           ((HexVertex) selectedItem).setStroke(Color.GOLD);                                //set fill to color the vertex the player's color (indicating a settlement
+           thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));                                            //add this new asset to the player's list of assets
+           thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE+1);                        //increase the vp of the player
+           pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));                               //adjust the progress bar for vp for thisPlayer
+           updateResources();
+
+    }
 
     private void generateResources(int diceValue) {
         resourceGenerator.generateResources(diceValue);
@@ -715,31 +742,33 @@ public class GameScreenController implements Initializable {
     }
     public void createTestPlayers(){
         players=new ArrayList<>();
-        Player mark = new Player("Mark", new int[]{5,5,5,5,5}, Color.GREEN);
-        Player dek = new Player("Dehkoda", new int[]{5,5,5,5,5}, Color.RED);
-        Player lisa = new Player("Lisa", new int[]{5,5,5,5,5}, Color.BLUE);
-        Player mew = new Player("Mew", new int[]{5,5,5,5,5}, Color.VIOLET);
+        Player mark = thisPlayer;
+        Player dek = new Player("Dehkoda", new int[]{0,0,0,0,0}, Color.RED);
+        Player lisa = new Player("Lisa", new int[]{0,0,0,0,0}, Color.BLUE);
+        Player mew = new Player("Mew", new int[]{0,0,0,0,0}, Color.VIOLET);
         players.add(mark);
         players.add(dek);
         players.add(lisa);
         players.add(mew);
-        
-//        return mark;
+        thisPlayer=mark;
+//      return mark;
         
     }
     public void openTradeDialog(){
         //set Resource Values
         //1) get hbox with tradeTrackers in it
         ObservableList<Node> trackers, anchors;
-        trackers = tradeResourceTrackers.getChildren();
-        System.out.println("TRACKERS");
+        trackers = tradeResourceTrackers.getChildren();                         //get the resource trackers frmo the TradeResourceTrackers HBox
         for(Node node: trackers){
             anchors=((VBox) node).getChildren();
             ((TradeResourceTracker)node).setResourcesAvailable(thisPlayer.resources[trackers.indexOf(node)]);
             for(Node n: anchors){
                 System.out.println(((AnchorPane)n).getChildren());
                 //0 Circle
-                ((AnchorPane)n).getChildren().get(0);
+                System.out.println(anchors.size()+"!!!!"+ anchors.indexOf(n));
+                ((Circle)((AnchorPane)n).getChildren().get(0)).setFill((Paint)board.getColorPallete()[trackers.indexOf(node)]); 
+                //((Circle)((AnchorPane)n).getChildren().get(0)).setFill(Color.); 
+
                 //1 lblResourceGiveValue
                 //2 lblResourceReqValue
                 //3 Button ^
@@ -747,13 +776,7 @@ public class GameScreenController implements Initializable {
                 //5 lblResourcesAvailable
                 ((Label)(((AnchorPane)n).getChildren().get(5))).setText(""+thisPlayer.resources[anchors.indexOf(n)]);
                         //thisPlayer.resources[]
-                
-                
-                
-                
-                
-                
-                
+          
             }
             
             
@@ -831,8 +854,8 @@ public class GameScreenController implements Initializable {
          }
         return new TradePack(thisPlayer,players.get(3),resourcesOffered, resourcesRequested);         
     }
-    @FXML
-    private void simulateTradeRequest(){
+    
+    public void simulateTradeRequest(){
         offerTrade(new TradePack(players.get(2),thisPlayer,new int[]{0,2,2,0,1}, new int[]{1,0,0,2,0}));
         System.out.println(thisPlayer);
     }
@@ -996,8 +1019,57 @@ public class GameScreenController implements Initializable {
             }
         }
     }
+    
+    public void openBuild(){
+        
+        pnBuild.setVisible(true);
+        pnBuild.setMouseTransparent(false);
+        pnBuild.getParent().setMouseTransparent(false);
+        
+    }
+    public void buildDev(ActionEvent e) throws IOException{
+        System.out.println("You clicked me");
+      
+        if(canBuyDev(thisPlayer)){//check if player has the requirements to buy dev card
+            System.out.println("You have enough resources");
+            if(!developmentDeck.isEmpty()){//check there is a dev card to take
+                System.out.println("There are enough Development Cards");
+               resourceBank.bankReturnResource(2,1);//return 1 hemp to bank
+               System.out.println("You returned Hemp");
+               resourceBank.bankReturnResource(3, 1);//return 1 soy to bank
+               System.out.println("You Returned Soy");
+               resourceBank.bankReturnResource(0, 1);//return 1 steel to bank 
+               System.out.println("You Returned Steel");
+               System.out.println("RETURNED TO BANK");
+               thisPlayer.setResources(subtractTwoResourceSets(thisPlayer.getResources(), new int[]{1,0,1,1,0}));//subtract resources used from player's resources
+               System.out.println("SUBTRACTED RESOURCES");
+               thisCard=developmentDeck.drawCard();//take development card from deck
+               System.out.println("SAVED CARD FROM DECK");
+               thisPlayer.add(thisCard);
+               System.out.println("YOU'VE BUILT A DEV CARD");
+            }
+        }
+    }
+    private boolean canBuyDev(Player player){
+        System.out.println(Arrays.toString(thisPlayer.getResources()));
+        if(checkRequirements(player)){
+            return true;
+           }
+        return false;
+    }
+    
+    public void closeBuild(){
+        pnBuild.setVisible(false);
+        pnBuild.setMouseTransparent(true);
+        pnBuild.getParent().setMouseTransparent(true);
+        
+    }
 
     private boolean winCondition() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private boolean canBuildCity(HexVertex hexVertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
