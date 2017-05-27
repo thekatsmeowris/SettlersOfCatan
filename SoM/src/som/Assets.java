@@ -28,7 +28,8 @@ public class Assets {
         if (hexVertex.getAsset()==null){
         settlements.add(new Settlement(player, hexVertex));
         }else{
-            settlements.remove((Settlement)hexVertex.getAsset());
+            settlements.remove(hexVertex.getAsset());
+            
             cities.add(new City(player, hexVertex));
         }
         

@@ -11,6 +11,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import som.assets.Asset;
+import som.assets.City;
 import som.assets.Settlement;
 
 
@@ -147,6 +148,20 @@ public class HexVertex extends Circle {
     @Override
     public String toString() {
         return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge + ", asset=" + asset + ", parentHex=" + parentHex + '}';
+    }
+
+    public City addCity(Player player) {
+            this.asset= new City(player,this);
+            this.setStroke(Color.GOLD);
+            this.setFill(player.getPlayerColor());
+
+         this.setOnMouseEntered(e ->{
+            System.out.println("THIS ASSET: "+ this.asset);
+        });
+       this.setOnMouseExited(e ->{
+        });
+        return (City) this.asset;
+    
     }
 
 }
