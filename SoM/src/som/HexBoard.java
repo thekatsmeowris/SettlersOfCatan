@@ -74,7 +74,7 @@ public class HexBoard {
 																// color 0
 			Color.web("#C16161"), // abse REDDISH Color 1
 			Color.web("#EED79B"), // pale yellow 2
-			Color.web("#BDB7A2"), // greenish GRAY 3
+			Color.web("#AFBDA8"), // dull green
 			Color.web("#AE9C9E"), // reddish GRAY 4
 			Color.web("#000000") }; // black null color 5
 	/*
