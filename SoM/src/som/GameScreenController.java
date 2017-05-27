@@ -318,7 +318,7 @@ public class GameScreenController implements Initializable {
 			System.out.println("ROBBER!!!");
 		}
 		if (gameState == PRE_ROLL) {
-			resGen.generateResources(diceValue, board);
+			resGen.generateResources(diceValue);
 			setGameState(MAIN_PHASE);
 		}
 
@@ -585,24 +585,19 @@ public class GameScreenController implements Initializable {
 	public void buildRoad() throws IOException {
 		if (canBuildRoad(((HexEdge) selectedItem), players.get(currentPlayerNumber))) {
 			((HexEdge) selectedItem).addRoad(players.get(currentPlayerNumber));
-			((HexEdge) selectedItem).setStroke(players.get(currentPlayerNumber).getPlayerColor());
-			// ((HexEdge)
-			// selectedItem).setStroke(players.get(currentPlayerNumber).getPlayerColor());
 			// put resources back to the bank
 			System.out.println("BUILD ROAD DIALOG");
-			System.out.println("ADJACENT EDGES:");
 			// System.out.println(((HexEdge) selectedItem).getAdjacentEdge());
 			players.get(currentPlayerNumber).assets.add(players.get(currentPlayerNumber), ((HexEdge) selectedItem));
 			checkForLongestRoad();
 
-			System.out.println("PRogress: " + players.get(currentPlayerNumber).assets.roads.size());
+			System.out.println("Longest Road Progress: " + players.get(currentPlayerNumber).assets.roads.size());
 			// System.out.println(((HexEdge)
 			// selectedItem).getType().toString());
 			for (HexEdge edge : ((HexEdge) selectedItem).getAdjacentEdge()) {
 				if (edge.isOwned()) {
 					// edge.setStroke(Color.WHITE);
 				}
-				System.out.println(edge.isOwned());
 			}
 			closeParentPane();
 		}
@@ -621,8 +616,6 @@ public class GameScreenController implements Initializable {
 						return true;
 					}
 				}
-				System.out.println("\n\n\n ADJACENT VERTEX: ");
-				System.out.println(edge.getAdjacentVertex());
 			}
 		}
 		return false;
@@ -704,7 +697,7 @@ public class GameScreenController implements Initializable {
 
 	public void buildCity() {
 		if (canBuildCity((HexVertex) selectedItem)) {
-			System.out.println("BUILD SETTLEMENT DIALOG");
+			System.out.println("BUILD CITY DIALOG");
 			// resourceBank.bankReturnResource(players.get(currentPlayerNumber)
 			// .removeResources(resourceBank.getResourceCost(((HexVertex)
 			// selectedItem).addCity(players.get(currentPlayerNumber))))); //
@@ -789,13 +782,11 @@ public class GameScreenController implements Initializable {
 		// 1) get hbox with tradeTrackers in it
 		ObservableList<Node> trackers, anchors;
 		trackers = tradeResourceTrackers.getChildren();
-		System.out.println("TRACKERS");
 		for (Node node : trackers) {
 			anchors = ((VBox) node).getChildren();
 			((TradeResourceTracker) node)
 					.setResourcesAvailable(players.get(currentPlayerNumber).resources[trackers.indexOf(node)]);
 			for (Node n : anchors) {
-				System.out.println(((AnchorPane) n).getChildren() + " heh");
 				// 0 Circle
 				((AnchorPane) n).getChildren().get(0);
 				// 1 lblResourceGiveValue
@@ -887,7 +878,6 @@ public class GameScreenController implements Initializable {
 	private void simulateTradeRequest() {
 		offerTrade(new TradePack(players.get(2), players.get(currentPlayerNumber), new int[] { 0, 2, 2, 0, 1 },
 				new int[] { 1, 0, 0, 2, 0 }));
-		System.out.println(players.get(currentPlayerNumber));
 	}
 
 	// offer trade should fire an event with whichever player is being offered a
@@ -937,7 +927,6 @@ public class GameScreenController implements Initializable {
 	}
 
 	private void acceptTrade(TradePack tp) {
-		System.out.println("this player is: " + players.get(currentPlayerNumber).getNickname());
 		// System.out.println("this player is:
 		// "+tp.getReceiver().getNickname());
 
