@@ -1,8 +1,11 @@
+//TODO Eventually move some of the hex-related code (i.e. hex.setStroke) to HexBoard for code clarity/organization
+
 package som;
 
 import java.util.ArrayList;
 
 import javafx.scene.paint.Color;
+import som.assets.Asset;
 
 /**
  * The resource generator is a class that will dispatch resource to each player.
@@ -10,7 +13,6 @@ import javafx.scene.paint.Color;
  * 
  * @author David Kapanga
  * @author Chadwick J Davis
- * 
  * @version 1.0
  */
 
@@ -36,17 +38,52 @@ public class ResourceGenerator {
 		this.board = board;
 	}
 
-	void generateResources(int diceValue, HexBoard board) {
-
+	void generateResources(int diceValue) {
 		// 1 get dice value
 		// 2 find all hexes with correspondinge dice value
 		// 3 get all players adjacent to that hex
 		// 4 get amount of resources to be distributed
 		// 5 check if the bank has enough
 		// 6 distribute resources
-		System.out.println("This is the resource dice value: " + diceValue);
-		hexes = checkHexWithDiceValue(diceValue, board);
-		players = getPlayersOnHex(hexes);
+
+		hexes = checkHexWithDiceValue(diceValue);
+		// 1) find all assets on hex
+		// assetsOnHex : arrayList
+		// 2) get players from asset
+		// 3) check if the bank has enough resources to give each player the
+		// proper amount of resources
+		// 4) give each player the proper amount of resources
+		for (Hex hex : hexes) {
+			int resourcesToDistribute = 0;
+			ArrayList<Asset> assets = new ArrayList<>();
+			for (Asset asset : getAssetsOnHex(hex)) {
+				// get the total number of resources to be distributed
+				resourcesToDistribute += asset.getType();
+				assets.add(asset);
+				// asset.getPlayer().addResource(resources);
+				// player.addResources(resourceBank.bankDrawResource(hex.getTerrainType(),asset.getType()));
+			}
+			if (checkBank(hex.getTerrainType(), resourcesToDistribute)) { // if
+																			// there
+																			// are
+																			// enough
+																			// resources
+																			// to
+																			// give
+																			// to
+																			// everyone
+																			// on
+																			// the
+																			// hex,
+																			// do
+																			// so
+				distributeResources(assets, hex.getTerrainType());
+			}
+
+		}
+
+		// players=getPlayersOnHex(hex);
+
 		// for each hex
 
 	}
@@ -59,15 +96,19 @@ public class ResourceGenerator {
 	 *            the dice number
 	 * @return a list of hexes
 	 */
-	public ArrayList<Hex> checkHexWithDiceValue(int diceValue, HexBoard board) {
+	public ArrayList<Hex> checkHexWithDiceValue(int diceValue) {
 		ArrayList<Hex> listOfHexes = new ArrayList<>();
 		for (Hex hex : board.hexList) {
 			if (hex.getTokenValue() == diceValue) {
-				System.out.println("Also good here: TOKEN VALUE: " + hex.getTokenValue() + " AND Terrain:"
-						+ hex.terrainTypeToString() + " AND COORD: " + hex.getCenterX() + "/" + hex.getCenterY()
-						+ " AND INDEX: " + hex.getIndex());
+				hex.setStroke(Color.GOLD);
+				hex.setStrokeWidth(18);
+				hex.toFront();
+
 				listOfHexes.add(hex);
+			} else {
+				hex.setStroke(Color.TRANSPARENT);
 			}
+
 		}
 
 		return listOfHexes;
@@ -80,18 +121,38 @@ public class ResourceGenerator {
 	 *            a list of hex to check in
 	 * @return list of players to assign resources
 	 */
-	public ArrayList<Player> getPlayersOnHex(ArrayList<Hex> listOfHexes) {
-		ArrayList<Player> listOfPlayers = new ArrayList<>();
-		for (Hex Hex : listOfHexes) {
-			for (int eachVertex = 0; eachVertex < 6; eachVertex++) {
-				if (Hex.getVerticies().get(eachVertex).getAsset() != null) {
-					System.out.println("Hit!: " + Hex.getVerticies().get(eachVertex).getAsset().getPlayer().toString());
-					listOfPlayers.add(Hex.getVerticies().get(eachVertex).getAsset().getPlayer());
-				}
+	public ArrayList<Player> getPlayersOnHex(Hex hex) {
+		ArrayList<Player> listOfplayers = new ArrayList<>();
+		// update hex vertices now
+		int vertexCounter = 0;
+		for (HexVertex vertex : hex.getVerticies()) {
+			vertex = board.vertexList.get(board.vertexList.indexOf(vertex));
+
+			if (vertex.getAsset() != null) {
+				listOfplayers.add(vertex.getAsset().getPlayer());
 			}
+
+			vertexCounter++;
 		}
 
-		return listOfPlayers;
+		return listOfplayers;
+	}
+
+	public ArrayList<Asset> getAssetsOnHex(Hex hex) {
+		ArrayList<Asset> listOfAssets = new ArrayList<>();
+		// update hex vertices now
+		int vertexCounter = 0;
+		for (HexVertex vertex : hex.getVerticies()) {
+			vertex = board.vertexList.get(board.vertexList.indexOf(vertex));
+
+			if (vertex.getAsset() != null) {
+				listOfAssets.add(vertex.getAsset());
+			}
+
+			vertexCounter++;
+		}
+
+		return listOfAssets;
 	}
 
 	/**
@@ -100,20 +161,12 @@ public class ResourceGenerator {
 	 * 
 	 * @return boolean value.
 	 */
-	public boolean checkBank(int resource) {
-
+	public boolean checkBank(int resource, int qty) {
 		/*
 		 * resource numbers: 0 = steel = ore 1 = glass = brick 2 = hemp = sheep
 		 * 3 = soy = wheat 4 = plastic = lumber
 		 */
-		int resourceNumber = 0;
-		boolean boolBank = resourceBank.resources[resource] >= 1;
-		// needs to be changed
-
-		if (resourceBank.resources[resource] >= 0)
-			boolBank = true;
-
-		return boolBank;
+		return resourceBank.resources[resource] >= qty;
 	}
 
 	/**
@@ -124,58 +177,38 @@ public class ResourceGenerator {
 	 * @param listOfHexes
 	 *            list of hex to get resource and assign it to player in it
 	 */
-	public void assignValue(ArrayList<Hex> listOfHexes) {
-		int resourceNumber;
+	public void distributeResources(ArrayList<Asset> assets, int resourceType) {
 		// geting value from hex
-		for (Hex hex : listOfHexes) {
-			hex.setFill(Color.WHITE);
-			if (checkBank(hex.getTerrainType())) {
+		for (Asset asset : assets) {
+			// 1) get the player
+			// 2) get the number of resources to give (assetType)
 
-				switch (hex.getTerrainType()) {
-				case SOY:
+			// 3) give the player that number of resources of this hex's terrain
+			// type
+			resourceBank.bankDrawResource(resourceType, asset.getType());
+			asset.getPlayer().addResource(resourceType, asset.getType()); // adds
+																			// the
+																			// number
+																			// of
+																			// resources
+																			// equal
+																			// to
+																			// the
+																			// assetType
+																			// (0
+																			// for
+																			// roads,
+																			// 1
+																			// for
+																			// settlemts,
+																			// 2
+																			// for
+																			// cities)
+																			// to
+																			// the
+																			// players
+																			// resources)
 
-					resourceBank.resourceList.get(SOY).drawResource(0);
-					for (int i = 0; i < 6; i++) {
-						if (hex.getVerticies().get(i).getAsset() != null)
-							hex.getVerticies().get(i).getAsset().getPlayer().resources[SOY]++;
-					}
-					break;
-				case HEMP:
-
-					resourceBank.resourceList.get(HEMP).drawResource(0);
-					for (int i = 0; i < 6; i++) {
-						if (hex.getVerticies().get(i).getAsset() != null)
-							hex.getVerticies().get(i).getAsset().getPlayer().resources[HEMP]++;
-
-					}
-					break;
-
-				case PLASTIC:
-
-					resourceBank.resourceList.get(PLASTIC).drawResource(0);
-					for (int i = 0; i < 6; i++) {
-						if (hex.getVerticies().get(i).getAsset() != null)
-							hex.getVerticies().get(i).getAsset().getPlayer().resources[PLASTIC]++;
-					}
-					break;
-				case STEEL:
-
-					resourceBank.resourceList.get(STEEL).drawResource(0);
-					for (int i = 0; i < 6; i++) {
-						if (hex.getVerticies().get(i).getAsset() != null)
-							hex.getVerticies().get(i).getAsset().getPlayer().resources[STEEL]++;
-
-					}
-					break;
-
-				default:
-					System.out.println("INVALID RESOURCE");
-					break;
-				}
-			} else {
-				System.out.println(
-						"Not enough resources for " + hex.getTerrainType() + " in the Hex " + hex.getTokenValue());
-			}
 		}
 
 	}
