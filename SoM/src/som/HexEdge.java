@@ -177,11 +177,12 @@ public class HexEdge extends Line {
 		this.asset = new Road(player, this);
 
 		this.setOnMouseEntered(e -> {
-			this.setStroke(Color.GREEN);
+			this.setStroke(player.getPlayerColor());
 		});
 		this.setOnMouseExited(e -> {
-			// this.setStroke(Color.TRANSPARENT);
+			this.setStroke(player.getPlayerColor());
 		});
+
 		return (Road) this.asset;
 	}
 
