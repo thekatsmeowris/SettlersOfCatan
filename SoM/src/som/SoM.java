@@ -28,16 +28,21 @@ import javafx.stage.Stage;
 public class SoM extends Application {
     //private static URL musicURL1, musicURL2;
     //static AudioClip aMusic1, aMusic2;
-     String music1Path = "src/res/WASTELAND1.wav";
+    String music1Path = "res/WASTELAND1.wav";
+
     Media mMusic1 = new Media(new File(music1Path).toURI().toString());
     static MediaPlayer mediaPlayer;
     MediaView  mediaView;
+    // Connect to Online
+    static ObjectClient client;
     
     @Override
     public void start(Stage stage) throws Exception {
         
         
         Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
+
+
         ResourceBank resourceBank= new ResourceBank();
         resourceBank.printResourceList();
         Scene scene = new Scene(root);

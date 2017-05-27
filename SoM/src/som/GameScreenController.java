@@ -134,6 +134,7 @@ public class GameScreenController implements Initializable {
     
 //-----------------------------------------------------//
     
+
     Player thisPlayer=new Player("Mark",new int[]{5,5,5,5,5}, Color.GREEN);
     TradePack thisPlayerTradePack;
     ArrayList<Player> players;
@@ -149,7 +150,12 @@ public class GameScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        board= new HexBoard();
+        createTestPlayers();
+
+        board = new HexBoard();
+        System.out.println(getPlayerNum());
+
+
         resourceGenerator= new ResourceGenerator(board);
         turnCount=1;
         sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
@@ -157,13 +163,14 @@ public class GameScreenController implements Initializable {
                 Number old_val, Number new_val) {
                     for (Player p : players){
                         p.setVictoryPoints((Math.round((new_val.floatValue()))));
+
                         System.out.println(((Math.round((new_val.floatValue()))))+"  "+ p.victoryPointGauge.getLength());
                         
                         
                         //setHighestVictoryPoints(p);
 
                     }
-            }
+                }
         });
         
         
@@ -264,8 +271,7 @@ public class GameScreenController implements Initializable {
 
         }
         
-                for(HexEdge hexEdge: board.edgeList)
-        {
+        for(HexEdge hexEdge: board.edgeList){
             hexEdge.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                 setSelectedItem(hexEdge);
             if(!popupDialog.isVisible()){
@@ -279,18 +285,20 @@ public class GameScreenController implements Initializable {
                 }
                 
             }
-                if(gameBoard.getRotate()>0){
+                
+            if(gameBoard.getRotate()>0){
                 popupDialog.relocate(Math.abs(hexEdge.getStartPoint().getY()-hexEdge.getEndPoint().getY()),Math.abs(hexEdge.getStartPoint().getX()-hexEdge.getEndPoint().getX()));
                     
-                }else{
+            }
+            else{
                 txtPopUpText.setText("Old: \n"+ popupDialog.getLayoutX()+", "+popupDialog.getLayoutY()
                             +"Current: "+
                             Math.abs(hexEdge.getStartPoint().getX()-hexEdge.getEndPoint().getX())
                             +","+
                             Math.abs(hexEdge.getStartPoint().getY()-hexEdge.getEndPoint().getY())
-                );
+                            );
                 popupDialog.relocate(Math.abs(hexEdge.getStartPoint().getX()-hexEdge.getEndPoint().getX()),Math.abs(hexEdge.getStartPoint().getY()-hexEdge.getEndPoint().getY()));
-                }
+            }
                 /*
                 popupDialog.setLayoutX(v.getLayoutX());
                 popupDialog.setLayoutY(v.getLayoutY());*/                
@@ -306,15 +314,14 @@ public class GameScreenController implements Initializable {
 
      
         
-        gameBoard.getChildren().add(board.getBoardPane());
+    gameBoard.getChildren().add(board.getBoardPane());
         
-//Player GUI Stuff
-    makeResources();
-    createTestPlayers();
-    fillPlayerInfo();
+    //Player GUI Stuff
+        makeResources();
+        fillPlayerInfo();
  
       
-     
+  
     //gameLoop();
     }
     
@@ -483,6 +490,29 @@ public class GameScreenController implements Initializable {
      
      
      //Buid Family of Functions:
+     
+     public void buildSettlement() throws IOException{
+         if(canBuildSettlement((HexVertex) selectedItem)){
+             System.out.println("BUILD SETTLEMENT DIALOG");
+             //((HexVertex)selectedItem).addSettlement(thisPlayer);
+            if (freeSettlement<=0){                                                                                                               //quick bug fix to see if freeSettlement can work. must change where it decrements.
+            resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexVertex)selectedItem).addSettlement(thisPlayer))));
+            }else{
+                ((HexVertex)selectedItem).addSettlement(thisPlayer);
+                freeSettlement--;
+            }
+            ((HexVertex) selectedItem).setFill((Paint) thisPlayer.getPlayerColor());                                //set fill to color the vertex the player's color (indicating a settlement
+            thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));                                            //add this new asset to the player's list of assets
+            thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE);                        //increase the vp of the player
+            pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));                               //adjust the progress bar for vp for thisPlayer
+            updateResources();
+            for(HexEdge edge:((HexVertex)selectedItem).getAdjacentEdge() ){
+                edge.setStroke(Color.WHITE);
+                if(((HexEdge)edge).isOwned()){
+                    edge.setFill(thisPlayer.getPlayerColor());
+                }
+            }
+            //test
 
     public void buildSettlement() throws IOException{
         if(canBuildSettlement((HexVertex) selectedItem)){
@@ -510,8 +540,37 @@ public class GameScreenController implements Initializable {
            int index=board.vertexList.indexOf(hv);
            for(HexEdge edge: ((HexVertex) selectedItem).getAdjacentEdge()){
 
+
+             
+         }
+     }
+     
+     public void getSelectedItemInfo(){
+     //        System.out.println((HexEdge)selectedItem);
+     //        System.out.println((HexVertex)selectedItem);
+     //        offerTrade(new tp(thisPlayer));
+
+     }
+     public boolean canBuildSettlement(HexVertex selectedItem){
+            boolean result=true;
+            //if (thisPlayer.assets.settlements.size()>=1&&thisPlayer.assets.cities.size()>=1){
+             
+                int localCount=1;
+                System.out.println("ADJACENT VERTICIES: ");
+                for(HexEdge edge: selectedItem.getAdjacentEdge() ){                            //check all adjacent edges' "otherVertex" to see if it is occupied with an asset
+                    System.out.println("\n\n "+localCount);
+                    localCount++;
+                    result= ((HexVertex) (edge.getOtherPoint(((HexVertex)selectedItem)))).getAsset()==null;         //if any of the "otherVertex"'s are null then continue on
+                    
+                    System.out.println(((HexVertex) (edge.getOtherPoint(((HexVertex)selectedItem)))).getAsset());   
+                    System.out.println(result);                                                 
+                   // if(freeSettlement>0){return result;}
+                    
+                    if (!result){return result ;}                                                                   //if any of the otherVertex's contain an asset return false and player cannot build here
+
                System.out.println("//");
                try{
+
 
                    ((HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem)))).setFill(Color.GOLDENROD);
 
@@ -750,8 +809,13 @@ public class GameScreenController implements Initializable {
         players.add(dek);
         players.add(lisa);
         players.add(mew);
+
+        System.out.println(getPlayerNum());
+        System.out.println(getPlayerNum());
+
         thisPlayer=mark;
-//      return mark;
+
+
         
     }
     public void openTradeDialog(){
@@ -1005,7 +1069,7 @@ public class GameScreenController implements Initializable {
         playerBlocks.add(pnPlayerRight);
         int counter=0;
         for(Player p: players){
-            if(p.nickname!="Mark"){
+            if(p.nickname!=thisPlayer.nickname){
                 p.pnPlayerInfo=playerBlocks.get(counter);
                 ((Label) playerBlocks.get(counter).getChildren().get(6)).setText(p.nickname);
                  p.victoryPointGauge=(Arc) playerBlocks.get(counter).getChildren().get(1);
@@ -1069,9 +1133,19 @@ public class GameScreenController implements Initializable {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    private int getPlayerNum(){
+        try{
+            return (int) SoM.client.read();
+        }
+        catch (Exception e){
+            return -1;
+        }
+    }
+
     private boolean canBuildCity(HexVertex hexVertex) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 
     
 }
