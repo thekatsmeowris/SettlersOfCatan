@@ -38,8 +38,6 @@ public class ResourceGenerator {
 
     
     void generateResources(int diceValue) {
-            System.out.println("GENERATE RESOURCE FUNC");
-            System.out.println(board);
         //1 get dice value
         //2 find all hexes with correspondinge dice value
         //3 get all players adjacent to that hex
@@ -48,7 +46,6 @@ public class ResourceGenerator {
         //6 distribute resources
         
         hexes=checkHexWithDiceValue(diceValue);
-        System.out.println("\n\n\t\t HEXES: \t\n\n"+ hexes);
                    //1) find all assets on hex
                 //assetsOnHex : arrayList
                 //2) get players from asset
@@ -89,7 +86,6 @@ public class ResourceGenerator {
          */
         public ArrayList<Hex> checkHexWithDiceValue(int diceValue) 
         {
-            System.out.println(board.hexList);
 		ArrayList<Hex>listOfHexes= new ArrayList<>();
                 for (Hex hex: board.hexList)
                 {
@@ -98,7 +94,10 @@ public class ResourceGenerator {
                                             hex.setFill(Color.GOLD);
 
                         listOfHexes.add(hex);
+                    }else{
+                        hex.setFill(hex.getHexColor());
                     }
+                    
                 }
      
                 
@@ -121,11 +120,9 @@ public class ResourceGenerator {
                              if(vertex.getAsset()!=null)
                         {
                             listOfplayers.add(vertex.getAsset().getPlayer());
-                            System.out.println("adding player: "+(vertex.getAsset().getPlayer().getNickname()));
                         }
                              
                              
-                             System.out.println("AFTER ASSN: "+ ((boolean)(vertex==board.vertexList.get(board.vertexList.indexOf(vertex)))));
 
                              vertexCounter++;
                          }
