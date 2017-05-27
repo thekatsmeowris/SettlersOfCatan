@@ -1,18 +1,17 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package som;
 
+import java.awt.Point;
+import java.io.IOException;
+import static java.lang.System.gc;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.Stack;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -20,14 +19,33 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import java.util.Collections;
 import java.util.List;
+import javafx.animation.Animation;
+import javafx.geometry.Pos;
+import static javafx.geometry.Pos.CENTER;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
 import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 /**
  *
  * @author makogenq
  */
 public class HexBoard {
+    
+   Image marsImage,spriteImage; //Image of Mars and sprite sheet of tornado
+    private static final int SPRITE_COLUMNS  =   5;
+    private static final int SPRITE_COUNT    =  5;
+    private static final int SPRITE_OFFSET_X =  0;
+    private static final int SPRITE_OFFSET_Y =  2;
+    private static final int SPRITE_WIDTH    = 95;
+    private static final int SPRITE_HEIGHT   = 168;
+    
 
     public Color[] getColorPallete() {
         return colorPallete;
@@ -54,7 +72,9 @@ public class HexBoard {
     Pane vertexPane;                        //this contains the vertices once they're each drawn
     Pane edgePane;                          //this contains the edges once they're each drawn
     Pane popUpDialog=new Pane();            //this is the pane that appears once a vertex or edge is clicked.
-
+    
+    final Canvas MarsCanvas; //canvas for Mars Image
+    
     int columnMax;                          //this is the maximum number of columns for a row...this is incremented and decremented to yield the 3,4,5,4,3 row pattern
     double hexRadius, inRadius;             //this is the default circumradius and inradius of all hexes
     float centerX, centerY;                 //this is the center of each hex when it is drawn
@@ -99,8 +119,9 @@ public class HexBoard {
     Stack terrainStack= new Stack();
     
    public HexBoard() {
-        //int[] boardBoundaries = new int[]{0.0,2,3,4};
-        //800x600
+        MarsCanvas = new Canvas(790, 790);
+        final GraphicsContext graphicsContext = MarsCanvas.getGraphicsContext2D();
+       
         columnMax=maxColumns-2;                                 //this sets the max columns of the first row to 2 less than the longest (median) row
                                                                 //i needed this because i had a hard time generating the radii of each in the constructor
         Hex modelHex= new Hex(0,400,300,50, 50*0.87, Color.ALICEBLUE, 0, 5);           //this generates a hex as a model to generate the rest of the board hexes from
@@ -109,6 +130,7 @@ public class HexBoard {
         inRadius= modelHex.getLayoutBounds().getWidth()/2;      //this makes the inRadius which is roughly the circumradius * (sqrt(3)/2) but 1/2*getwidth is the same and it's prettier
         boardPane= new Pane();                                  //creates new board for boardpane
         vertexPane= new Pane();                                 //creates new board for vertexpane
+       
         
         centerX= (float) (boardPane.getWidth()/2);              //assigns the center of the pane a value
         centerY= (float) (boardPane.getHeight()/2);                          
@@ -124,13 +146,33 @@ public class HexBoard {
 //        addAdjacentVerticies();
         //  addAdjacentHexes();
         //
-                                                                
+         spriteImage = new Image(getClass().getResourceAsStream("graphics/Tornado.png"));   
+        final ImageView spriteImageView = new ImageView(spriteImage);
+        spriteImageView.setViewport(new Rectangle2D(SPRITE_OFFSET_X, SPRITE_OFFSET_Y, SPRITE_WIDTH, SPRITE_HEIGHT));
+        spriteImageView.setRotate(270);
+        spriteImageView.setFitHeight(50);
+        spriteImageView.setFitWidth(50);
+        final Animation animation = new SpriteAnimation(
+                spriteImageView,
+                Duration.millis(500),
+                SPRITE_COUNT, SPRITE_COLUMNS,
+                SPRITE_OFFSET_X, SPRITE_OFFSET_Y,
+                SPRITE_WIDTH, SPRITE_HEIGHT
+        );
+        animation.setCycleCount(Animation.INDEFINITE);
+        animation.play();
+        
 
         vertexPane.setPickOnBounds(false);                      //sets property to false so that the circle (vertex point) is selectable and the bounding shape around it is not
         edgePane.setPickOnBounds(false);
         
-        
-        boardShell.getChildren().addAll(boardPane,edgePane,vertexPane);     //adds the 3 panes to the stackpane and so publishes the constructed board.
+        marsImage = new Image(getClass().getResourceAsStream("graphics/MapAr.jpg"));
+        graphicsContext.drawImage(marsImage, 130, 110, 480, 480);
+       
+       spriteImageView.setTranslateX(-30.0);
+       spriteImageView.setTranslateY(-50.0);
+       
+        boardShell.getChildren().addAll(boardPane,MarsCanvas,edgePane,vertexPane,spriteImageView);     //adds the 3 panes and an imageview to the stackpane and so publishes the constructed board.
 
     }
     
@@ -181,7 +223,7 @@ public class HexBoard {
                }
                 
                 hexCounter++;
-                boardPane.getChildren().add(h);
+                boardPane.getChildren().addAll(h);
                 
                 hexList.add(h);
             }
@@ -203,7 +245,9 @@ public class HexBoard {
             for (int i=0; i< h.getPoints().size(); i=i+2){
                 Point2D p= new Point2D(h.getPoints().get(i), h.getPoints().get(i+1));
                 
-                HexVertex hV= new HexVertex(p, h);
+//                HexVertex hV= new HexVertex(p, h);
+                HexVertex hV= new HexVertex(p);
+                
                 h.addVertex(hV);
                 //hV.setFill(colorPallete[j]);
                 //j++;
@@ -226,22 +270,18 @@ public class HexBoard {
                 //check if vertexList contains the vertex already
                 //check item
                 
-                System.out.println(vertexList.contains(hV));
 
                 boolean inList=vertexList.contains(hV);
                 
                 
                 
-                System.out.println("check 0");
                 if (inList){
-                    System.out.println(hV+" already exists");
-                    vertexList.get(vertexList.indexOf(hV)).addAdjacentHex(h);
+                    vertexList.get(vertexList.indexOf(hV)).addAdjacentHex(h);           //adds each hex that shares a vertex to the adjacentHex arrayList within this hexVertex
+    
                     
                 }else{
-                    System.out.println("adding vertex: "+hV+"\n");
                     vertexList.add(hV);
                     //vertexPane.getChildren().add(new Circle(hV.position.getX(),hV.position.getX(),5,Color.BLACK));
-                    System.out.println(vertexPane);
                     
                     //Circle c= new Circle(hV.position.getX(), hV.position.getY(),5,Color.BLACK);
                     
@@ -255,10 +295,8 @@ public class HexBoard {
         //boardPane.getChildren().add(vertexPane);
         
    }
-        System.out.println("Verticies: ");
-        System.out.print(vertexList);
-        System.out.println("Hex List: ");
-        System.out.println(hexList);
+
+        
 
 }
        
@@ -296,6 +334,7 @@ public class HexBoard {
                         new Point2D((double) points.get(p3),(double) points.get(p4))
                         
                         );
+                
                ((Line) (hE)).setOnMouseEntered(e ->{
                     hE.setStroke(Color.BLACK);
                 });
@@ -322,15 +361,11 @@ public class HexBoard {
                 
                 
                 
-                System.out.println("check 0");
                 if (inList){
-                    System.out.println(hE+" already exists");
                     edgeList.get(edgeList.indexOf(hE)).addHex(h);
                     
                 }else{
-                    System.out.print(h);
 
-                    System.out.println("adding edge: "+hE+"\n");
                     edgeList.add(hE);
                 
                     
@@ -343,14 +378,25 @@ public class HexBoard {
                 
 
             }
-   
-   
-   
-   
-   
-   
-   }
-}
+        }
+                //update hex vertices now
+        int hexCounter=0;
+         for (Hex hex: hexList){
+             int vertexCounter=0;
+             System.out.println("[\t\t\t\t\t"+hexCounter+"\t\t\t\t\t]");
+             for(HexVertex vertex: hex.getVerticies()){
+                 System.out.print(vertexCounter+"\t\t");
+                 System.out.print(vertex +"\n" );                 
+                 System.out.println("it's in the list on at index: "+vertexList.indexOf(vertex));
+                 System.out.println("BEFORE ASSN: "+ ((boolean)(vertex==vertexList.get(vertexList.indexOf(vertex)))));
+                 vertex=vertexList.get(vertexList.indexOf(vertex));
+                System.out.println("AFTER ASSN: "+ ((boolean)(vertex==vertexList.get(vertexList.indexOf(vertex)))));
+
+                 vertexCounter++;
+             }
+             hexCounter++;
+         }   
+    }
     
    public Pane getBoardPane(){
        return boardShell;
@@ -386,9 +432,6 @@ public class HexBoard {
             
             
             
-            System.out.println(vertexList.indexOf(h)+": "
-            +h+"\n"
-            +h.getAdjacentEdge());
             
         }
         for(HexEdge h: edgeList){
@@ -396,12 +439,13 @@ public class HexBoard {
             HexVertex start,end;
             start=new HexVertex(h.getStartPoint());
             end=new HexVertex(h.getEndPoint());
-            System.out.println("CHECKING IF THE POINT EXISTS IN VERTEXLIST");
             if(vertexList.contains(start)){
                 h.addAdjacentVertex(vertexList.get(vertexList.indexOf(start)));
+                h.addStartVertex(vertexList.get(vertexList.indexOf(start)));
             }
             if(vertexList.contains(end)){
                 h.addAdjacentVertex(vertexList.get(vertexList.indexOf(end)));
+                h.addEndVertex(vertexList.get(vertexList.indexOf(end)));
             }
             //now that adjacent vertices are attached, get the adjacent edges from each
             

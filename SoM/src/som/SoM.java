@@ -5,6 +5,11 @@
  */
 package som;
 
+import progressCards.RoadBuilding;
+import devCards.VictoryPoint;
+import progressCards.YearOfPlenty;
+import progressCards.Monopoly;
+import devCards.Knight;
 import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +19,6 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-
 import javafx.stage.Stage;
 
 /**
@@ -22,24 +26,23 @@ import javafx.stage.Stage;
  * @author makogenq
  */
 public class SoM extends Application {
-    
     //private static URL musicURL1, musicURL2;
     //static AudioClip aMusic1, aMusic2;
-     String music1Path = "src/WASTELAND1.wav";
+    String music1Path = "res/WASTELAND1.wav";
+
     Media mMusic1 = new Media(new File(music1Path).toURI().toString());
     static MediaPlayer mediaPlayer;
     MediaView  mediaView;
+    // Connect to Online
+    static ObjectClient client;
     
     @Override
     public void start(Stage stage) throws Exception {
         
-        mediaPlayer = new MediaPlayer(mMusic1); //mediaPlayer
-        mediaView = new MediaView(mediaPlayer);
-        mediaView.setMediaPlayer(mediaPlayer);
-        
-        loadAudioAssets();      
         
         Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
+
+
         ResourceBank resourceBank= new ResourceBank();
         resourceBank.printResourceList();
         Scene scene = new Scene(root);
@@ -51,6 +54,8 @@ public class SoM extends Application {
         stage.setScene(scene);
         stage.show();
 
+        MediaClass mediaClass = new MediaClass();
+       
     }
 
     /**
@@ -118,7 +123,7 @@ public class SoM extends Application {
 		// d.addCard(yop);
 		// d.addCard(mp);
 		d.addCard(rb);
-		while (d.hasCard()){
+		while (!d.isEmpty()){
 			DevelopmentCard card = d.drawCard();
 			System.out.println(card);	
 			if (card instanceof RoadBuilding)
