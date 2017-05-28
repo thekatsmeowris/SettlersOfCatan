@@ -50,6 +50,9 @@ import som.assets.Settlement;
  * @author makogenq
  */
 public class GameScreenController implements Initializable {
+    static Audio audio = new Audio();
+    
+    
     @FXML
     Pane 
             gameLayer, 
@@ -141,6 +144,7 @@ public class GameScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         board= new HexBoard();
+        audio.playMusic1();
         sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
@@ -304,6 +308,7 @@ public class GameScreenController implements Initializable {
     }
     
     public int rollDice(){
+        audio.playClips(1);
        btnRollDice.setDisable(true);
             int diceValue;
             Integer r;
@@ -449,6 +454,7 @@ public class GameScreenController implements Initializable {
             }else{
                 ((HexVertex)selectedItem).addSettlement(thisPlayer);
             }
+            audio.playClips(0);
             thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));
             thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE);
             //pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));
@@ -521,6 +527,8 @@ public class GameScreenController implements Initializable {
      public void buildRoad(ActionEvent e) throws IOException{
          if(canBuildRoad(((HexEdge)selectedItem), thisPlayer)){
          ((HexEdge)selectedItem).addRoad(thisPlayer);
+         
+         audio.playClips(0);
                                                                                                 //put resources back to the bank
          System.out.println("BUILD ROAD DIALOG");
          System.out.println("ADJACENT EDGES:");
