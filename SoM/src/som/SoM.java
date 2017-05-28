@@ -5,7 +5,23 @@
  */
 package som;
 
+<<<<<<< HEAD
+<<<<<<< HEAD
 import java.io.File;
+=======
+=======
+>>>>>>> master
+import progressCards.RoadBuilding;
+import devCards.VictoryPoint;
+import progressCards.YearOfPlenty;
+import progressCards.Monopoly;
+import devCards.Knight;
+import java.io.File;
+
+<<<<<<< HEAD
+>>>>>>> master
+=======
+>>>>>>> master
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,19 +37,38 @@ import javafx.stage.Stage;
  * @author makogenq
  */
 public class SoM extends Application {
+<<<<<<< HEAD
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> master
+=======
+
+>>>>>>> master
     //private static URL musicURL1, musicURL2;
     //static AudioClip aMusic1, aMusic2;
-     String music1Path = "src/res/WASTELAND1.wav";
+    String music1Path = "src/res/WASTELAND1.wav";
+
     Media mMusic1 = new Media(new File(music1Path).toURI().toString());
     static MediaPlayer mediaPlayer;
     MediaView  mediaView;
+    // Connect to Online
+    static ObjectClient client;
     
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
+=======
+>>>>>>> master
     @Override
     public void start(Stage stage) throws Exception {
         
         Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
+
+
         ResourceBank resourceBank= new ResourceBank();
         resourceBank.printResourceList();
         Scene scene = new Scene(root);
@@ -89,6 +124,19 @@ public class SoM extends Application {
         mediaPlayer.play();
     }
 
+<<<<<<< HEAD
+=======
+    /*
+     public AudioClip getaMusic1() {
+     return aMusic1;
+     }
+     
+     public AudioClip getaMusic2() {
+     return aMusic2;
+     }*/
+
+    
+>>>>>>> master
     
     /*public void TestDeck() {
 		Knight k = new Knight();
@@ -98,18 +146,29 @@ public class SoM extends Application {
 		RoadBuilding rb = new RoadBuilding();
 		DevelopmentDeck d = new DevelopmentDeck();
 
-		
 		d.addCard(k);
 		d.addCard(vp);
 		// d.addCard(yop);
 		// d.addCard(mp);
 		d.addCard(rb);
-		while (d.hasCard()){
+		while (!d.isEmpty()){
 			DevelopmentCard card = d.drawCard();
-			System.out.println(card);	
+			System.out.println(card);
 			if (card instanceof RoadBuilding)
 				card.playCard();
+<<<<<<< HEAD
+<<<<<<< HEAD
                 }
         }
     */
+=======
+		}
+	}
+
+>>>>>>> master
+=======
+		}
+	}
+
+>>>>>>> master
 }
