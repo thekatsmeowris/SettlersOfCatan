@@ -5,12 +5,7 @@
  */
 package som;
 
-import java.awt.Point;
-import java.io.IOException;
-import static java.lang.System.gc;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Stack;
 
 import javafx.collections.ObservableList;
@@ -24,19 +19,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import java.util.Collections;
 import java.util.List;
-import javafx.animation.Animation;
-import javafx.geometry.Pos;
-import static javafx.geometry.Pos.CENTER;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-
-
-import javafx.scene.shape.Shape;
-import javafx.util.Duration;
 
 /**
  *

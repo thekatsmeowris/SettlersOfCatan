@@ -23,6 +23,7 @@
 <?import customcontrols.TradeResourceTracker?>
 
 
+
 <!-- <?import customcontrols.TradeResourceTracker?> -->
 
 
@@ -388,6 +389,13 @@
                                           <Pane fx:id="pnStatusPane" layoutX="167.0" layoutY="-10.0" prefHeight="101.0" prefWidth="274.0">
                                              <children>
                                                 <Label fx:id="txtCurrentStatus" layoutX="75.0" layoutY="51.0" text="Game State">
+<!--
+                                                   <font>
+                                                      <Font size="22.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="txtLastRoll" layoutX="75.0" layoutY="81.0" text="">
+-->
                                                    <font>
                                                       <Font size="22.0" />
                                                    </font>
@@ -398,6 +406,33 @@
                                                       <Font size="22.0" />
                                                    </font>
                                                 </Label>
+                                             </children>
+                                          </Pane>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane mouseTransparent="true" prefHeight="200.0" prefWidth="200.0" visible="false">
+                                       <children>
+                                          <Pane id="pnBuild" fx:id="pnBuild" layoutX="5.0" layoutY="22.0" mouseTransparent="true" prefHeight="521.0" prefWidth="1300.0" style="-fx-background-color: #c0c0c0;" visible="false">
+                                             <children>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="521.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                                                <Text layoutX="546.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Road=0VP" />
+                                                <Text layoutX="546.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settlement=1VP" />
+                                                <Text layoutX="546.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City=2VPs" />
+                                                <Text layoutX="546.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dev Card=? VPs" />
+                                                <Text layoutX="607.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Building Costs" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="57.0" layoutY="224.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="363.0" layoutY="224.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="703.0" layoutY="224.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="1043.0" layoutY="224.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                                                <Text layoutX="129.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dev Card" />
+                                                <Text layoutX="449.0" layoutY="321.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Road" />
+                                                <Text layoutX="789.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settlement" />
+                                                <Text layoutX="1129.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CIty" />
+                                                <Button layoutX="84.0" layoutY="424.0" mnemonicParsing="false" onAction="#buildDev" text="Buy Development Card" />
+                                                <Button layoutX="435.0" layoutY="424.0" mnemonicParsing="false" text="Buy Road" />
+                                                <Button layoutX="744.0" layoutY="424.0" mnemonicParsing="false" text="Buy Settlement" />
+                                                <Button layoutX="1114.0" layoutY="424.0" mnemonicParsing="false" text="Buy City" />
+                                                <Button layoutX="1214.0" layoutY="11.0" mnemonicParsing="false" onAction="#closeBuild" text="X" />
                                              </children>
                                           </Pane>
                                        </children>

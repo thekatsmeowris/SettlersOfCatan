@@ -12,6 +12,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.Random;
+import java.util.ResourceBundle;
+import java.util.Collections;
+import java.util.Random;
+import java.util.ResourceBundle;
 
 import customcontrols.TradeResourceTracker;
 import javafx.beans.value.ChangeListener;
@@ -54,6 +59,8 @@ import som.ResourceBank;
  */
 public class GameScreenController implements Initializable {
 
+
+    
 
 
 	@FXML
@@ -118,7 +125,6 @@ public class GameScreenController implements Initializable {
                 hbOutgoingResources;
 	@FXML
 	private VBox vbTradeContents;
-        
 
 	Node selectedItem;
 	int diceValue;
@@ -129,13 +135,13 @@ public class GameScreenController implements Initializable {
 	final int SETTLMENT_VP_VALUE = 1;
 	ResourceBank resourceBank = new ResourceBank(19);
 	ResourceGenerator resGen;
-        
-        static Audio audio = new Audio();
+
 	public final static int MAX_PLAYERS = 4;
 	private static Player currentPlayer;
 	private static Player playerWithLongestRoad;
 	private static Player playerWithLargestArmy;
 	private static int gameState;
+        static Audio audio = new Audio();
 
 	public final static int GAME_OVER = 404;
 	public final static int NEW_GAME = 0;
@@ -189,7 +195,7 @@ public class GameScreenController implements Initializable {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		currentPlayerNumber = 0;
 		board = new HexBoard();
-                turnCount=1;
+                  turnCount=1;
                 audio.playMusic1();
 		sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
@@ -319,9 +325,9 @@ public class GameScreenController implements Initializable {
 	}
 
 	public int rollDice() {
-	        audio.playClips(1);
-	
-            btnRollDice.setDisable(true);
+                audio.playClips(1);
+
+                btnRollDice.setDisable(true);
 		Integer r;
 		Random z = new Random();
 		r = z.nextInt(6) + 1;
@@ -506,37 +512,41 @@ public class GameScreenController implements Initializable {
 	// Buid Family of Functions:
 
 	public void buildSettlement() throws IOException {
+             Player thisPlayer=players.get(currentPlayerNumber);
+        
 		if (canBuildSettlement((HexVertex) selectedItem)) {
 			// ((HexVertex)selectedItem).addSettlement(thisPlayer);
-			if (freeSettlement < 0) { // quick bug fix to see if freeSettlment
-										// can work. must change where it
-										// decrements.
-				resourceBank.bankReturnResource(
-						resourceBank.getResourceCost(
-								((HexVertex) selectedItem).addSettlement(players.get(currentPlayerNumber))),
-						players.get(currentPlayerNumber));
-			} else {
-				((HexVertex) selectedItem).addSettlement(players.get(currentPlayerNumber));
-				System.out.println("Current color: " + players.get(currentPlayerNumber).getPlayerColor());
-				System.out.println("For current player: " + players.get(currentPlayerNumber) + " and player number: "
-						+ currentPlayerNumber);
+			 if (freeSettlement<=0){                                                                                                               //quick bug fix to see if freeSettlement can work. must change where it decrements.
+            resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexVertex)selectedItem).addSettlement(thisPlayer))));
+            }else{    
+                             
+                         
+				((HexVertex) selectedItem).addSettlement(thisPlayer);
+				System.out.println("Current color: " + thisPlayer.getPlayerColor());
+				//System.out.println("For current player: " + players.get(currentPlayerNumber) + " and player number: "
+				//		+ currentPlayerNumber);
 			}
 			System.out.println("BUILD Settlement DIALOG");
 			thisPlayer.assets.add(thisPlayer, ((HexVertex) selectedItem));
 			thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints()) + SETTLMENT_VP_VALUE);
-			audio.playClips(0);
-
-                        // pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));
+			// pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));
+                        audio.playClips(0);
 			updateResources();
 			// System.out.println("ADJACENT EDGES:");
 			// System.out.println(((HexVertex) selectedItem).getAdjacentEdge());
-			for (HexEdge edge : ((HexVertex) selectedItem).getAdjacentEdge()) {
+                        
+                        //**-------------------------------------------------------//
+                        //**This part highlights adjacent edges for debugging problems
+                        //**-----------------------------------------------------//
+			/*for (HexEdge edge : ((HexVertex) selectedItem).getAdjacentEdge()) {
 				// edge.setStroke(Color.WHITE);
 				if (((HexEdge) edge).isOwned()) {
-					edge.setFill(players.get(currentPlayerNumber).getPlayerColor());
+					edge.setFill(thisPlayer.getPlayerColor());
 
 				}
 			}
+                        *///end debug edge highlighting section
+                        //**---------------------------------------------------------//
 			closeParentPane();
 
 		}
@@ -545,6 +555,7 @@ public class GameScreenController implements Initializable {
                    System.out.println((HexEdge)selectedItem);
                    System.out.println((HexVertex)selectedItem);
            //        offerTrade(new tp(thisPlayer));
+
 
            }
  public boolean canBuildSettlement(HexVertex selectedItem){
@@ -580,7 +591,11 @@ public class GameScreenController implements Initializable {
                        result=true;                                                        //only returns true if the otherPoint has no settlement
                    }*/
       return result;
-    }
+
+           }
+    
+
+
 
 	private boolean canBuildCity(HexVertex hv) {
 		return true;
@@ -611,7 +626,6 @@ public class GameScreenController implements Initializable {
            thisPlayer.assets.add(thisPlayer,((HexEdge)selectedItem));
            ((HexEdge) selectedItem).setStroke((Paint)thisPlayer.getPlayerColor());                                //set fill to color the vertex the player's color (indicating a settlement
             audio.playClips(0);
-
 
            updateResources();
 
@@ -659,6 +673,7 @@ public class GameScreenController implements Initializable {
                    System.out.println("FAIL ON START");
                }   
 
+
                try{
                    System.out.println("This vertex was not null");
                        if(hexEdge.getEndVertex().getAsset().getPlayer().equals(thisPlayer)){
@@ -700,14 +715,16 @@ public class GameScreenController implements Initializable {
 	}
 
 
+
 	private boolean checkRequirements(HexVertex hexVertex, Player player, Settlement settlement) { // checks
-																									// requirements
-																									// for
-																									// settlement
+
 
 		return (isGreater(players.get(currentPlayerNumber).getResources(), new int[] { 3, 0, 0, 2, 0 }));
 
 	}
+
+
+
 
 	private boolean checkRequirements(Player player) { // checks requirements
 														// for developmentCards
@@ -768,6 +785,11 @@ public class GameScreenController implements Initializable {
 
     }
 
+
+	
+
+	
+	
  private void generateResources(int diceValue) {
         resourceGenerator.generateResources(diceValue);
         updateResources();

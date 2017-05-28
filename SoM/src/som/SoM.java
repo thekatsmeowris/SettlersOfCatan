@@ -5,12 +5,10 @@
  */
 package som;
 
-import progressCards.RoadBuilding;
-import devCards.VictoryPoint;
-import progressCards.YearOfPlenty;
-import progressCards.Monopoly;
-import devCards.Knight;
+
 import java.io.File;
+
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -110,7 +108,6 @@ public class SoM extends Application {
      }*/
 
     
-    
     /*public void TestDeck() {
 		Knight k = new Knight();
 		VictoryPoint vp = new VictoryPoint();
@@ -129,11 +126,11 @@ public class SoM extends Application {
 			System.out.println(card);
 			if (card instanceof RoadBuilding)
 				card.playCard();
-<<<<<<< HEAD
+
                 }
         }
     */
-		}
+}
 	
 
 
