@@ -94,7 +94,6 @@ public class ResourceBank {
       public void printResourceList() //method to print out resourceList
       { 
           //String resourceName = new String(); //String variable to keep track of resource Name
-          System.out.println(resources);
 
 
       }

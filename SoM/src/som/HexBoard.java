@@ -1,10 +1,13 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package som;
 
+import java.awt.Point;
+import java.io.IOException;
+import static java.lang.System.gc;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,21 +22,44 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import java.util.Collections;
+import java.util.List;
+import javafx.animation.Animation;
+import javafx.geometry.Pos;
+import static javafx.geometry.Pos.CENTER;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+
+import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 /**
  *
  * @author makogenq
  */
 public class HexBoard {
+    
+   Image marsImage,spriteImage; //Image of Mars and sprite sheet of tornado
+    private static final int SPRITE_COLUMNS  =   5;
+    private static final int SPRITE_COUNT    =  5;
+    private static final int SPRITE_OFFSET_X =  0;
+    private static final int SPRITE_OFFSET_Y =  2;
+    private static final int SPRITE_WIDTH    = 95;
+    private static final int SPRITE_HEIGHT   = 168;
+    
 
-	public Color[] getColorPallete() {
-		return colorPallete;
+	public Color[] getColorPalette() {
+		return colorPalette;
 	}
 
 	// get longest row
 	// build board based on longest row
-	public void setColorPallete(Color[] colorPallete) {
-		this.colorPallete = colorPallete;
+	public void setColorPalette(Color[] colorPalette) {
+		this.colorPalette = colorPalette;
 	}
 	// ie 5 builds 5 rows of 3,4,5,4,3
 
@@ -70,7 +96,7 @@ public class HexBoard {
 	// This is the palette for colors to be used in the generation of the board.
 	// Also, below this color palette should be a secondary one used for
 	// debugging the board
-	Color[] colorPallete = new Color[] { Color.web("#7EA6C4"), // light blueish
+	Color[] colorPalette = new Color[] { Color.web("#7EA6C4"), // light blueish
 																// color 0
 			Color.web("#C16161"), // abse REDDISH Color 1
 			Color.web("#EED79B"), // pale yellow 2
@@ -78,7 +104,7 @@ public class HexBoard {
 			Color.web("#AE9C9E"), // reddish GRAY 4
 			Color.web("#000000") }; // black null color 5
 	/*
-	 * Color[] colorPallete= new Color[]{ Color.VIOLET, Color.BLUE, Color.GREEN,
+	 * Color[] colorPalette= new Color[]{ Color.VIOLET, Color.BLUE, Color.GREEN,
 	 * Color.YELLOW, Color.ORANGE, Color.web("#000000")}; //black null color 5
 	 */
 
@@ -224,7 +250,7 @@ public class HexBoard {
 				Color hexColor; // Declare the variable for the color of each
 								// hex
 
-				hexColor = colorPallete[(int) terrainStack.peek()]; // get the
+				hexColor = colorPalette[(int) terrainStack.peek()]; // get the
 																	// color
 																	// based on
 																	// the type
@@ -289,7 +315,7 @@ public class HexBoard {
 				Point2D p = new Point2D(h.getPoints().get(i), h.getPoints().get(i + 1));
 				HexVertex hV = new HexVertex(p, h);
 				h.addVertex(hV);
-				// hV.setFill(colorPallete[j]);
+				// hV.setFill(colorPalette[j]);
 				// j++;
 				((Circle) (hV)).setOnMouseEntered(e -> {
 					hV.setFill(Color.RED);
@@ -378,7 +404,7 @@ public class HexBoard {
 				((Line) (hE)).setOnMouseExited(e -> {
 					hE.setStroke(Color.TRANSPARENT);
 				});
-				// hE.setStroke(colorPallete[j]);
+				// hE.setStroke(colorPalette[j]);
 
 				// j++;
 				h.addEdge(hE);
@@ -399,22 +425,35 @@ public class HexBoard {
 					edgeList.get(edgeList.indexOf(hE)).addHex(h);
 
 				} else {
-					// System.out.print(h);
+                                        edgeList.add(hE);
+                
 
-					// System.out.println("adding edge: " + hE + "\n");
-					edgeList.add(hE);
+                                        //Circle c= new Circle(hV.position.getX(), hV.position.getY(),5,Color.BLACK);
 
-					// Circle c= new Circle(hV.position.getX(),
-					// hV.position.getY(),5,Color.BLACK);
-
-					// System.out.println(c);
-					edgePane.getChildren().add(hE);
+                                        // System.out.println(c);
+                                        edgePane.getChildren().add(hE);
 
 				}
 
 			}
 
 		}
+                  int hexCounter=0;
+         for (Hex hex: hexList){
+             int vertexCounter=0;
+             System.out.println("[\t\t\t\t\t"+hexCounter+"\t\t\t\t\t]");
+             for(HexVertex vertex: hex.getVerticies()){
+                 System.out.print(vertexCounter+"\t\t");
+                 System.out.print(vertex +"\n" );                 
+                 System.out.println("it's in the list on at index: "+vertexList.indexOf(vertex));
+                 System.out.println("BEFORE ASSN: "+ ((boolean)(vertex==vertexList.get(vertexList.indexOf(vertex)))));
+                 vertex=vertexList.get(vertexList.indexOf(vertex));
+                System.out.println("AFTER ASSN: "+ ((boolean)(vertex==vertexList.get(vertexList.indexOf(vertex)))));
+
+                 vertexCounter++;
+             }
+             hexCounter++;
+         } 
 	}
 
 	public Pane getBoardPane() {
