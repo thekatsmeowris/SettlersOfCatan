@@ -1,10 +1,13 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package som;
 
+import java.awt.Point;
+import java.io.IOException;
+import static java.lang.System.gc;
 import java.util.ArrayList;
 import java.util.Stack;
 import javafx.collections.ObservableList;
@@ -16,13 +19,34 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import java.util.Collections;
 import java.util.List;
+import javafx.animation.Animation;
+import javafx.geometry.Pos;
+import static javafx.geometry.Pos.CENTER;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
+
+import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 /**
  *
  * @author makogenq
  */
 public class HexBoard {
+    
+   Image marsImage,spriteImage; //Image of Mars and sprite sheet of tornado
+    private static final int SPRITE_COLUMNS  =   5;
+    private static final int SPRITE_COUNT    =  5;
+    private static final int SPRITE_OFFSET_X =  0;
+    private static final int SPRITE_OFFSET_Y =  2;
+    private static final int SPRITE_WIDTH    = 95;
+    private static final int SPRITE_HEIGHT   = 168;
+    
 
     public Color[] getColorPallete() {
         return colorPallete;
@@ -49,7 +73,9 @@ public class HexBoard {
     Pane vertexPane;                        //this contains the vertices once they're each drawn
     Pane edgePane;                          //this contains the edges once they're each drawn
     Pane popUpDialog=new Pane();            //this is the pane that appears once a vertex or edge is clicked.
-
+    
+    final Canvas MarsCanvas; //canvas for Mars Image
+    
     int columnMax;                          //this is the maximum number of columns for a row...this is incremented and decremented to yield the 3,4,5,4,3 row pattern
     double hexRadius, inRadius;             //this is the default circumradius and inradius of all hexes
     float centerX, centerY;                 //this is the center of each hex when it is drawn
@@ -94,8 +120,9 @@ public class HexBoard {
     Stack terrainStack= new Stack();
     
    public HexBoard() {
-        //int[] boardBoundaries = new int[]{0.0,2,3,4};
-        //800x600
+        MarsCanvas = new Canvas(790, 790);
+        final GraphicsContext graphicsContext = MarsCanvas.getGraphicsContext2D();
+       
         columnMax=maxColumns-2;                                 //this sets the max columns of the first row to 2 less than the longest (median) row
                                                                 //i needed this because i had a hard time generating the radii of each in the constructor
         Hex modelHex= new Hex(0,400,300,50, 50*0.87, Color.ALICEBLUE, 0, 5);           //this generates a hex as a model to generate the rest of the board hexes from
@@ -104,6 +131,7 @@ public class HexBoard {
         inRadius= modelHex.getLayoutBounds().getWidth()/2;      //this makes the inRadius which is roughly the circumradius * (sqrt(3)/2) but 1/2*getwidth is the same and it's prettier
         boardPane= new Pane();                                  //creates new board for boardpane
         vertexPane= new Pane();                                 //creates new board for vertexpane
+       
         
         centerX= (float) (boardPane.getWidth()/2);              //assigns the center of the pane a value
         centerY= (float) (boardPane.getHeight()/2);                          
@@ -119,13 +147,33 @@ public class HexBoard {
 //        addAdjacentVerticies();
         //  addAdjacentHexes();
         //
-                                                                
+         spriteImage = new Image(getClass().getResourceAsStream("graphics/Tornado.png"));   
+        final ImageView spriteImageView = new ImageView(spriteImage);
+        spriteImageView.setViewport(new Rectangle2D(SPRITE_OFFSET_X, SPRITE_OFFSET_Y, SPRITE_WIDTH, SPRITE_HEIGHT));
+        spriteImageView.setRotate(270);
+        spriteImageView.setFitHeight(50);
+        spriteImageView.setFitWidth(50);
+        final Animation animation = new SpriteAnimation(
+                spriteImageView,
+                Duration.millis(500),
+                SPRITE_COUNT, SPRITE_COLUMNS,
+                SPRITE_OFFSET_X, SPRITE_OFFSET_Y,
+                SPRITE_WIDTH, SPRITE_HEIGHT
+        );
+        animation.setCycleCount(Animation.INDEFINITE);
+        animation.play();
+        
 
         vertexPane.setPickOnBounds(false);                      //sets property to false so that the circle (vertex point) is selectable and the bounding shape around it is not
         edgePane.setPickOnBounds(false);
         
-        
-        boardShell.getChildren().addAll(boardPane,edgePane,vertexPane);     //adds the 3 panes to the stackpane and so publishes the constructed board.
+        marsImage = new Image(getClass().getResourceAsStream("graphics/MapAr.jpg"));
+        graphicsContext.drawImage(marsImage, 130, 110, 480, 480);
+       
+       spriteImageView.setTranslateX(-30.0);
+       spriteImageView.setTranslateY(-50.0);
+       
+        boardShell.getChildren().addAll(boardPane,MarsCanvas,edgePane,vertexPane,spriteImageView);     //adds the 3 panes and an imageview to the stackpane and so publishes the constructed board.
 
     }
     
@@ -176,7 +224,7 @@ public class HexBoard {
                }
                 
                 hexCounter++;
-                boardPane.getChildren().add(h);
+                boardPane.getChildren().addAll(h);
                 
                 hexList.add(h);
             }

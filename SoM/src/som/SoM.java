@@ -14,7 +14,6 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-
 import javafx.stage.Stage;
 
 /**
@@ -30,14 +29,9 @@ public class SoM extends Application {
     static MediaPlayer mediaPlayer;
     MediaView  mediaView;
     
+
     @Override
     public void start(Stage stage) throws Exception {
-        
-        mediaPlayer = new MediaPlayer(mMusic1); //mediaPlayer
-        mediaView = new MediaView(mediaPlayer);
-        mediaView.setMediaPlayer(mediaPlayer);
-        
-        loadAudioAssets();      
         
         Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
         ResourceBank resourceBank= new ResourceBank();
@@ -51,7 +45,8 @@ public class SoM extends Application {
         stage.setScene(scene);
         stage.show();
 
-        playMusic1();
+        
+       
     }
 
     /**
@@ -94,18 +89,8 @@ public class SoM extends Application {
         mediaPlayer.play();
     }
 
-    /*
-     public AudioClip getaMusic1() {
-     return aMusic1;
-     }
-     
-     public AudioClip getaMusic2() {
-     return aMusic2;
-     }*/
-
     
-    
-    public void TestDeck() {
+    /*public void TestDeck() {
 		Knight k = new Knight();
 		VictoryPoint vp = new VictoryPoint();
 		YearOfPlenty yop = new YearOfPlenty();
@@ -126,5 +111,5 @@ public class SoM extends Application {
 				card.playCard();
                 }
         }
-    
+    */
 }

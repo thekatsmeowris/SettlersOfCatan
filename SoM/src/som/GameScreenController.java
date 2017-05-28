@@ -48,6 +48,9 @@ import som.assets.Settlement;
  * @author makogenq
  */
 public class GameScreenController implements Initializable {
+    static Audio audio = new Audio();
+    
+    
     @FXML
     Pane 
             gameLayer, 
@@ -145,6 +148,7 @@ public class GameScreenController implements Initializable {
         board= new HexBoard();
         resourceGenerator= new ResourceGenerator(board);
         turnCount=1;
+        audio.playMusic1();
         sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                 Number old_val, Number new_val) {
@@ -335,6 +339,7 @@ public class GameScreenController implements Initializable {
     }
     
     public int rollDice(){
+        audio.playClips(1);
        btnRollDice.setDisable(true);
             int diceValue;
             Integer r;
@@ -490,6 +495,8 @@ public class GameScreenController implements Initializable {
             thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));                                            //add this new asset to the player's list of assets
             thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE);                        //increase the vp of the player
             pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));                               //adjust the progress bar for vp for thisPlayer
+            audio.playClips(0);
+            //pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));
             updateResources();
             for(HexEdge edge:((HexVertex)selectedItem).getAdjacentEdge() ){
                 edge.setStroke(Color.WHITE);
@@ -591,9 +598,12 @@ public class GameScreenController implements Initializable {
                 resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexEdge)selectedItem).addRoad(thisPlayer))));
              }
             thisPlayer.assets.add(thisPlayer,((HexEdge)selectedItem));
+            audio.playClips(0);
+
 
             updateResources();
             
+
 
                                                                                                 //put resources back to the bank
          System.out.println("BUILD ROAD DIALOG");
@@ -771,13 +781,7 @@ public class GameScreenController implements Initializable {
                 //5 lblResourcesAvailable
                 ((Label)(((AnchorPane)n).getChildren().get(5))).setText(""+thisPlayer.resources[anchors.indexOf(n)]);
                         //thisPlayer.resources[]
-                
-                
-                
-                
-                
-                
-                
+          
             }
             
             

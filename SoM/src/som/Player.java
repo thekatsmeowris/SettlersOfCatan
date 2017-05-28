@@ -20,6 +20,7 @@ import javafx.scene.shape.Arc;
  */
 public class Player {
     final int VICTORY_POINT_MAX=10;
+    static int currentLeaderVP;
     
     private TradePack tradePack= new TradePack(this);
 
@@ -64,7 +65,7 @@ public class Player {
         
         
         if (victoryPoints > 6) {
-                SoM.playMusic2();
+                GameScreenController.audio.playMusic2();
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
