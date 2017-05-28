@@ -62,7 +62,7 @@ public class Player {
         
         
         if (victoryPoints > 6) {
-                Audio.playMusic2();
+                GameScreenController.audio.playMusic2();
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
