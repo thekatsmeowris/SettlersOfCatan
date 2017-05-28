@@ -20,7 +20,6 @@ public class SoM extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         
-        Audio audio = new Audio();
         Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
         ResourceBank resourceBank= new ResourceBank();
         resourceBank.printResourceList();
