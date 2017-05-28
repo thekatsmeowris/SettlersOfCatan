@@ -65,6 +65,7 @@ public class Audio {
   
         sounds = getClass().getResource(audioClips.get(i));
         soundClips = new AudioClip(sounds.toString());
+        soundClips.setVolume(1);
         soundClips.play();
     }
 
@@ -79,6 +80,8 @@ public class Audio {
         audioClips.add(path + "Plastic.wav");
         audioClips.add(path + "steel.wav");
         audioClips.add(path + "water.wav");
+        audioClips.add(path + "click.wav");
+        
 
         String music1Path = "src/som/audio/music/WASTELAND2melody.wav";
         Media mMusic1 = new Media(new File(music1Path).toURI().toString());
@@ -97,7 +100,7 @@ public class Audio {
     }
 
     public  void playMusic1() {
-
+        mediaPlayer1.setVolume(0.1);
         mediaPlayer1.setCycleCount(AudioClip.INDEFINITE);
         mediaPlayer1.play();
         if (mediaPlayer2.getStatus().equals(Status.PLAYING)) {
