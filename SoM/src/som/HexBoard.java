@@ -176,7 +176,7 @@ public class HexBoard {
        spriteImageView.setTranslateX(-30.0);
        spriteImageView.setTranslateY(-50.0);
        
-        boardShell.getChildren().addAll(boardPane,MarsCanvas,edgePane,vertexPane,spriteImageView);     //adds the 3 panes and an imageview to the stackpane and so publishes the constructed board.
+        boardShell.getChildren().addAll(MarsCanvas,boardPane,edgePane,vertexPane,spriteImageView);     //adds the 3 panes and an imageview to the stackpane and so publishes the constructed board.
 
     }
     
