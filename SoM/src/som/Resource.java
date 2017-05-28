@@ -11,45 +11,51 @@ import javafx.scene.shape.Polygon;
  *
  * @author makogenq
  */
-    class Resource extends Polygon{
-       
-        private int resourceAmount;
-        private int resourceType;
+class Resource extends Polygon {
 
-        public Resource()
-        {
+    private int resourceAmount;
+    private int resourceType;
+
+    public Resource() {
 //            super(100,100,200,100,200,200,200,300,200,400,100,400,0,400, 0,300, 0,200,0, 100);
 
-            resourceAmount = 0;
-        }
-        public Resource(int value){
-            resourceAmount=value;
-        }
-        
-
-        public Resource(int resourceType, int resourceAmount ){
-            this.resourceAmount=resourceAmount;
-            this.resourceType=resourceType;
-        }
-                
-        public void drawResource(int amount) //method to take desired amount of resources from the Bank, provided the desired number is appropriate
-        {
-            if(resourceAmount-amount >=0) resourceAmount -=amount;
-            else System.out.println("No more of desired resource");            
-        }
-        
-        public void returnResource(int amount) //method to return desired amount of resources from the Bank, provided the desired number is appropriate
-        {
-            if(resourceAmount+amount <=19) resourceAmount +=amount;
-            else System.out.println("Too many of desired resource");
-        }
-        
-        public int getResourceAmount() //returns number of resource
-        {
-            return resourceAmount;
-        }
-        public int getType(){
-            return resourceType;
-        }
-
+        resourceAmount = 0;
     }
+
+    public Resource(int value) {
+        resourceAmount = value;
+    }
+
+    public Resource(int resourceType, int resourceAmount) {
+        this.resourceAmount = resourceAmount;
+        this.resourceType = resourceType;
+    }
+
+    public void drawResource(int amount) //method to take desired amount of resources from the Bank, provided the desired number is appropriate
+    {
+        if (resourceAmount - amount >= 0) {
+            resourceAmount -= amount;
+        } else {
+            System.out.println("No more of desired resource");
+        }
+    }
+
+    public void returnResource(int amount) //method to return desired amount of resources from the Bank, provided the desired number is appropriate
+    {
+        if (resourceAmount + amount <= 19) {
+            resourceAmount += amount;
+        } else {
+            System.out.println("Too many of desired resource");
+        }
+    }
+
+    public int getResourceAmount() //returns number of resource
+    {
+        return resourceAmount;
+    }
+
+    public int getType() {
+        return resourceType;
+    }
+
+}

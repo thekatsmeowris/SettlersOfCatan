@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 package org.pdfsam.ui;
 
 import javafx.animation.KeyFrame;
@@ -29,12 +29,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 /**
- * Skin for the {@link FillProgressIndicator} that represents progress and a circle that fills
- * 
+ * Skin for the {@link FillProgressIndicator} that represents progress and a
+ * circle that fills
+ *
  * @author Andrea Vacondio
  *
  */
 public class FillProgressIndicatorSkin implements Skin<FillProgressIndicator> {
+
     private final FillProgressIndicator indicator;
     private final StackPane container = new StackPane();
     private final Label percentLabel = new Label();
@@ -70,7 +72,7 @@ public class FillProgressIndicatorSkin implements Skin<FillProgressIndicator> {
             updateRadii();
         });
         coverPane.heightProperty().addListener((o, oldVal, newVal) -> {
-        	 this.cover.setHeight(newVal.intValue() * ((100 - indicator.getProgress()) / 100d));
+            this.cover.setHeight(newVal.intValue() * ((100 - indicator.getProgress()) / 100d));
         });
         initLabel(indicator.getProgress());
         indicator.visibleProperty().addListener((o, oldVal, newVal) -> {

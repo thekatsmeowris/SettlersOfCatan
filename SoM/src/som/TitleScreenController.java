@@ -24,13 +24,12 @@ import javafx.stage.Stage;
  * @author makogenq
  */
 public class TitleScreenController implements Initializable {
-    
+
     @FXML
     private Label label;
 
     //private Button btnStartGame;
     //btnStartGame.setOnAction(new EventHandler<ActionEvent>())    
-    
     public void handleButtonAction(ActionEvent event) throws IOException {
         GameScreenController.audio.playClips(8);
         //System.out.println("You clicked me!");
@@ -50,11 +49,9 @@ public class TitleScreenController implements Initializable {
         a_stage.show();
     }
 
-
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
-    
+    }
+
 }

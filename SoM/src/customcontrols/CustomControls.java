@@ -14,13 +14,13 @@ import javafx.stage.Stage;
  * @author makogenq
  */
 public class CustomControls extends Application {
-    
+
     @Override
     public void start(Stage stage) throws Exception {
-       TradeResourceTracker customControl= new TradeResourceTracker(8);
-       
-       Scene scene = new Scene(customControl);
-        
+        TradeResourceTracker customControl = new TradeResourceTracker(8);
+
+        Scene scene = new Scene(customControl);
+
         stage.setScene(scene);
         stage.show();
     }
@@ -31,5 +31,5 @@ public class CustomControls extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

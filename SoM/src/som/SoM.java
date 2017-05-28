@@ -5,9 +5,7 @@
  */
 package som;
 
-
 import java.io.File;
-
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -31,68 +29,58 @@ public class SoM extends Application {
 
     Media mMusic1 = new Media(new File(music1Path).toURI().toString());
     static MediaPlayer mediaPlayer;
-    MediaView  mediaView;
+    MediaView mediaView;
     // Connect to Online
     static ObjectClient client;
-    
 
     @Override
     public void start(Stage stage) throws Exception {
-        
+
         Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
 
-
-        ResourceBank resourceBank= new ResourceBank();
+        ResourceBank resourceBank = new ResourceBank();
         resourceBank.printResourceList();
         Scene scene = new Scene(root);
-        
+
         stage.setX(300);
         stage.setY(0);
-        
+
         stage.setTitle("Title Screen");
         stage.setScene(scene);
         stage.show();
 
-        
-       
     }
 
     /**
      * @param args the command line arguments
      */
-    
     public static void main(String[] args) {
         launch(args);
-        
-      
-        
+
     }
-    
-       
-    
-        //Test comment
-     private void loadAudioAssets(){
-        
+
+    //Test comment
+    private void loadAudioAssets() {
+
         //comment
-        
         /*musicURL1 = getClass().getResource("/WASTELAND1.wav");
         aMusic1 = new AudioClip(musicURL1.toString());
         musicURL2 = getClass().getResource("/WASTELAND2.wav");
         aMusic2 = new AudioClip(musicURL2.toString());*/
     }
-    
+
     public static void playMusic1() {
         //aMusic1.setCycleCount(AudioClip.INDEFINITE);
         //aMusic1.play();
-        
-       mediaPlayer.setCycleCount(AudioClip.INDEFINITE);
+
+        mediaPlayer.setCycleCount(AudioClip.INDEFINITE);
         mediaPlayer.play();
     }
-    
+
     public static void playMusic2() {
         //aMusic2.setCycleCount(AudioClip.INDEFINITE);
         //aMusic2.play();
-        
+
         mediaPlayer.setCycleCount(AudioClip.INDEFINITE);
         mediaPlayer.play();
     }
@@ -106,9 +94,7 @@ public class SoM extends Application {
      public AudioClip getaMusic2() {
      return aMusic2;
      }*/
-
-    
-    /*public void TestDeck() {
+ /*public void TestDeck() {
 		Knight k = new Knight();
 		VictoryPoint vp = new VictoryPoint();
 		YearOfPlenty yop = new YearOfPlenty();
@@ -129,8 +115,5 @@ public class SoM extends Application {
 
                 }
         }
-    */
+     */
 }
-	
-
-

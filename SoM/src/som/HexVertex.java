@@ -20,150 +20,153 @@ import som.assets.Settlement;
  * @author makogenq
  */
 public class HexVertex extends Circle {
-	private Point2D position;
-	private ArrayList<Hex> adjacentHex;
-	private ArrayList<HexEdge> adjacentEdge;
-	private Asset asset;
-	private Hex parentHex;
 
-	public Point2D getPosition() {
-		return position;
-	}
+    private Point2D position;
+    private ArrayList<Hex> adjacentHex;
+    private ArrayList<HexEdge> adjacentEdge;
+    private Asset asset;
+    private Hex parentHex;
 
-	public void setPosition(Point2D position) {
-		this.position = position;
-	}
+    public Point2D getPosition() {
+        return position;
+    }
 
-	public ArrayList<Hex> getAdjacentHex() {
-		return adjacentHex;
-	}
+    public void setPosition(Point2D position) {
+        this.position = position;
+    }
 
-	public void setAdjacentHex(ArrayList<Hex> adjacentHex) {
-		this.adjacentHex = adjacentHex;
-	}
+    public ArrayList<Hex> getAdjacentHex() {
+        return adjacentHex;
+    }
 
-	public ArrayList<HexEdge> getAdjacentEdge() {
-		return adjacentEdge;
-	}
+    public void setAdjacentHex(ArrayList<Hex> adjacentHex) {
+        this.adjacentHex = adjacentHex;
+    }
 
-	public void setAdjacentEdge(ArrayList<HexEdge> adjacentEdge) {
-		this.adjacentEdge = adjacentEdge;
-	}
+    public ArrayList<HexEdge> getAdjacentEdge() {
+        return adjacentEdge;
+    }
 
-	public Hex getParentHex() {
-		return parentHex;
-	}
+    public void setAdjacentEdge(ArrayList<HexEdge> adjacentEdge) {
+        this.adjacentEdge = adjacentEdge;
+    }
 
-	public void setParentHex(Hex parentHex) {
-		this.parentHex = parentHex;
-	}
+    public Hex getParentHex() {
+        return parentHex;
+    }
 
-	public HexVertex(Point2D position) {
-		super(position.getX(), position.getY(), 10, Color.TRANSPARENT);
-		this.position = position;
+    public void setParentHex(Hex parentHex) {
+        this.parentHex = parentHex;
+    }
 
-		// adjacentHex.add(h);
-		asset = null;
-		adjacentHex = new ArrayList<>();
-		adjacentEdge = new ArrayList<>();
-		parentHex = null;
+    public HexVertex(Point2D position) {
+        super(position.getX(), position.getY(), 10, Color.TRANSPARENT);
+        this.position = position;
 
-	}
+        // adjacentHex.add(h);
+        asset = null;
+        adjacentHex = new ArrayList<>();
+        adjacentEdge = new ArrayList<>();
+        parentHex = null;
 
-	// hex vertex takes a location p and a hex h,
-	// the hex is the hex that the vertex belongs to
-	public HexVertex(Point2D position, Hex hex) {
-		super(position.getX(), position.getY(), 10, Color.TRANSPARENT);
-		this.position = position;
+    }
 
-		// adjacentHex.add(h);
-		asset = null;
-		adjacentHex = new ArrayList<>();
-		adjacentEdge = new ArrayList<>();
-		parentHex = hex;
+    // hex vertex takes a location p and a hex h,
+    // the hex is the hex that the vertex belongs to
+    public HexVertex(Point2D position, Hex hex) {
+        super(position.getX(), position.getY(), 10, Color.TRANSPARENT);
+        this.position = position;
 
-	}
+        // adjacentHex.add(h);
+        asset = null;
+        adjacentHex = new ArrayList<>();
+        adjacentEdge = new ArrayList<>();
+        parentHex = hex;
 
-	public void setVertex(Point2D p) {
+    }
 
-	}
+    public void setVertex(Point2D p) {
 
-	public void setEdge(Point2D p, Point2D q) {
-		HexEdge hE = new HexEdge(p, q);
-	}
+    }
 
-	public void addAdjacentHex(Hex h) {
+    public void setEdge(Point2D p, Point2D q) {
+        HexEdge hE = new HexEdge(p, q);
+    }
 
-		adjacentHex.add(h);
+    public void addAdjacentHex(Hex h) {
 
-	}
+        adjacentHex.add(h);
 
-	public Hex getHex() {
-		return parentHex;
-	}
+    }
 
-	public Settlement addSettlement(Player player) {
-		this.asset = new Settlement(player, this);
-		this.setStroke(player.getPlayerColor());
-		this.setFill(player.getPlayerColor());
+    public Hex getHex() {
+        return parentHex;
+    }
 
-		this.setOnMouseEntered(e -> {
-			System.out.println("THIS ASSET: " + this.asset);
-		});
-		this.setOnMouseExited(e -> {
-		});
-		return (Settlement) this.asset;
-	}
+    public Settlement addSettlement(Player player) {
+        this.asset = new Settlement(player, this);
+        this.setStroke(player.getPlayerColor());
+        this.setFill(player.getPlayerColor());
 
-	public Asset getAsset() {
-		return asset;
-	}
+        this.setOnMouseEntered(e -> {
+            System.out.println("THIS ASSET: " + this.asset);
+        });
+        this.setOnMouseExited(e -> {
+        });
+        return (Settlement) this.asset;
+    }
 
-	public void addAdjacentEdge(HexEdge hexEdge) {
-		adjacentEdge.add(hexEdge);
-	}
+    public Asset getAsset() {
+        return asset;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		boolean result = false;
+    public void addAdjacentEdge(HexEdge hexEdge) {
+        adjacentEdge.add(hexEdge);
+    }
 
-		// self check
-		if (this == o)
-			return true;
-		// null check
-		if (o == null)
-			return false;
-		// type check and cast
-		if (getClass() != o.getClass())
-			return false;
-		HexVertex hV = (HexVertex) o;
-		// field comparison
-		return Objects.equals(position, hV.position);
-	}
+    @Override
+    public boolean equals(Object o) {
+        boolean result = false;
 
-	// mouse events
-	/*
+        // self check
+        if (this == o) {
+            return true;
+        }
+        // null check
+        if (o == null) {
+            return false;
+        }
+        // type check and cast
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        HexVertex hV = (HexVertex) o;
+        // field comparison
+        return Objects.equals(position, hV.position);
+    }
+
+    // mouse events
+    /*
 	 * public void handle(MouseEvent e){ this.setFill(Color.RED); }
-	 */
-
-	@Override
-	public String toString() {
-		return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge
-				+ ", asset=" + asset + ", parentHex=" + parentHex + '}';
-	}
+     */
+    @Override
+    public String toString() {
+        return "HexVertex{" + "position=" + position + ", adjacentHex=" + adjacentHex + ", adjacentEdge=" + adjacentEdge
+                + ", asset=" + asset + ", parentHex=" + parentHex + '}';
+    }
 
     public City addCity(Player player) {
-            this.asset= new City(player,this);
-            this.setStroke(Color.GOLD);
-            this.setFill(player.getPlayerColor());
+        this.asset = new City(player, this);
+        this.setStroke(Color.GOLD);
+        this.setFill(player.getPlayerColor());
 
-         this.setOnMouseEntered(e ->{
-            System.out.println("THIS ASSET: "+ this.asset);
+        this.setOnMouseEntered(e -> {
+            System.out.println("THIS ASSET: " + this.asset);
         });
-       this.setOnMouseExited(e ->{
+        this.setOnMouseExited(e -> {
         });
         return (City) this.asset;
-    
+
     }
 
 }

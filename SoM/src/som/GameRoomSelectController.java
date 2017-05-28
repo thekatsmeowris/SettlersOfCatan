@@ -29,9 +29,10 @@ public class GameRoomSelectController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }   
-     public void handleButtonAction(ActionEvent event) throws IOException {
-         GameScreenController.audio.playClips(8);
+    }
+
+    public void handleButtonAction(ActionEvent event) throws IOException {
+        GameScreenController.audio.playClips(8);
         System.out.println("You clicked me!");
 //        label.setText("Hello World!");
         Parent game_room_parent = FXMLLoader.load(getClass().getResource("GameScreen.fxml"));
@@ -40,5 +41,5 @@ public class GameRoomSelectController implements Initializable {
         a_stage.setScene(game_room_scene);
         a_stage.show();
     }
-    
+
 }

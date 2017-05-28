@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import som.assets.City;
 import som.assets.Road;
 import som.assets.Settlement;
+
 /**
  *
  * @author makogenq
  */
 public class Assets {
+
     ArrayList<Settlement> settlements;
     ArrayList<Road> roads;
     ArrayList<City> cities;
@@ -22,21 +24,23 @@ public class Assets {
         settlements = new ArrayList<>();
         roads = new ArrayList<>();
         cities = new ArrayList<>();
-        
+
     }
-    public void add(Player player, HexVertex hexVertex){
-        if (hexVertex.getAsset()==null){
-        settlements.add(new Settlement(player, hexVertex));
-        }else{
+
+    public void add(Player player, HexVertex hexVertex) {
+        if (hexVertex.getAsset() == null) {
+            settlements.add(new Settlement(player, hexVertex));
+        } else {
             settlements.remove(hexVertex.getAsset());
-            
+
             cities.add(new City(player, hexVertex));
         }
-        
+
     }
-    public void add(Player player, HexEdge hexEdge){ 
+
+    public void add(Player player, HexEdge hexEdge) {
         Road road = new Road(player, hexEdge);
         roads.add(road);
     }
-   
+
 }

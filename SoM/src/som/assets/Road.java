@@ -1,4 +1,5 @@
 package som.assets;
+
 import javafx.geometry.Point2D;
 import som.Hex;
 import som.HexEdge;
@@ -13,19 +14,19 @@ public class Road extends Asset {
     /*public Road(Player player, HexBoard board, Hex hex, int[] coord) {
     super(player, Asset.ROAD, board, hex, coord);
     }*/
-
     /**
      *
      * @param player
      * @param hexEdge
      */
     public Road(Player player, HexEdge hexEdge) {
-        super (player, hexEdge.getHex());
-        this.player = player;      
+        super(player, hexEdge.getHex());
+        this.player = player;
         this.hex = hexEdge.getHex();
         this.hexEdge = hexEdge;
     }
-        public int getType(){
+
+    public int getType() {
         return 0;
     }
 }

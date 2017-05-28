@@ -17,44 +17,41 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-
 public class ConnectServerController implements Initializable {
-	@FXML
-	private TextField ip, port;
-	
 
-	@Override
+    @FXML
+    private TextField ip, port;
+
+    @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
 
-    	// Press enter jump to next TextField until reaching to Conncet
-        ip.setOnAction(new EventHandler<ActionEvent>(){
-        	@Override
-        	public void handle(ActionEvent e){
-        		port.requestFocus();
-        	}
+        // Press enter jump to next TextField until reaching to Conncet
+        ip.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                port.requestFocus();
+            }
         });
 
-        port.setOnAction(new EventHandler<ActionEvent>(){
-        	@Override
-        	public void handle(ActionEvent e){
-        		try{
-	        		handleConnectServer(e);
-	        	}
-	        	catch (IOException ioe){
-	        		ioe.printStackTrace();
-	        	}
-        	}
+        port.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                try {
+                    handleConnectServer(e);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
         });
-    }    
-	
+    }
 
-	public void handleConnectServer(ActionEvent e) throws IOException {
-		ip.setText((ip.getText().trim().isEmpty()) ? "localhost" : ip.getText());
+    public void handleConnectServer(ActionEvent e) throws IOException {
+        ip.setText((ip.getText().trim().isEmpty()) ? "localhost" : ip.getText());
         port.setText((port.getText().trim().isEmpty()) ? "8888" : port.getText());
         SoM.client = new ObjectClient(ip.getText().trim(), Integer.parseInt(port.getText().trim()));
 
-        if (SoM.client.hasConnection()){
+        if (SoM.client.hasConnection()) {
             SoM.client.write("Successfully Connect to Server");
             Parent game_room_parent = FXMLLoader.load(getClass().getResource("GameScreen.fxml"));
             Scene game_room_scene = new Scene(game_room_parent);
@@ -66,8 +63,6 @@ public class ConnectServerController implements Initializable {
         }
         // client.close();
         // System.out.println("Connected to server: " + client.hasConnection());
-
-
 
     }
 }

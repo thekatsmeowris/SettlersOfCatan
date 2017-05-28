@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 package org.pdfsam.ui;
 
 import java.util.ArrayList;
@@ -34,11 +34,12 @@ import com.sun.javafx.css.converters.SizeConverter;
 
 /**
  * Base class for the progress indicator controls represented by circualr shapes
- * 
+ *
  * @author Andrea Vacondio
  *
  */
 abstract class ProgressCircleIndicator extends Control {
+
     private static final int INDETERMINATE_PROGRESS = -1;
 
     private ReadOnlyIntegerWrapper progress = new ReadOnlyIntegerWrapper(0);
@@ -53,8 +54,9 @@ abstract class ProgressCircleIndicator extends Control {
     }
 
     /**
-     * Set the value for the progress, it cannot be more then 100 (meaning 100%). A negative value means indeterminate progress.
-     * 
+     * Set the value for the progress, it cannot be more then 100 (meaning
+     * 100%). A negative value means indeterminate progress.
+     *
      * @param progressValue
      * @see ProgressCircleIndicator#makeIndeterminate()
      */
@@ -119,6 +121,7 @@ abstract class ProgressCircleIndicator extends Control {
     };
 
     private static class StyleableProperties {
+
         private static final CssMetaData<ProgressCircleIndicator, Number> INNER_CIRCLE_RADIUS = new CssMetaData<ProgressCircleIndicator, Number>(
                 "-fx-inner-radius", SizeConverter.getInstance(), 60) {
 
@@ -134,6 +137,7 @@ abstract class ProgressCircleIndicator extends Control {
         };
 
         public static final List<CssMetaData<? extends Styleable, ?>> STYLEABLES;
+
         static {
             final List<CssMetaData<? extends Styleable, ?>> styleables = new ArrayList<>(Control.getClassCssMetaData());
             styleables.add(INNER_CIRCLE_RADIUS);
@@ -142,12 +146,13 @@ abstract class ProgressCircleIndicator extends Control {
     }
 
     /**
-     * @return The CssMetaData associated with this class, which may include the CssMetaData of its super classes.
+     * @return The CssMetaData associated with this class, which may include the
+     * CssMetaData of its super classes.
      */
     public static List<CssMetaData<? extends Styleable, ?>> getClassCssMetaData() {
         return StyleableProperties.STYLEABLES;
     }
-    
+
     @Override
     public List<CssMetaData<? extends Styleable, ?>> getControlCssMetaData() {
         return StyleableProperties.STYLEABLES;

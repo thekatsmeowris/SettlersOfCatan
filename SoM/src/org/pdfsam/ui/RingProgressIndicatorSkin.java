@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
+ */
 package org.pdfsam.ui;
 
 import javafx.animation.Animation;
@@ -28,8 +28,9 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 /**
- * Skin of the ring progress indicator where an arc grows and by the progress value up to 100% where the arc becomes a ring.
- * 
+ * Skin of the ring progress indicator where an arc grows and by the progress
+ * value up to 100% where the arc becomes a ring.
+ *
  * @author Andrea Vacondio
  *
  */

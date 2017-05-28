@@ -9,22 +9,22 @@
 <AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="som.ConnectServerController">
     <children>
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="320.0">
-         <children>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="320.0">
+            <children>
 
-          <Label text="IP: " />
+                <Label text="IP: " />
        
-          <TextField fx:id="ip" maxWidth="100"/>
+                <TextField fx:id="ip" maxWidth="100"/>
        
-          <Label text="Port: " />
+                <Label text="Port: " />
        
-          <TextField fx:id="port" maxWidth="69"/>
+                <TextField fx:id="port" maxWidth="69"/>
 
 
-          <!-- Connect -->
-          <Button id="connectBtn" mnemonicParsing="false" text="Connect" onAction="#handleConnectServer" />
+                <!-- Connect -->
+                <Button id="connectBtn" mnemonicParsing="false" text="Connect" onAction="#handleConnectServer" />
 
-         </children>
-      </VBox>
+            </children>
+        </VBox>
     </children>
 </AnchorPane>

@@ -1,59 +1,59 @@
 package som;
 
 // DevelopmentCard.java
-public class DevelopmentCard{
-	private String name;
-	private String description;
-	private String imagePathName;
+public class DevelopmentCard {
 
+    private String name;
+    private String description;
+    private String imagePathName;
 
-        public DevelopmentCard(){
-            name="dvCard";
-            description="";
-            imagePathName="";
-        }
-	public DevelopmentCard(String n, String d, String imgName){
-		setName(n);
-		setDescription(d);
-		setImage(imgName);
-	}
+    public DevelopmentCard() {
+        name = "dvCard";
+        description = "";
+        imagePathName = "";
+    }
 
-	private void setName(String n){
-		name = n;
-	}
+    public DevelopmentCard(String n, String d, String imgName) {
+        setName(n);
+        setDescription(d);
+        setImage(imgName);
+    }
 
-	private void setDescription(String d){
-		description = d;
-	}
+    private void setName(String n) {
+        name = n;
+    }
 
-	private void setImage(String img){
-		imagePathName = img;
-	}
+    private void setDescription(String d) {
+        description = d;
+    }
 
-	private String getName(){
-		return name;
-	}
-	
-	private String getDescription(){
-		return description;
-	}
+    private void setImage(String img) {
+        imagePathName = img;
+    }
 
-	private String getImage(){
-		return imagePathName;
-	}
+    private String getName() {
+        return name;
+    }
 
-	// playCard() & discardCard methods will be override
-	public void playCard(){
-		return;
-	}
+    private String getDescription() {
+        return description;
+    }
 
-	public void discardCard(){
-		return;
-	}
+    private String getImage() {
+        return imagePathName;
+    }
 
-	public String toString(){
-		return "(" + getName() + ", " + getDescription() + ", " + getImage() +")";	
-	}
-	
+    // playCard() & discardCard methods will be override
+    public void playCard() {
+        return;
+    }
+
+    public void discardCard() {
+        return;
+    }
+
+    public String toString() {
+        return "(" + getName() + ", " + getDescription() + ", " + getImage() + ")";
+    }
 
 }
