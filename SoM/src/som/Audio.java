@@ -50,23 +50,26 @@ public class Audio {
     static URL musicURL1, musicURL2, sounds;
 
     static ArrayList<String> audioClips = new ArrayList();
+    
+    static Audio audio;
 
     public Audio() {
 
 //    resource = this.getClass().getResourceAsStream("/Team-Project/SoM/src/som/music/WASTELAND1.wav");
         //start
         loadAudioAssets();
-        playMusic1();
+        //playMusic1();
     }
 
-    public void playClips(int i) {
-        //sounds = getClass().getResource("audio/sounds/building.wav");
+    public  void playClips(int i) {
+  
         sounds = getClass().getResource(audioClips.get(i));
         soundClips = new AudioClip(sounds.toString());
         soundClips.play();
     }
 
     private void loadAudioAssets() {
+        
         String path = "audio/sounds/";
         audioClips.add(path + "building.wav");
         audioClips.add(path + "dice.wav");
@@ -93,7 +96,7 @@ public class Audio {
         aMusic2 = new AudioClip(musicURL2.toString());
     }
 
-    public static void playMusic1() {
+    public  void playMusic1() {
 
         mediaPlayer1.setCycleCount(AudioClip.INDEFINITE);
         mediaPlayer1.play();
@@ -102,7 +105,7 @@ public class Audio {
         }
     }
 
-    public static void playMusic2() {
+    public  void playMusic2() {
 
         mediaPlayer2.setCycleCount(AudioClip.INDEFINITE);
         mediaPlayer2.play();
