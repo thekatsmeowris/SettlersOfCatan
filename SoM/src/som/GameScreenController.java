@@ -55,6 +55,7 @@ import som.ResourceBank;
  * @author makogenq
  */
 public class GameScreenController implements Initializable {
+
 	@FXML
 	Pane gameLayer, 
                 gameBoard, 
@@ -139,9 +140,8 @@ public class GameScreenController implements Initializable {
 	public final static int DETERMINE_PLAYER_ORDER = 1;
 	public final static int INIT_BUILD_PHASE_A = 2;
 	public final static int INIT_BUILD_PHASE_B = 3;
-	public final static int PRE_ROLL = 4; // roll/ play dev card
-	public final static int MAIN_PHASE = 5; // After roll, player can
-											// build/trade/play dev card
+	public final static int PRE_ROLL = 4;
+	public final static int MAIN_PHASE = 5;
 
 	public final static int PLACING_ROAD = 10;
 	public final static int PLACING_SETTLEMENT = 11;
@@ -265,37 +265,6 @@ public class GameScreenController implements Initializable {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				// if (!popupDialog.isVisible()) {
-				// popupDialog.setVisible(true);
-				// // board.popUpDialog.setVisible(true);
-				//
-				// popupDialog.setMouseTransparent(false);
-				// // popupDialog.getParent().setMouseTransparent(false);
-				// for (Node n : popupDialog.getChildren()) {
-				// n.setMouseTransparent(false);
-				// }
-				//
-				// }
-				// if (gameBoard.getRotate() > 0) {
-				// popupDialog.relocate(hexVertex.getPosition().getY(),
-				// hexVertex.getPosition().getX());
-				//
-				// } else {
-				// txtPopUpText.setText(
-				// "Old: \n" + popupDialog.getLayoutX() + ", " +
-				// popupDialog.getLayoutY() + "Current: "
-				// + hexVertex.getPosition().getX() + 300 + ", " +
-				// hexVertex.getPosition().getY());
-				// popupDialog.relocate(hexVertex.getPosition().getX() + 350,
-				// hexVertex.getPosition().getY());
-				// // popupDialog.setLayoutX(v.position.getX());
-				// // popupDialog.setLayoutY(v.position.getY());
-				//
-				// }
-				// popupDialog.setLayoutY(v.getLayoutY());
-
-				// selectedCircle.set(circle);
-				// selectedLocation.set(new Point2D(x, y));
 			});
 
 		}
@@ -314,17 +283,6 @@ public class GameScreenController implements Initializable {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				// if (!popupDialog.isVisible()) {
-				// popupDialog.setVisible(true);
-				// // board.popUpDialog.setVisible(true);
-				//
-				// popupDialog.setMouseTransparent(false);
-				// // popupDialog.getParent().setMouseTransparent(false);
-				// for (Node n : popupDialog.getChildren()) {
-				// n.setMouseTransparent(false);
-				// }
-				//
-				// }
 				if (gameBoard.getRotate() > 0) {
 					popupDialog.relocate(Math.abs(hexEdge.getStartPoint().getY() - hexEdge.getEndPoint().getY()),
 							Math.abs(hexEdge.getStartPoint().getX() - hexEdge.getEndPoint().getX()));
@@ -336,15 +294,6 @@ public class GameScreenController implements Initializable {
 					popupDialog.relocate(Math.abs(hexEdge.getStartPoint().getX() - hexEdge.getEndPoint().getX()),
 							Math.abs(hexEdge.getStartPoint().getY() - hexEdge.getEndPoint().getY()));
 				}
-				/*
-				 * popupDialog.setLayoutX(v.getLayoutX());
-				 * popupDialog.setLayoutY(v.getLayoutY());
-				 */
-
-				// popupDialog.setLayoutY(v.getLayoutY());
-
-				// selectedCircle.set(circle);
-				// selectedLocation.set(new Point2D(x, y));
 			});
 
 		}
@@ -359,18 +308,12 @@ public class GameScreenController implements Initializable {
 		cancelBuildBtn.setVisible(false);
 
 		setGameState(NEW_GAME);
-		// If gameState = NEW_GAME, display "Start Game" overlay Panel
-		// --> Pressing "Start Game" button launches startGame();
-
 	}
 
 	public void setSelectedItem(Node o) {
 		selectedItem = o;
 	}
 
-	// **************************************
-	// *Beginning of Game Loop related code *
-	// **************************************
 	public int rollDice() {
 		btnRollDice.setDisable(true);
 		Integer r;
@@ -418,7 +361,6 @@ public class GameScreenController implements Initializable {
 
 	}
 
-	// START GAME METHOD HERE!
 	public void startGame() {
 		getPlayerOrder(players);
 		setGameState(PRE_ROLL);
@@ -429,12 +371,6 @@ public class GameScreenController implements Initializable {
 		System.out.println("GAME STARTED");
 		System.out.println("//////////////////////////////////");
 
-		// if (currentPlayer.getNickname() != "Mark") {
-		// System.out.println("Skipping cpu turn: " +
-		// currentPlayer.getNickname());
-		// rollDice();
-		// endTurn();
-		// }
 	}
 
 	public void endTurn() {
@@ -1171,16 +1107,7 @@ public class GameScreenController implements Initializable {
 	}
 
 	private boolean winCondition() {
-		throw new UnsupportedOperationException("Not supported yet."); // To
-																		// change
-																		// body
-																		// of
-																		// generated
-																		// methods,
-																		// choose
-																		// Tools
-																		// |
-																		// Templates.
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	public Player getCurrentPlayer() {
