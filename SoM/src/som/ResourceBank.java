@@ -137,5 +137,33 @@ public class ResourceBank {
             
         }
     }
+    
+    String getResourceName(int resourceNumber)
+    {
+        String resourceString = new String();
+        
+        switch(resourceNumber)
+                {
+                    case 0:
+                        resourceString = "STEEL";
+                    break;
+                    case 1:
+                        resourceString = "GLASS";
+                    break;
+                    case 2:
+                        resourceString = "HEMP";
+                    break;
+                    case 3:
+                        resourceString = "SOY";
+                    break;
+                    case 4:
+                        resourceString = "PLASTIC";
+                    break;
+                    default:
+                        resourceString = "INVALID RESOURCE";
+                    break;
+                }
+        return resourceString;
+    }
 } 
 
