@@ -4,6 +4,7 @@ package som;
 import java.util.ArrayList;
 
 import javafx.scene.paint.Color;
+import static som.GameScreenController.audio;
 import som.assets.Asset;
 
 /**
@@ -168,6 +169,7 @@ public class ResourceGenerator {
             resourceBank.bankDrawResource(resourceType, asset.getType());
             asset.getPlayer().addResource(resourceType, asset.getType());                       //adds the number of resources equal to the assetType (0 for roads, 1 for settlemts, 2 for cities) to the players resources)
 
+            audio.playClips(resourceType);
         }
 
     }
