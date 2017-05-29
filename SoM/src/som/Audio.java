@@ -53,6 +53,8 @@ public class Audio {
 
     static Audio audio;
     int numPlayers;
+    static int oldHighestVP;
+    static int newHighestVP;
 
     public Audio() {
 
@@ -62,18 +64,24 @@ public class Audio {
         //playMusic1();
     }
 
-    
     /**
      *
      */
-    public void changeMusic(){
+    public void changeMusic() {
         
-        
+        newHighestVP = 0;
         numPlayers = GameScreenController.players.size();
+        for (int i = 0; i < numPlayers; i++) {
+            if(newHighestVP < GameScreenController.players.get(i).getVictoryPoints())
+                newHighestVP = GameScreenController.players.get(i).getVictoryPoints();
         }
-    
-    
-    
+        if(newHighestVP > 6 && oldHighestVP <= 6)
+            playMusic2();
+        else if(oldHighestVP > newHighestVP && newHighestVP <= 6)
+            playMusic1();
+        oldHighestVP = newHighestVP;
+    }
+
     public void playClips(int i) {
 
         sounds = getClass().getResource(audioClips.get(i));
@@ -89,7 +97,7 @@ public class Audio {
         audioClips.add(path + "glass.wav");
         audioClips.add(path + "hemp.wav");
         audioClips.add(path + "water.wav");
-         audioClips.add(path + "Plastic.wav");
+        audioClips.add(path + "Plastic.wav");
         audioClips.add(path + "building.wav");
         audioClips.add(path + "dice.wav");
         audioClips.add(path + "drop.wav");
@@ -127,26 +135,9 @@ public class Audio {
         if (mediaPlayer1.getStatus().equals(MediaPlayer.Status.PLAYING)) {
             mediaPlayer1.stop();
         }
-        
-    
-    }   
+
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // determine the source directory for the playlist (either the first argument to the program or a default).
 //final List<String> params = request.getParameters().getRaw();
