@@ -172,7 +172,7 @@ public class GameScreenController implements Initializable {
     // -----------------------------------------------------//
     Player thisPlayer = new Player("Mark", new int[]{5, 5, 5, 5, 5}, Color.GREEN);
     TradePack thisPlayerTradePack;
-    ArrayList<Player> players;
+    static ArrayList<Player> players;
     DevelopmentDeck developmentDeck = new DevelopmentDeck();
     DevelopmentCard thisCard;
     HexBoard board;
@@ -309,7 +309,7 @@ public class GameScreenController implements Initializable {
     }
 
     public int rollDice() {
-        audio.playClips(1);
+        audio.playClips(6);
 
         btnRollDice.setDisable(true);
         Integer r;
