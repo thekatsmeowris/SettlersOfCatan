@@ -14,6 +14,9 @@ public class Robber {
     private Player pickedPlayer;
     private  ArrayList<Player> players = new ArrayList<>();
     private ResourceBank resourceBank = new ResourceBank();
+    private Hex pickedHex = new Hex();
+    private Hex previousHex = new Hex();
+    
      /*
    * This method will Activate the Robber which will later activate all the othe methods
    * Not sure how turn order will work, for now I added a player argument as a requirement
@@ -36,11 +39,13 @@ public class Robber {
         {
             if(players.get(i).countResources() >= 7) //If the current player has more than 7 resource cards...
             {
+                System.out.println(players.get(i).getNickname() + " lost:");
                 for(int j = 0; j < (players.get(i).countResources()/2); j++) //for loop to run half of number of player resource cards, rounding down. Ex: player has 7 cards it will run 3 times
                 {
-                    randomResourceNumber = RandomResourceValue(i);
+                    randomResourceNumber = RandomResourceValue(i);      //randomly generates a number from 0-4 using the RandomResourceValue method
                     players.get(i).resources[randomResourceNumber]--;    //randomly removes one resource dictated by RandomResourceValue method  
                     resourceBank.bankReturnResource(randomResourceNumber,1);
+                    System.out.print(" one " + resourceBank.getResourceName(randomResourceNumber));
                 } //end of inner for loop
             } //end of inner if statment
         } //end of for loop
@@ -77,11 +82,12 @@ public class Robber {
     
     /*
      * This method allows the current player to move the robber to a desired hex
+     * Use this method for Knight card and use ActivateRobber method is a seven on the dice are rolled
      */
     public void MoveRobber(Player player)
     {
         //Needs Implementation to move Robber to specific hex
-        Hex pickedHex = new Hex();
+        
         //pickedHex = the specific hex
         //pickedHex can no longer generate resources until rober is moved again
         
@@ -90,8 +96,7 @@ public class Robber {
     
     /*
      * This method checks the specific hex for players
-     * Made public for the knight card
-     */
+      */
     private void checkHex(Hex pickedHex)
     {
      ArrayList<Player>listOfplayers= new ArrayList<>();
@@ -119,10 +124,12 @@ public class Robber {
         
         if(listOfplayers.size() == 1)
         {
-            listOfplayers.get(0).resources[randomResourceNumber]--;
+            pickedPlayer = listOfplayers.get(0);
+            pickedPlayer.resources[randomResourceNumber]--;
             CurrentPlayer.resources[randomResourceNumber]++;
+            System.out.println(CurrentPlayer.getNickname() + " stole one " + resourceBank.getResourceName(randomResourceNumber) + " from " + pickedPlayer);
         }
-        else 
+         if (listOfplayers.size() > 1)
         {
             //pick player from list of players
             //pickedPlayer = listOfplayers[?]
@@ -131,5 +138,12 @@ public class Robber {
         }
         
     }
-        
+     /*
+     * This method sets players to a given Player ArrayList
+     */   
+    public void setPlayerList(ArrayList<Player> listOfplayers)
+    {
+         players = (ArrayList<Player>)listOfplayers.clone();
+    }
 }
+
