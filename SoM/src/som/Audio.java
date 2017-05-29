@@ -52,6 +52,7 @@ public class Audio {
     static ArrayList<String> audioClips = new ArrayList();
 
     static Audio audio;
+    int numPlayers;
 
     public Audio() {
 
@@ -61,6 +62,18 @@ public class Audio {
         //playMusic1();
     }
 
+    
+    /**
+     *
+     */
+    public void changeMusic(){
+        
+        
+        numPlayers = GameScreenController.players.size();
+        }
+    
+    
+    
     public void playClips(int i) {
 
         sounds = getClass().getResource(audioClips.get(i));
@@ -72,19 +85,19 @@ public class Audio {
     private void loadAudioAssets() {
 
         String path = "audio/sounds/";
+        audioClips.add(path + "steel.wav");
+        audioClips.add(path + "glass.wav");
+        audioClips.add(path + "hemp.wav");
+        audioClips.add(path + "water.wav");
+         audioClips.add(path + "Plastic.wav");
         audioClips.add(path + "building.wav");
         audioClips.add(path + "dice.wav");
         audioClips.add(path + "drop.wav");
-        audioClips.add(path + "glass.wav");
-        audioClips.add(path + "hemp.wav");
-        audioClips.add(path + "Plastic.wav");
-        audioClips.add(path + "steel.wav");
-        audioClips.add(path + "water.wav");
         audioClips.add(path + "click.wav");
 
         String music1Path = "src/som/audio/music/WASTELAND2melody.wav";
         Media mMusic1 = new Media(new File(music1Path).toURI().toString());
-        String music2Path = "src/som/audio/music/EDGEofAWARE1wbrass.wav";
+        String music2Path = "src/som/audio/music/EdgeOfAwareMelody.wav";
         Media mMusic2 = new Media(new File(music2Path).toURI().toString());
 
         mediaPlayer1 = new MediaPlayer(mMusic1); //mediaPlayer
@@ -92,10 +105,10 @@ public class Audio {
         mediaView = new MediaView(mediaPlayer1);
         mediaView.setMediaPlayer(mediaPlayer1);
 
-        musicURL1 = getClass().getResource("audio/music/WASTELAND1.wav");
-        aMusic1 = new AudioClip(musicURL1.toString());
-        musicURL2 = getClass().getResource("audio/music/WASTELAND2.wav");
-        aMusic2 = new AudioClip(musicURL2.toString());
+//        musicURL1 = getClass().getResource("audio/music/WASTELAND1.wav");
+//        aMusic1 = new AudioClip(musicURL1.toString());
+//        musicURL2 = getClass().getResource("audio/music/WASTELAND2.wav");
+//        aMusic2 = new AudioClip(musicURL2.toString());
     }
 
     public void playMusic1() {
@@ -114,7 +127,9 @@ public class Audio {
         if (mediaPlayer1.getStatus().equals(MediaPlayer.Status.PLAYING)) {
             mediaPlayer1.stop();
         }
-    }
+        
+    
+    }   
 }
 
 
