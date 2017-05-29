@@ -17,6 +17,15 @@ public class Cpu extends Player{
     private int victoryPoints;
     private TradePack tradePack= new TradePack(this);
     private int priority;
+    HexBoard board;
+
+    public HexBoard getBoard() {
+        return board;
+    }
+
+    public void setBoard(HexBoard board) {
+        this.board = board;
+    }
 
     public int getVictoryPoints() {
         return victoryPoints;
@@ -47,28 +56,31 @@ public class Cpu extends Player{
         assets=new Assets();
         resources= new int[]{0,0,0,0,0}; 
         victoryPoints=0;
+        setBoard(board);
         int prio=(int)(Math.random()*(7-0+1)+0);
         setPriority(prio);
         
     }
 
-    Cpu(String name, Color playerColor) {
+    Cpu(String name, Color playerColor, HexBoard board) {
         super(name,playerColor);
         assets=new Assets();
             nickname=name;
             this.playerColor=playerColor;
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.       
+        setBoard(board);
         int prio=(int)(Math.random()*(7-0+1)+0);
         setPriority(prio);
     }
 
-    Cpu(String name, int[] resources, Color playerColor) {
+    Cpu(String name, int[] resources, Color playerColor,HexBoard board) {
         super(name,resources,playerColor);
         this.nickname=name;
         this.resources=resources;
         this.victoryPoints=4;
         assets=new Assets();
-        this.playerColor=playerColor;        
+        this.playerColor=playerColor;           
+        setBoard(board);
         int prio=(int)(Math.random()*(7-0+1)+0);
         setPriority(prio);
     }
@@ -83,15 +95,15 @@ public class Cpu extends Player{
             */
         int steel=resources[0],glass=resources[1],hemp=resources[2],soy=resources[3],plastic=resources[4];
 
-        if(priority==1)
+        if(priority==1) //priority 1 the cpu prefferences is on building settlement 
         {           
             if((steel==4) && (glass==4) && (soy==4) && (plastic==4))
             {
-                buildSettlement(board);
+                buildSettlement(this.board);
             }
             else
             {
-                int action=(int)(Math.random()*(8-0+1)+0);
+                int action=(int)(Math.random()*(5-0+1)+0);
                 if(action==1)
                 {
                     //build road, if not enough resources incriment action +1 so the next if can be executed
@@ -106,20 +118,52 @@ public class Cpu extends Player{
                 }
                 if(action==4)
                 {
-                    //dev card
+                    //dev card,if not enough resources incriment action +1 so the next if can be executed
                 }
                 if(action==5)
                 {
-                    //progress card
+                    //progress card, if not enough resources incriment action +1 so the next if can be executed
                 }
                 if(action==6)
                 {
-                    //
+                    //pass without doing anything
                 }                
             }
         }
-        else if(priority==2)
+        else if(priority==2)//priority 2 the cpu focuse on building road 
         {
+            if((steel==4) && (glass==4) && (soy==4) && (plastic==4))
+            {
+                BuildRoad();
+            }
+            else
+            {
+                int action=(int)(Math.random()*(5-0+1)+0);
+                if(action==1)
+                {
+                    //build road, if not enough resources incriment action +1 so the next if can be executed
+                }
+                if(action==2)
+                {
+                    //trade, if not enough resources incriment action +1 so the next if can be executed
+                }
+                if(action==3)
+                {
+                    //upgrade settlement to city, if not enough resources incriment action +1 so the next if can be executed
+                }
+                if(action==4)
+                {
+                    //dev card,if not enough resources incriment action +1 so the next if can be executed
+                }
+                if(action==5)
+                {
+                    //progress card, if not enough resources incriment action +1 so the next if can be executed
+                }
+                if(action==6)
+                {
+                    //pass without doing anything
+                }                
+            }
         }
         else if(priority==3)
         {
@@ -156,6 +200,40 @@ public class Cpu extends Player{
         //generate a random number between 0 and the number of vertex available 
         //this index is where the AI will built the settlement
         int indexForBuildInVertex = (int)(Math.random()*(listOfVertexAvailable.size()-0+1)+0);
+        
+   }
+    
+    public static void BuildRoad()
+    {
+    }
+     public static void tradeResspurce()
+    {
+    }
+     
+     public static void buildCity(HexBoard board)
+    {
+        ArrayList<HexVertex>listOfPlayerVertexToUpgrade= new ArrayList<>();
+        //for each hex on the bord check each vertex to know if a player has a city already build
+        //if not we put the available vertex in a list of available vertex
+        for(Hex  hex: board.hexList)
+        {
+            for(int i=0;i<6;i++)
+            {
+                Player thisPlayer = null;
+
+                if(hex.getVerticies().get(i).getAsset().getPlayer()==thisPlayer)
+                {
+                    listOfPlayerVertexToUpgrade.add(hex.getVerticies().get(i));
+                }
+            }
+        }
+        //generate a random number between 0 and the number of vertex that the player has a settlement 
+        //this number will be use as index where the AI will built the city
+        int indexForBuildInVertex = (int)(Math.random()*(listOfPlayerVertexToUpgrade.size()-0+1)+0);
+        
+        /*
+        code for upgradind the settlement to a city here
+        */
         
    }
 }

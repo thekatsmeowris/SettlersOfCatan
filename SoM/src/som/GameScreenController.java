@@ -265,7 +265,7 @@ public class GameScreenController implements Initializable {
                 //popupDialog.getParent().setMouseTransparent(false);
                 for (Node n: popupDialog.getChildren()){
                     n.setMouseTransparent(false);
-                }
+                }      
                 
             }
                 if(gameBoard.getRotate()>0){
@@ -290,7 +290,7 @@ public class GameScreenController implements Initializable {
             //selectedCircle.set(circle);
             //selectedLocation.set(new Point2D(x, y));
         });
-
+            
         }
 
      
