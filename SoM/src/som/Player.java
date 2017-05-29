@@ -66,15 +66,6 @@ public class Player {
         victoryPointGauge.setLength(((double) value / (double) VICTORY_POINT_MAX) * 360);     //3.6 is 360 divided by the 100 for the 100 we would have multiplied the value/vpMax to get a percentage.
         System.out.println(pnPlayerInfo.getWidth());
         GameScreenController.audio.changeMusic();
-//        if (victoryPoints > 7) {
-//            GameScreenController.audio.playMusic2();
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(GameRoomSelectController.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            GameScreenController.audio.mediaPlayer1.stop();
-//        }
 
     }
 
