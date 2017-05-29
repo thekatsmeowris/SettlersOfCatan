@@ -366,7 +366,7 @@ public class GameScreenController implements Initializable {
         System.out.println("//////////////////////////////////");
         System.out.println("GAME STARTED");
         System.out.println("//////////////////////////////////");
-
+        audio.playClips(8);
     }
 
     public void endTurn() {

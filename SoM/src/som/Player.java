@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
-import static som.Audio.audio;
-import static som.Audio.mediaPlayer1;
+//import static som.Audio.audio;
+//import static som.Audio.mediaPlayer1;
 
 /**
  *

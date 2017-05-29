@@ -51,7 +51,7 @@ public class Audio {
 
     static ArrayList<String> audioClips = new ArrayList();
 
-    static Audio audio;
+    //static Audio audio;
     int numPlayers;
     static int oldHighestVP;
     static int newHighestVP;
