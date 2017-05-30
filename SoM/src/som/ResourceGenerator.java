@@ -1,14 +1,18 @@
+//TODO Eventually move some of the hex-related code (i.e. hex.setStroke) to HexBoard for code clarity/organization
+
 package som;
+
 import java.util.ArrayList;
+
 import javafx.scene.paint.Color;
 import som.assets.Asset;
 
 /**
  * The resource generator is a class that will dispatch resource to each player.
- * it will get resources from the bank if the banks has available resources. 
+ * it will get resources from the bank if the banks has available resources.
+ * 
  * @author David Kapanga
  * @author Chadwick J Davis
-
  * @version 1.0
  */
 
@@ -263,6 +267,6 @@ public class ResourceGenerator {
         this.resourceBank = resourceBank;
     }
         
-}
-  
 
+  
+}
