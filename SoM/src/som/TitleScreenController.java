@@ -27,6 +27,7 @@ public class TitleScreenController implements Initializable {
     
     @FXML
     private Label label;
+
     //private Button btnStartGame;
     //btnStartGame.setOnAction(new EventHandler<ActionEvent>())    
     
@@ -39,7 +40,16 @@ public class TitleScreenController implements Initializable {
         a_stage.setScene(game_room_scene);
         a_stage.show();
     }
-    
+
+    public void handlePlayOnline(ActionEvent e) throws IOException {
+        Parent serverPort = FXMLLoader.load(getClass().getResource("ConnectServer.fxml"));
+        Scene serverPortScene = new Scene(serverPort);
+        Stage a_stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+        a_stage.setScene(serverPortScene);
+        a_stage.show();
+    }
+
+
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
