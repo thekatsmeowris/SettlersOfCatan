@@ -324,6 +324,7 @@ public class GameScreenController implements Initializable {
 		leftDie.setText(r.toString());
 
 		r = z.nextInt(6) + 1;
+                System.out.println("second die: " + r);
 		diceValue += r;
 		rightDie.setText(r.toString());
 		System.out.println("total die: " + diceValue);
