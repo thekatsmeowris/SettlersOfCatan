@@ -5,10 +5,9 @@
  */
 package som;
 
-
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
@@ -18,7 +17,7 @@ import javafx.scene.shape.Arc;
  * @author makogenq
  */
 public class Player {
-	final int VICTORY_POINT_MAX = 10;
+	private static final int VICTORY_POINT_MAX = 10;
 
 	Integer diceRoll;
 
@@ -28,6 +27,8 @@ public class Player {
 	Arc victoryPointGauge = new Arc();
 
 	int[] resources;
+	private int freeSettlements = 2;
+	private int freeRoads = 2;
 	ResourceManager resourceManager = new ResourceManager();
 	private int victoryPoints;
 
@@ -59,23 +60,41 @@ public class Player {
 		this.playerColor = playerColor;
 	}
 
-    public void setVictoryPoints(int value){
-        victoryPoints=value;
-        victoryPointGauge.setLength(((double)value/(double)VICTORY_POINT_MAX)*360);     //3.6 is 360 divided by the 100 for the 100 we would have multiplied the value/vpMax to get a percentage.
-        System.out.println(pnPlayerInfo.getWidth());
-        
-        
-        if (victoryPoints > 6) {
-                MediaClass.playMusic2();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(GameRoomSelectController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                //SoM.mMusic1.stop();
-            }
+	public void setVictoryPoints(int value) {
+		victoryPoints = value;
+		victoryPointGauge.setLength(((double) value / (double) VICTORY_POINT_MAX) * 360); // 3.6
+																							// is
+																							// 360
+																							// divided
+																							// by
+																							// the
+																							// 100
+																							// for
+																							// the
+																							// 100
+																							// we
+																							// would
+																							// have
+																							// multiplied
+																							// the
+																							// value/vpMax
+																							// to
+																							// get
+																							// a
+																							// percentage.
+		System.out.println(pnPlayerInfo.getWidth());
 
-    }
+		if (victoryPoints > 6) {
+			MediaClass.playMusic2();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException ex) {
+				Logger.getLogger(GameRoomSelectController.class.getName()).log(Level.SEVERE, null, ex);
+			}
+			// SoM.mMusic1.stop();
+		}
+
+	}
 
 	public void build(String assetName) {
 		if (assetName.equals("SETTLEMENT"))
@@ -95,12 +114,8 @@ public class Player {
 
 		// resources.bankDrawResource("SOY", 10);
 		// resources.printResourceList();
-                
+
 	}
-
-
-
-
 
 	int getVictoryPoints() {
 		return victoryPoints;
@@ -140,39 +155,33 @@ public class Player {
 		}
 	}
 
+	public void setResource(int index, int value) {
+		this.resources[index] = value;
+	}
 
-    
-    public void setResource(int index, int value) {
-        this.resources[index]=value;
-    }
-    
- 
-    public int[] removeResources(int[] resources){
-        for(int i=0; i<this.resources.length;i++){
-            this.resources[i]-=resources[i];
-        }
-        return resources;
-    }
+	public int[] removeResources(int[] resources) {
+		for (int i = 0; i < this.resources.length; i++) {
+			this.resources[i] -= resources[i];
+		}
+		return resources;
+	}
 
-    @Override
-    public String toString() {
-        return "Player{" + "VICTORY_POINT_MAX=" + VICTORY_POINT_MAX + ", pnPlayerInfo=" + pnPlayerInfo + ", victoryPointGauge=" + victoryPointGauge + ", resources=" + resources + ", resourceManager=" + resourceManager + ", victoryPoints=" + victoryPoints + ", playerColor=" + playerColor + ", nickname=" + nickname + ", assets=" + assets + '}';
-    }
+	@Override
+	public String toString() {
+		return "Player{" + "VICTORY_POINT_MAX=" + VICTORY_POINT_MAX + ", pnPlayerInfo=" + pnPlayerInfo
+				+ ", victoryPointGauge=" + victoryPointGauge + ", resources=" + resources + ", resourceManager="
+				+ resourceManager + ", victoryPoints=" + victoryPoints + ", playerColor=" + playerColor + ", nickname="
+				+ nickname + ", assets=" + assets + '}';
+	}
 
+	public int countResources() {
+		int counter = 0;
 
-    
-    public int countResources()
-    {
-        int counter = 0;
-        
-        for(int i = 0; i < resources.length -1; i++)
-        {
-            counter += resources[i];
-        }
-        return counter;
-    }
-
-
+		for (int i = 0; i < resources.length - 1; i++) {
+			counter += resources[i];
+		}
+		return counter;
+	}
 
 	public void setDiceRoll(Integer rollDice) {
 		this.diceRoll = rollDice;
@@ -190,8 +199,24 @@ public class Player {
 		return (GameScreenController.getPlayerWithLongestRoad() == this);
 	}
 
-	
 	Color getPlayerColor() {
 		return playerColor;
 	}
+
+	public int getFreeSettlements() {
+		return freeSettlements;
+	}
+
+	public void setFreeSettlements(int freeSettlements) {
+		this.freeSettlements = freeSettlements;
+	}
+
+	public int getFreeRoads() {
+		return freeRoads;
+	}
+
+	public void setFreeRoads(int freeRoads) {
+		this.freeRoads = freeRoads;
+	}
+
 }
