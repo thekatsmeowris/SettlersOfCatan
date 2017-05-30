@@ -32,7 +32,7 @@ public class GameRoomSelectController implements Initializable {
     }   
      public void handleButtonAction(ActionEvent event) throws IOException {
         System.out.println("You clicked me!");
-        //label.setText("Hello World!");
+//        label.setText("Hello World!");
         Parent game_room_parent = FXMLLoader.load(getClass().getResource("GameScreen.fxml"));
         Scene game_room_scene = new Scene(game_room_parent);
         Stage a_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

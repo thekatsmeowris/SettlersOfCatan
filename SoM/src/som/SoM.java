@@ -11,6 +11,7 @@ import progressCards.YearOfPlenty;
 import progressCards.Monopoly;
 import devCards.Knight;
 import java.io.File;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,9 +27,10 @@ import javafx.stage.Stage;
  * @author makogenq
  */
 public class SoM extends Application {
+
     //private static URL musicURL1, musicURL2;
     //static AudioClip aMusic1, aMusic2;
-    String music1Path = "res/WASTELAND1.wav";
+    String music1Path = "src/res/WASTELAND1.wav";
 
     Media mMusic1 = new Media(new File(music1Path).toURI().toString());
     static MediaPlayer mediaPlayer;
@@ -117,7 +119,6 @@ public class SoM extends Application {
 		RoadBuilding rb = new RoadBuilding();
 		DevelopmentDeck d = new DevelopmentDeck();
 
-		
 		d.addCard(k);
 		d.addCard(vp);
 		// d.addCard(yop);
@@ -125,10 +126,10 @@ public class SoM extends Application {
 		d.addCard(rb);
 		while (!d.isEmpty()){
 			DevelopmentCard card = d.drawCard();
-			System.out.println(card);	
+			System.out.println(card);
 			if (card instanceof RoadBuilding)
 				card.playCard();
-                }
-        }
-    
+		}
+	}
+
 }
