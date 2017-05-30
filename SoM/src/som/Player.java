@@ -10,6 +10,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
+import devCards.Knight;
+import devCards.ProgressCard;
+import devCards.VictoryPoint;
+import progressCards.Monopoly;
+import progressCards.RoadBuilding;
+import progressCards.YearOfPlenty;
 
 
 /**
@@ -18,16 +24,17 @@ import javafx.scene.shape.Arc;
  */
 public class Player {
     final int VICTORY_POINT_MAX=10;
-    
     private TradePack tradePack= new TradePack(this);
-
-
     Pane pnPlayerInfo=new Pane();
     Arc victoryPointGauge = new Arc();
     
-    
     int[] resources;
-    ArrayList<DevelopmentCard> developmentCards;
+    ArrayList<DevelopmentCard> hand;
+    
+  
+    
+    
+    
     ResourceManager resourceManager= new ResourceManager(); 
     private int victoryPoints;
     
@@ -35,16 +42,32 @@ public class Player {
     String nickname;
     //String n, d, imgName;
     Assets assets;
+    DevelopmentDeck deck;
     DevelopmentCard card;//Creates an object instance of the card from the development deck
     Player(){
 
         assets=new Assets();
-        resources= new int[]{0,0,0,0,0}; 
-        developmentCards=new ArrayList<>();//new development card ArrayList to hold Player's development Cards
-        
+        resources= new int[]{0,0,0,0,0};
+        hand=new ArrayList<>();
         victoryPoints=0;
+        //hand=new ArrayList[24];
+        //for(int i=0; i<24; i++){
+           // hand[i]=new ArrayList<DevelopmentCard>();
+        //}
+        
+        
+        Knight k= new Knight();
+        VictoryPoint vp=new VictoryPoint();
+        YearOfPlenty yop=new YearOfPlenty();
+        Monopoly mp=new Monopoly();
+        RoadBuilding rb=new RoadBuilding();
+        
+        
+        
+        
         
     }
+    
 
     Player(String name, Color playerColor) {
         assets=new Assets();
@@ -63,17 +86,9 @@ public class Player {
         assets=new Assets();
         this.playerColor=playerColor;
     }
-    Player(ArrayList<DevelopmentCard> developmentCards){
-        
-        this.developmentCards=developmentCards;
-        developmentCards=new ArrayList<>();
-             
-    }
-    public void add(DevelopmentCard card){//add a development card to the Player's ArrayList
-        developmentCards.add(card);
-    }
-    //need to add remove development card from Player's ArrayList
-    //need to add victory point increase for Player if the development card is a VP
+   
+    
+    
     public void setVictoryPoints(int value){
         victoryPoints=value;
         victoryPointGauge.setLength(((double)value/(double)VICTORY_POINT_MAX)*360);     //3.6 is 360 divided by the 100 for the 100 we would have multiplied the value/vpMax to get a percentage.

@@ -137,8 +137,11 @@ public class GameScreenController implements Initializable {
     Player thisPlayer=new Player("Mark",new int[]{5,5,5,5,5}, Color.GREEN);
     TradePack thisPlayerTradePack;
     ArrayList<Player> players;
+    
+   
     DevelopmentDeck developmentDeck= new DevelopmentDeck();
     DevelopmentCard thisCard;
+    
     HexBoard board; 
     int turnCount;
     ResourceBank resourceBank=new ResourceBank(19);
@@ -1027,8 +1030,10 @@ public class GameScreenController implements Initializable {
                System.out.println("SUBTRACTED RESOURCES");
                thisCard=developmentDeck.drawCard();//take development card from deck
                System.out.println("SAVED CARD FROM DECK");
-               thisPlayer.add(thisCard);
+               thisPlayer.hand.add(developmentDeck.drawCard());
+               System.out.println(""+thisPlayer.hand);
                System.out.println("YOU'VE BUILT A DEV CARD");
+              
             }
         }
     }
