@@ -12,6 +12,9 @@
          <children>
             <Button id="btnStartGame" mnemonicParsing="false" onAction="#handleButtonAction" text="Start Game" />
             <Button id="btnOptions" mnemonicParsing="false" text="Options" />
+            <!-- Online -->
+	        <Button id="btnConnectServer" mnemonicParsing="false" text="Play Online" onAction="#handlePlayOnline" />
+
          </children>
       </VBox>
     </children>
