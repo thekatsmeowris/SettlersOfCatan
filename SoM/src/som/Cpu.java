@@ -5,8 +5,10 @@
  */
 package som;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 /**
  *
@@ -19,6 +21,7 @@ public class Cpu extends Player{
     private int victoryPoints;
     private TradePack tradePack= new TradePack(this);
     private int priority;
+    static GameScreenController gsc=new GameScreenController();
     HexBoard board;
 
     public HexBoard getBoard() {
@@ -86,7 +89,7 @@ public class Cpu extends Player{
         int prio=(int)(Math.random()*(7-0+1)+0);
         setPriority(prio);
     }
-    public synchronized void play()
+    public synchronized void play() throws IOException
     {
          /*resource numbers:
             0 = steel = ore
@@ -137,7 +140,7 @@ public class Cpu extends Player{
         {
             if((steel==4) && (glass==4) && (soy==4) && (plastic==4))
             {
-                BuildRoad();
+                BuildRoad(board);
             }
             else
             {
@@ -185,7 +188,7 @@ public class Cpu extends Player{
         }
     }
     
-    public static void buildSettlement(HexBoard board)
+    public static void buildSettlement(HexBoard board) throws IOException
     {
         ArrayList<HexVertex>listOfVertexAvailable= new ArrayList<>();
         //for each hex on the bord check each vertex to know if a player has a Settlement already build
@@ -203,13 +206,26 @@ public class Cpu extends Player{
         //generate a random number between 0 and the number of vertex available 
         //this index is where the AI will built the settlement
         int indexForBuildInVertex = (int)(Math.random()*(listOfVertexAvailable.size()-0+1)+0);
-        
+        HexVertex selectedItem = listOfVertexAvailable.get(indexForBuildInVertex);
+        gsc.buildSettlement(selectedItem);
+              
    }
     
-    public static void BuildRoad()
+    public static void BuildRoad(HexBoard board) throws IOException
     {
+        ArrayList<HexEdge>listOfEgdeAvailable= new ArrayList<>();
+         for(HexEdge  edge: board.edgeList)
+        {
+            if(edge.getOwner()!=null)
+            {
+                listOfEgdeAvailable.add(edge);
+            }
+        }
+         int indexForBuildInEdge = (int)(Math.random()*(listOfEgdeAvailable.size()-0+1)+0);
+         HexEdge selectedItem = listOfEgdeAvailable.get(indexForBuildInEdge);
+        gsc.buildRoad(selectedItem);
     }
-     public static void tradeResspurce()
+     public static void tradeRessource()
     {
     }
      

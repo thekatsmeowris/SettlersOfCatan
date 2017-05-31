@@ -497,6 +497,51 @@ public class GameScreenController implements Initializable {
              
          }
      }
+     public void buildSettlement(HexVertex selectedItem) throws IOException{
+         if(canBuildSettlement((HexVertex) selectedItem)){
+             System.out.println("BUILD SETTLEMENT DIALOG");
+             //((HexVertex)selectedItem).addSettlement(thisPlayer);
+            if (freeSettlement<=0){                                                                                                               //quick bug fix to see if freeSettlement can work. must change where it decrements.
+            resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexVertex)selectedItem).addSettlement(thisPlayer))));
+            }else{
+                ((HexVertex)selectedItem).addSettlement(thisPlayer);
+                freeSettlement--;
+            }
+            ((HexVertex) selectedItem).setFill((Paint) thisPlayer.getPlayerColor());                                //set fill to color the vertex the player's color (indicating a settlement
+            thisPlayer.assets.add(thisPlayer,((HexVertex)selectedItem));                                            //add this new asset to the player's list of assets
+            thisPlayer.setVictoryPoints((thisPlayer.getVictoryPoints())+SETTLMENT_VP_VALUE);                        //increase the vp of the player
+            pgbVictoryPoints.setProgress(((double)thisPlayer.getVictoryPoints()/10));                               //adjust the progress bar for vp for thisPlayer
+            updateResources();
+            for(HexEdge edge:((HexVertex)selectedItem).getAdjacentEdge() ){
+                edge.setStroke(Color.WHITE);
+                if(((HexEdge)edge).isOwned()){
+                    edge.setFill(Color.GREENYELLOW);
+                }
+            }
+            //test
+
+            HexVertex hv=(HexVertex)selectedItem;
+            int index=board.vertexList.indexOf(hv);
+            for(HexEdge edge: ((HexVertex) selectedItem).getAdjacentEdge()){
+                
+                System.out.println("//");
+                try{
+                    System.out.println("Startpoint for edge: "+edge.getStartVertex());
+                    System.out.println("!!"+(HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem))));
+                    
+                    ((HexVertex)(edge.getOtherPoint(((HexVertex)selectedItem)))).setFill(Color.GOLDENROD);
+
+                }catch(NullPointerException nullPointer){
+                    System.out.println("FAIL");
+                }
+                
+            }
+           closeParentPane();
+
+             
+         }
+     }
+     
      public void getSelectedItemInfo(){
             System.out.println((HexEdge)selectedItem);
             System.out.println((HexVertex)selectedItem);
@@ -587,6 +632,38 @@ public class GameScreenController implements Initializable {
           closeParentPane();
          } 
      }
+     
+     //overload this methode for the AI as it cant click on the board, i pass the hexEdge selected by the AI
+     public void buildRoad(HexEdge selectedItem) throws IOException{
+         if(canBuildRoad(((HexEdge)selectedItem), thisPlayer)){
+             if(freeRoad>0){
+                ((HexEdge)selectedItem).addRoad(thisPlayer);
+                freeRoad--;
+             }else{
+                resourceBank.bankReturnResource(thisPlayer.removeResources(resourceBank.getResourceCost(((HexEdge)selectedItem).addRoad(thisPlayer))));
+             }
+            thisPlayer.assets.add(thisPlayer,((HexEdge)selectedItem));
+
+            updateResources();
+            
+
+                                                                                                //put resources back to the bank
+         System.out.println("BUILD ROAD DIALOG");
+         System.out.println("ADJACENT EDGES:");
+         System.out.println(((HexEdge)selectedItem).getAdjacentEdge());
+          checkForLongestRoad();
+
+          System.out.println("PRogress: " + thisPlayer.assets.roads.size());
+          //System.out.println(((HexEdge) selectedItem).getType().toString());
+        for(HexEdge edge:((HexEdge)selectedItem).getAdjacentEdge() ){
+             edge.setStroke(Color.WHITE);
+             System.out.println(edge.isOwned());
+         }
+          closeParentPane();
+         } 
+     }
+     
+     
      private boolean canBuildRoad(HexEdge hexEdge, Player player)   {
          if(checkRequirements(hexEdge, player)){
              //check all the adjacent edges to see if at leaset one of them has a road
