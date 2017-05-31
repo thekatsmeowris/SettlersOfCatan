@@ -1031,7 +1031,6 @@ public class GameScreenController implements Initializable {
                thisCard=developmentDeck.drawCard();//take development card from deck
                System.out.println("SAVED CARD FROM DECK");
                thisPlayer.hand.add(developmentDeck.drawCard());
-               System.out.println(""+thisPlayer.hand);
                System.out.println("YOU'VE BUILT A DEV CARD");
               
             }
