@@ -1,22 +1,23 @@
 package som;
 
 // Deck.java
-import java.util.Stack;
-
-
 import devCards.Knight;
 import devCards.VictoryPoint;
+import java.util.Stack;
+import java.util.Collections;
 import progressCards.Monopoly;
 import progressCards.RoadBuilding;
 import progressCards.YearOfPlenty;
-import java.util.Collections;
-
 public class DevelopmentDeck{
 
 
 	private Stack<DevelopmentCard> deck;
 	private int totalNumber;
-        
+        Knight k= new Knight();
+        VictoryPoint vp=new VictoryPoint();
+        YearOfPlenty yop=new YearOfPlenty();
+        Monopoly mp=new Monopoly();
+        RoadBuilding rb=new RoadBuilding();
         
         public DevelopmentDeck(){
             deck=new Stack<>();
@@ -27,11 +28,11 @@ public class DevelopmentDeck{
                 deck.push(new YearOfPlenty());
                 deck.push(new Monopoly());
                 deck.push(new RoadBuilding());
+                
             }
             for (int i=0; i<5; i++){
                 deck.push(new VictoryPoint());
             }
-            
         }
         
         
@@ -58,7 +59,7 @@ public class DevelopmentDeck{
 	protected void addCard(DevelopmentCard dc){
 		deck.push(dc);
 		totalNumber++;
-                Collections.shuffle(deck);//shuffles the deck of knight cards 
+                Collections.shuffle(deck);
 	}
 
 
