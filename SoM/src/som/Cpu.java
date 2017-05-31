@@ -14,6 +14,8 @@ import javafx.scene.paint.Color;
  */
 public class Cpu extends Player{
     
+    GameScreenController gm=new GameScreenController();
+    
     private int victoryPoints;
     private TradePack tradePack= new TradePack(this);
     private int priority;
@@ -102,6 +104,7 @@ public class Cpu extends Player{
                 buildSettlement(this.board);
             }
             else
+                
             {
                 int action=(int)(Math.random()*(5-0+1)+0);
                 if(action==1)

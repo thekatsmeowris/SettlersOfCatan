@@ -48,6 +48,7 @@ import som.assets.Settlement;
  * @author makogenq
  */
 public class GameScreenController implements Initializable {
+    
     @FXML
     Pane 
             gameLayer, 
