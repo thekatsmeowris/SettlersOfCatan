@@ -8,7 +8,6 @@ package som;
 import java.util.ArrayList;
 
 import javafx.collections.ObservableList;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -17,7 +16,6 @@ import javafx.scene.shape.Polygon;
  * @author makogenq
  */
 public class Hex extends Polygon {
-    
 
 	// double inRadius, circumRadius, centralAngle, interiorAngle, side;
 
@@ -74,6 +72,28 @@ public class Hex extends Polygon {
 		this.setFill(hexColor);
 		this.tokenValue = tokenValue;
 		this.terrainType = terrainType;
+	}
+
+	// Constructor without token/terrain values
+	Hex(int index, double centerX, double centerY, double circumRadius, double inRadius, Color hexColor) {
+		super(centerX, centerY - circumRadius,
+				// cX+(Math.round(R*Math.sqrt(3)/2)), cY-(R/2),
+				centerX + (Math.round(circumRadius * Math.sqrt(3) / 2)), centerY - (circumRadius / 2),
+				centerX + (Math.round(circumRadius * Math.sqrt(3) / 2)), centerY + (circumRadius / 2), centerX,
+				centerY + circumRadius, centerX - (Math.round(circumRadius * Math.sqrt(3) / 2)),
+				centerY + (circumRadius / 2), centerX - (Math.round(circumRadius * Math.sqrt(3) / 2)),
+				centerY - (circumRadius / 2));
+		this.index = index;
+		this.centerX = centerX;
+		this.centerY = centerX;
+		this.circumRadius = circumRadius;
+		this.inRadius = circumRadius * (int) (Math.sqrt(3) / 2);
+		this.hexPoints = super.getPoints();
+		this.verticies = new ArrayList<>();
+		this.edges = new ArrayList<>();
+
+		this.hexColor = hexColor;
+		this.setFill(hexColor);
 	}
 
 	public ArrayList<HexVertex> getVerticies() {
@@ -191,6 +211,7 @@ public class Hex extends Polygon {
 	}
 
 	public void setSandstorming(boolean sandstorming) {
+		// Robber class --> Robber.getPreviousHex().setSandstorming(false);
 		this.sandstorming = sandstorming;
 	}
 
