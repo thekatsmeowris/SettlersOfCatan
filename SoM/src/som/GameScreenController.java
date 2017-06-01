@@ -260,7 +260,7 @@ public class GameScreenController implements Initializable {
 						setGameState(PLACING_FREE_SETTLEMENT);
 						if ((currentPlayerNumber == players.size() - 1)
 								&& (players.get(players.size() - 1).getFreeRoads() > 0)) {
-							advanceBackwards = true;
+							setAdvanceBackwards(true);
 						} else {
 							System.out.println(gameStateToString());
 							endTurn();
@@ -364,6 +364,7 @@ public class GameScreenController implements Initializable {
 		if (advanceBackwards) {
 			if (currentPlayerNumber == 0) {
 				setGameState(PRE_ROLL);
+				setAdvanceBackwards(false);
 			} else {
 				currentPlayerNumber--;
 			}
@@ -416,6 +417,8 @@ public class GameScreenController implements Initializable {
 			devBtn.setDisable(true);
 			gameBoard.setDisable(false);
 			buildBtn.setDisable(true);
+			cancelBuildBtn.setVisible(false);
+			cancelBuildBtn.setDisable(true);
 			endBtn.setDisable(true);
 			break;
 		case PRE_ROLL:
@@ -425,6 +428,8 @@ public class GameScreenController implements Initializable {
 			devBtn.setDisable(false);
 			gameBoard.setDisable(true);
 			buildBtn.setDisable(true);
+			cancelBuildBtn.setVisible(false);
+			cancelBuildBtn.setDisable(true);
 			endBtn.setDisable(true);
 			break;
 		case MAIN_PHASE:
@@ -436,13 +441,12 @@ public class GameScreenController implements Initializable {
 			buildBtn.setVisible(true);
 			buildBtn.setDisable(false);
 			cancelBuildBtn.setVisible(false);
+			cancelBuildBtn.setDisable(true);
 			endBtn.setDisable(false);
 			break;
 		case PLACING_ROAD:
 		case PLACING_CITY:
 		case PLACING_SETTLEMENT:
-		case PLACING_FREE_ROAD:
-		case PLACING_FREE_SETTLEMENT:
 			tradeBtn.setDisable(true);
 			diceRoller.setDisable(true);
 			startGameBtn.setDisable(true);
@@ -450,6 +454,19 @@ public class GameScreenController implements Initializable {
 			gameBoard.setDisable(false);
 			buildBtn.setVisible(false);
 			cancelBuildBtn.setVisible(true);
+			cancelBuildBtn.setDisable(false);
+			endBtn.setDisable(true);
+			break;
+		case PLACING_FREE_ROAD:
+		case PLACING_FREE_SETTLEMENT:
+			tradeBtn.setDisable(true);
+			diceRoller.setDisable(true);
+			startGameBtn.setDisable(true);
+			devBtn.setDisable(true);
+			gameBoard.setDisable(false);
+			buildBtn.setVisible(true);
+			buildBtn.setDisable(true);
+			cancelBuildBtn.setVisible(false);
 			endBtn.setDisable(true);
 		}
 	}
@@ -707,7 +724,6 @@ public class GameScreenController implements Initializable {
 																			// for
 																			// settlement
 		// road requirements: BRICK AND LUMBER (plastic + glass) 1+4
-
 		return (isGreater(players.get(currentPlayerNumber).getResources(), new int[] { 0, 1, 1, 1, 1 }));
 
 	}
@@ -1218,6 +1234,10 @@ public class GameScreenController implements Initializable {
 
 	public int getGameState() {
 		return gameState;
+	}
+
+	private void setAdvanceBackwards(boolean bool) {
+		advanceBackwards = bool;
 	}
 
 	public void placingSettlement() {
