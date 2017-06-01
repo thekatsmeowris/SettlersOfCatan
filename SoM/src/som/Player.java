@@ -30,6 +30,8 @@ public class Player {
     Arc victoryPointGauge = new Arc();
     
     int[] resources;
+    private int freeSettlements = 2;
+    private int freeRoads = 2;
     ArrayList<DevelopmentCard> hand;
     
   
@@ -211,6 +213,33 @@ public class Player {
     Color getPlayerColor() {
         return playerColor;
     }
+public int getFreeSettlements() {
+		return freeSettlements;
+	}
+
+	public void setFreeSettlements(int freeSettlements) {
+		this.freeSettlements = freeSettlements;
+	}
+
+	public int getFreeRoads() {
+		return freeRoads;
+	}
+
+	public void setFreeRoads(int freeRoads) {
+		this.freeRoads = freeRoads;
+	}
+        public void build(String assetName) {
+		if (assetName.equals("SETTLEMENT"))
+			;
+		else if (assetName.equals("ROAD"))
+			;
+		else if (assetName.equals("CITY"))
+			;
+	}
+public void buildInitial() {
+		this.build("SETTLEMENT");
+		this.build("ROAD");
+	}
 
 
 

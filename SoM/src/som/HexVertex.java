@@ -25,6 +25,7 @@ public class HexVertex extends Circle {
 	private ArrayList<HexEdge> adjacentEdge;
 	private Asset asset;
 	private Hex parentHex;
+        private boolean owned;
 
 	public Point2D getPosition() {
 		return position;
@@ -165,5 +166,8 @@ public class HexVertex extends Circle {
         return (City) this.asset;
     
     }
+    public boolean isOwned() {
+		return owned;
+	}
 
 }
