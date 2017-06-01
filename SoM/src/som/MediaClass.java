@@ -29,9 +29,9 @@ public class MediaClass {
 	}
 
 	private void loadAudioAssets() {
-		String music1Path = "SoM/src/som/music/WASTELAND2melody.wav";
+		String music1Path = "src/som/music/WASTELAND2melody.wav";
 		Media mMusic1 = new Media(new File(music1Path).toURI().toString());
-		String music2Path = "SoM/src/som/music/EDGEofAWARE1wbrass.wav";
+		String music2Path = "src/som/music/EDGEofAWARE1wbrass.wav";
 		Media mMusic2 = new Media(new File(music2Path).toURI().toString());
 
 		mediaPlayer1 = new MediaPlayer(mMusic1); // mediaPlayer
@@ -53,6 +53,7 @@ public class MediaClass {
 
 		mediaPlayer1.setCycleCount(AudioClip.INDEFINITE);
 		mediaPlayer1.play();
+
 		// if(mediaPlayer2.getStatus().equals(Status.PLAYING))
 		// mediaPlayer2.stop();
 	}
@@ -62,7 +63,7 @@ public class MediaClass {
 		// aMusic2.play();
 
 		mediaPlayer2.setCycleCount(AudioClip.INDEFINITE);
-		// mediaPlayer1.play();
+		mediaPlayer1.play();
 
 		mediaPlayer2.play();
 		if (mediaPlayer1.getStatus().equals(MediaPlayer.Status.PLAYING))
