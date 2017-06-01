@@ -133,7 +133,6 @@ public class GameScreenController implements Initializable {
 
 	// -----------------------------------------------------//
 
-	Player thisPlayer = new Player("Mark", new int[] { 5, 5, 5, 5, 5 }, Color.GREEN);
 	TradePack thisPlayerTradePack;
 	ArrayList<Player> players;
 	DevelopmentDeck developmentDeck = new DevelopmentDeck();
@@ -147,6 +146,7 @@ public class GameScreenController implements Initializable {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		currentPlayerNumber = 0;
 		board = new HexBoard();
+		Robber rob = new Robber();
 		sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
 				for (Player p : players) {
@@ -189,10 +189,16 @@ public class GameScreenController implements Initializable {
 		// DEPRECATED CODE --> board.hexList stuff inaccessible under numberPane
 		for (Hex h : board.transHexList) {
 			h.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-				setSelectedItem(h);
 				// Robber bob.setPrevHex = currentHex
 				// currentHex = selectedItem (or h);
-				h.setFill(Color.SEAGREEN);
+				if (getGameState() == MOVING_ROBBER) {
+					setSelectedItem(board.hexList.get(h.getIndex()));
+					h.setFill(Color.SEAGREEN);
+					moveRobber(rob);
+					System.out.println(rob.getCurrentHex().terrainTypeToString());
+					setGameState(MAIN_PHASE);
+					updateResources();
+				}
 			});
 		}
 		for (Hex hex : board.hexList) {
@@ -270,6 +276,10 @@ public class GameScreenController implements Initializable {
 		// Player GUI Stuff
 		resGen = new ResourceGenerator(board);
 		createTestPlayers();
+
+		// TODO: reorganize
+		rob.setPlayerArray(players);
+
 		fillPlayerInfo();
 		cancelBuildBtn.setVisible(false);
 
@@ -296,6 +306,7 @@ public class GameScreenController implements Initializable {
 		txtLastRoll.setText("Last Dice Roll: " + diceValue);
 		if (diceValue == 7) {
 			System.out.println("ROBBER!!!");
+			setGameState(MOVING_ROBBER);
 		}
 		if (gameState == PRE_ROLL) {
 			resGen.generateResources(diceValue);
@@ -392,6 +403,17 @@ public class GameScreenController implements Initializable {
 			cancelBuildBtn.setVisible(false);
 			endBtn.setDisable(false);
 			break;
+		case MOVING_ROBBER:
+			tradeBtn.setDisable(true);
+			diceRoller.setDisable(true);
+			startGameBtn.setDisable(true);
+			devBtn.setDisable(true);
+			gameBoard.setDisable(false);
+			buildBtn.setVisible(true);
+			buildBtn.setDisable(true);
+			cancelBuildBtn.setVisible(false);
+			endBtn.setDisable(true);
+			break;
 		case PLACING_ROAD:
 		case PLACING_CITY:
 		case PLACING_SETTLEMENT:
@@ -464,11 +486,21 @@ public class GameScreenController implements Initializable {
 
 	}
 
-	private void moveRobber() {
+	public void moveRobber(Robber rob) {
 		if (canMoveRobber((Hex) selectedItem, players.get(currentPlayerNumber))) {
 			((Hex) selectedItem).setSandstorming(true);
+			rob.setCurrentHex((Hex) selectedItem);
+			rob.ActivateRobber(players.get(currentPlayerNumber), board);
+		}
+	}
+
+	private boolean canMoveRobber(Hex h, Player player) {
+
+		if (!h.isSandstorming()) {
+			return true;
 		}
 
+		return false;
 	}
 
 	public void buildSettlement() throws IOException {
@@ -1163,7 +1195,7 @@ public class GameScreenController implements Initializable {
 		setUIFromGameState();
 	}
 
-	public int getGameState() {
+	public static int getGameState() {
 		return gameState;
 	}
 

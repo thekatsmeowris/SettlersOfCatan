@@ -286,11 +286,11 @@ public class HexBoard {
 
 		for (Hex h2 : transHexList) {
 			h2.setOnMouseEntered(e -> {
-				h2.setFill(Color.PEACHPUFF);
+				// h2.setFill(Color.PEACHPUFF);
 			});
 
 			h2.setOnMouseExited(e -> {
-				h2.setFill(Color.TRANSPARENT);
+
 			});
 		}
 	}
