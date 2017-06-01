@@ -186,7 +186,6 @@ public class GameScreenController implements Initializable {
 		freeRoad = 2;
 		resourcePass = 4;
 
-		// DEPRECATED CODE --> board.hexList stuff inaccessible under numberPane
 		for (Hex h : board.transHexList) {
 			h.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
 				// Robber bob.setPrevHex = currentHex
