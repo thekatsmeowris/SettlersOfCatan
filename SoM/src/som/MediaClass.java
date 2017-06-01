@@ -53,7 +53,6 @@ public class MediaClass {
 
 		mediaPlayer1.setCycleCount(AudioClip.INDEFINITE);
 		mediaPlayer1.play();
-
 		// if(mediaPlayer2.getStatus().equals(Status.PLAYING))
 		// mediaPlayer2.stop();
 	}
@@ -63,7 +62,7 @@ public class MediaClass {
 		// aMusic2.play();
 
 		mediaPlayer2.setCycleCount(AudioClip.INDEFINITE);
-		mediaPlayer1.play();
+		// mediaPlayer1.play();
 
 		mediaPlayer2.play();
 		if (mediaPlayer1.getStatus().equals(MediaPlayer.Status.PLAYING))
