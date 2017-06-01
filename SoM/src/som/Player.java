@@ -177,7 +177,7 @@ public class Player {
 	public int countResources() {
 		int counter = 0;
 
-		for (int i = 0; i < resources.length - 1; i++) {
+		for (int i = 0; i < resources.length; i++) {
 			counter += resources[i];
 		}
 		return counter;
