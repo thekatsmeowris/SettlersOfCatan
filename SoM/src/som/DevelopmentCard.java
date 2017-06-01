@@ -7,7 +7,11 @@ public class DevelopmentCard{
 	private String imagePathName;
 
 
-
+        public DevelopmentCard(){
+            name="dvCard";
+            description="";
+            imagePathName="";
+        }
 	public DevelopmentCard(String n, String d, String imgName){
 		setName(n);
 		setDescription(d);
