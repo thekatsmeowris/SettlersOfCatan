@@ -17,6 +17,7 @@ public class Robber {
     private Hex previousHex = new Hex();
     GameScreenController GSC = new GameScreenController();
     
+    //Only available constructor: clones ArrayList<Player> from GameScreenController.players
     public Robber()
     {
         robberPlayers = (ArrayList<Player>) GSC.players.clone();
@@ -67,7 +68,7 @@ public class Robber {
         
         ArrayList<Integer> excludedNumbers = new ArrayList<>();
                 
-         for(int i = 0; i < 5; i++)
+         for(int i = 0; i < CurrentPlayer.resources.length; i++)
         {
             if(robberPlayers.get(playerNumber).resources[i] == 0)
                 excludedNumbers.add(i);
@@ -113,16 +114,15 @@ public class Robber {
                    }
          }
         
-        pickPlayer(listOfplayers);
+        stealResources(listOfplayers);
         
     }
     
-    /*
+   /*
      * This method will either remove a random resources from one player and give it to the current player
-     * or will allow the player to pick from a list of players on a specific hex
-     * and remove a random resource from the picked player and give it to the current player
+     * or will and remove a random resource from all players on the specific hex and give them to the current player
      */
-    private void pickPlayer(ArrayList<Player> listOfplayers)
+    private void stealResources(ArrayList<Player> listOfplayers)
     {   
         int randomResourceNumber = 0;
         randomResourceNumber = RandomResourceValue(0);
@@ -135,13 +135,36 @@ public class Robber {
             System.out.println(CurrentPlayer.getNickname() + " stole one " + resourceBank.getResourceName(randomResourceNumber) + " from " + pickedPlayer);
         }
          if (listOfplayers.size() > 1)
-        {
-            //pick player from list of players
-            //pickedPlayer = listOfplayers[?]
-            //pickedPlayer.resources[randomResourceNumber]--;
-            //CurrentPlayer.resources[randomResourceNumber]++;
+        {            
+            for(int i = 0; i < listOfplayers.size(); i++)
+            {
+                randomResourceNumber = RandomResourceValue(i);                
+                listOfplayers.get(i).resources[randomResourceNumber]--;
+                CurrentPlayer.resources[randomResourceNumber]++;
+                System.out.println(CurrentPlayer.getNickname() + " stole one " + resourceBank.getResourceName(randomResourceNumber)+ " from " + listOfplayers.get(i).getNickname());
+            }            
         }
         
+    }
+    
+    public Hex getPreviousHex()
+    {
+        return previousHex;
+    }
+    
+    public void setPreviousHex(Hex previousHex)
+    {
+        this.previousHex = previousHex;
+    }
+    
+    public Hex getPickedHex()
+    {
+        return pickedHex;
+    }
+    
+    public void setPickedHex(Hex pickedHex)
+    {
+        this.pickedHex = pickedHex;
     }
 }
      
