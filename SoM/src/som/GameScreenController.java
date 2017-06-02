@@ -7,7 +7,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 import java.util.ResourceBundle;
-
+import progressCards.Monopoly;
+import progressCards.YearOfPlenty;
+import som.assets.Settlement;
+import progressCards.RoadBuilding;
+import devCards.Knight;
 import customcontrols.TradeResourceTracker;
 <<<<<<< HEAD
 import java.util.logging.Level;
@@ -2666,9 +2670,55 @@ public class GameScreenController implements Initializable {
 
 	}
 
-	public void buildDev() {
+        public void buildDev(ActionEvent e) throws IOException{
+                System.out.println("You clicked me");
 
-	}
+               if(canBuyDev(thisPlayer)){//check if player has the requirements to buy dev card
+                    System.out.println("You have enough resources");
+                    if(!developmentDeck.isEmpty()){//check there is a dev card to take
+                        System.out.println("There are enough Development Cards");
+                       resourceBank.bankReturnResource(2,1);//return 1 hemp to bank
+                       System.out.println("You returned Hemp");
+                       resourceBank.bankReturnResource(3, 1);//return 1 soy to bank
+                       System.out.println("You Returned Soy");
+                       resourceBank.bankReturnResource(0, 1);//return 1 steel to bank
+                       System.out.println("You Returned Steel");
+                       System.out.println("RETURNED TO BANK");
+                       thisPlayer.setResources(subtractTwoResourceSets(thisPlayer.getResources(), new int[]{1,0,1,1,0}));//subtract resources used from player's resources
+                       System.out.println("SUBTRACTED RESOURCES");
+                       thisCard=developmentDeck.drawCard();//take development card from deck
+                       System.out.println("SAVED CARD FROM DECK");
+                       thisCard=developmentDeck.drawCard();
+                       thisPlayer.addCard(thisCard);
+
+                       System.out.println("YOU'VE BUILT A DEV CARD");
+                       thisPlayer.ifDevCardVictoryPoint(thisPlayer.hand);
+
+                       System.out.println("You've Checked if there is a VP in the Deck");
+                       keepKnightCard();
+                       System.out.println("You've Checked if Knight gives you longest Road");
+                    }
+                }
+            }
+public void useYearOfPlenty (ActionEvent e) throws IOException{
+    
+}
+
+public void useMonopolyCard(ActionEvent e) throws IOException{
+    
+}
+
+public void useRoadBuildingCard(ActionEvent e) throws IOException{
+    
+}
+
+public void keepKnightCard(){
+    
+}
+
+public void playKnightCard(ActionEvent e) throws IOException{
+    
+}
 
 	private int getPlayerNum() {
 		try {
