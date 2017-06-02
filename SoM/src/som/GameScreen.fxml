@@ -160,7 +160,7 @@
                                           <Button layoutX="145.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeParentPane" text="X" />
                                        </children>
                                     </Pane>
-                                    <AnchorPane mouseTransparent="true" prefHeight="109.0" prefWidth="1309.0" style="-: #171717;" visible="false">
+                                    <AnchorPane mouseTransparent="true" prefHeight="109.0" prefWidth="1309.0" style="-: #171717;" visible="true">
                                        <children>
                                           <Pane fx:id="pnAcceptTradeDialog" layoutX="541.0" layoutY="172.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #C97B84; -fx-border-color: #53e864;" visible="false">
                                              <children>
