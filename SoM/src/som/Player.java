@@ -30,8 +30,11 @@ public class Player {
     Arc victoryPointGauge = new Arc();
     
     int[] resources;
+   
+    int resourceType;
     private int freeSettlements = 2;
     private int freeRoads = 2;
+    public int largestArmy=0;
     ArrayList<DevelopmentCard> hand;
     
   
@@ -53,6 +56,7 @@ public class Player {
         resources= new int[]{0,0,0,0,0};
         hand=new ArrayList<>(25);
         victoryPoints=0;
+        
         //hand=new ArrayList[24];
         //for(int i=0; i<24; i++){
            // hand[i]=new ArrayList<DevelopmentCard>();
@@ -96,6 +100,10 @@ public class Player {
 		hand=new ArrayList<>();
 		hand.add(d);
 	}
+    public void removeCard(DevelopmentCard d){
+            hand.remove(d);
+    }
+   //no remove method can use remlve card when acted upon in each use card method
     public void ifDevCardVictoryPoint(ArrayList<DevelopmentCard> hand1){
         /*for (Iterator<DevelopmentCard> it = hand.iterator(); it.hasNext();) {
         DevelopmentCard d1 = it.next();
@@ -120,18 +128,9 @@ public class Player {
            
         });
     }
-    public void useKnight(DevelopmentCard d){
-        
-    }
-    public void useMonopoly(DevelopmentCard d){
-        
-    }
-    public void useYearOfPlenty(DevelopmentCard d){
-        
-    }
-    public void useRoadBuilding(DevelopmentCard d){
-        
-    }
+   
+    
+    
     public void setVictoryPoints(int value){
         victoryPoints=value;
         victoryPointGauge.setLength(((double)value/(double)VICTORY_POINT_MAX)*360);     //3.6 is 360 divided by the 100 for the 100 we would have multiplied the value/vpMax to get a percentage.
@@ -147,8 +146,18 @@ public class Player {
 	}
 
 
-
-
+        public int largestArmyAdd(){
+            largestArmy+=1;
+            return largestArmy;
+            
+        }
+        public int largestArmySubtract(){
+            largestArmy-=1;
+            return largestArmy;
+        }
+        public int getLargestArmy(){
+            return largestArmy;
+        }
     int getVictoryPoints() {
         return victoryPoints;
     }

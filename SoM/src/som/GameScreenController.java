@@ -14,6 +14,8 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 import customcontrols.TradeResourceTracker;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -43,7 +45,12 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import progressCards.Monopoly;
+import progressCards.YearOfPlenty;
 import som.assets.Settlement;
+import progressCards.RoadBuilding;
+import devCards.Knight;
+import static java.sql.JDBCType.NULL;
 
 /**
  * FXML Controller class
@@ -87,6 +94,7 @@ public class GameScreenController implements Initializable {
 	int longestRoadValue;
 	int largestArmyValue;
 	int resourcePass;
+       
 	final int SETTLMENT_VP_VALUE = 1;
 	ResourceBank resourceBank = new ResourceBank(19);
 	ResourceGenerator resGen;
@@ -135,13 +143,14 @@ public class GameScreenController implements Initializable {
 
 	Player thisPlayer = new Player("Mark", new int[] { 5, 5, 5, 5, 5 }, Color.GREEN);
 	TradePack thisPlayerTradePack;
-	ArrayList<Player> players;
+	ArrayList<Player> players=new ArrayList<>();
 	DevelopmentDeck developmentDeck = new DevelopmentDeck();
 	DevelopmentCard thisCard;
 	HexBoard board;
 	int turnCount;
 	ResourceGenerator resourceGenerator;
 	// ----------------------------------------------------------------//
+    private int[] resources;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -183,6 +192,7 @@ public class GameScreenController implements Initializable {
 		// ROLL DICE SECTION ENDS
 		longestRoadValue = 5;
 		largestArmyValue = 3;
+                
 		freeRoad = 2;
 		resourcePass = 4;
 
@@ -1110,7 +1120,8 @@ public class GameScreenController implements Initializable {
 		return currentPlayer;
 	}
 
-	public static Player getPlayerWithLargestArmy() {
+	public static Player getPlayerWithLargestArmy(ArrayList<Player> players) {
+            if(thisPlayer.getLargestArmy()==3)
 		return playerWithLargestArmy;
 	}
 
@@ -1235,7 +1246,175 @@ public class GameScreenController implements Initializable {
               
             }
         }
+        }
+        public void useYearOfPlenty (ActionEvent e) throws IOException{
+            thisPlayer.hand.forEach((DevelopmentCard d2) -> {
+               if(d2 instanceof YearOfPlenty){
+               if(chooseSteelYoP()){
+                   resourceBank.bankDrawResource(0, 1);
+                   thisPlayer.addResource(0,1);
+                    }
+               else if(chooseGlassYoP()){
+                    resourceBank.bankDrawResource(1, 1);
+                    thisPlayer.addResource(1,1);
+                    } 
+               else if(chooseHempYoP()){
+                   resourceBank.bankDrawResource(2, 1);
+                   thisPlayer.addResource(2,1);
+               }
+               else if(chooseSoyYoP()){
+                   resourceBank.bankDrawResource(3, 1);
+                   thisPlayer.addResource(3,1);
+               }
+               else if(choosePlasticYoP()){
+                   resourceBank.bankDrawResource(3, 1);
+                   thisPlayer.addResource(3,1);
+               }
+    
+            }
+           thisPlayer.removeCard(d2);
+               
+        });
+            
     }
+           
+     public void useMonopolyCard(ActionEvent e) throws IOException{
+         thisPlayer.hand.forEach((DevelopmentCard d3) -> {
+             if(d3 instanceof Monopoly){
+                 if(chooseSteelYoP()){
+                   for (int i = 0; i < players.size(); i++){
+                      if(players.get(i).resources[0]>0){
+                          do{
+                              players.get(i).resources[0]--;
+                              thisPlayer.addResource(0,1);
+                              thisPlayer.setResources(resources);
+                          }while(players.get(i).resources[0]>0);
+                          
+                      }
+                   }
+                  
+                 }
+               else if(chooseGlassYoP()){
+                   for (int i = 0; i < players.size(); i++){
+                      if(players.get(i).resources[1]>0){
+                          do{
+                              players.get(i).resources[1]--;
+                              thisPlayer.addResource(1,1);
+                              thisPlayer.setResources(resources);
+                          }while(players.get(i).resources[1]>0);
+                   
+                 
+                    } 
+                   }
+               }
+               else if(chooseHempYoP()){
+                   for (int i = 0; i < players.size(); i++){
+                      if(players.get(i).resources[2]>0){
+                          do{
+                              players.get(i).resources[2]--;
+                              thisPlayer.addResource(2,1);
+                              thisPlayer.setResources(resources);
+                          }while(players.get(i).resources[2]>0);
+               }
+                   
+                   
+               }
+               }
+               else if(chooseSoyYoP()){
+                   
+                   for (int i = 0; i < players.size(); i++){
+                      if(players.get(i).resources[3]>0){
+                          do{
+                              players.get(i).resources[3]--;
+                              thisPlayer.addResource(3,1);
+                              thisPlayer.setResources(resources);
+                          }while(players.get(i).resources[3]>0);
+               }
+                   }
+               }
+               else if(choosePlasticYoP()){
+                   
+                  for (int i = 0; i < players.size(); i++){
+                      if(players.get(i).resources[0]>0){
+                          do{
+                              players.get(i).resources[0]--;
+                              thisPlayer.addResource(0,1);
+                              thisPlayer.setResources(resources);
+                          }while(players.get(i).resources[0]>0);
+                        }
+                    }
+                }
+             }
+               
+             
+         });
+     }  
+     
+     public void useRoadBuildingCard(ActionEvent e) throws IOException{
+         thisPlayer.hand.forEach((DevelopmentCard d4) -> {
+             if(d4 instanceof RoadBuilding){
+                 
+                 thisPlayer.setFreeRoads(2);
+                 closeBuild();
+                 ((HexEdge) selectedItem).addRoad(players.get(currentPlayerNumber));
+                 players.get(currentPlayerNumber).setFreeRoads(players.get(currentPlayerNumber).getFreeRoads() - 1);
+                 System.out.println("Free Roads: " + players.get(currentPlayerNumber).getFreeRoads());
+                 players.get(currentPlayerNumber).assets.add(players.get(currentPlayerNumber), ((HexEdge) selectedItem));
+                 ((HexEdge) selectedItem).setStroke((Paint) players.get(currentPlayerNumber).getPlayerColor());
+                 checkForLongestRoad();
+
+			// System.out.println(((HexEdge)
+			// selectedItem).getType().toString());
+                 for (HexEdge edge : ((HexEdge) selectedItem).getAdjacentEdge()) {
+				// edge.setStroke(Color.WHITE);
+				System.out.println("Edge owned?: " + edge.isOwned());
+                    }
+                 try {
+                     closeParentPane();
+                 } catch (IOException ex) {
+                     Logger.getLogger(GameScreenController.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+                 
+         });
+     }
+     
+     public void useKnightCard(ActionEvent e) throws IOException{
+         thisPlayer.hand.forEach((DevelopmentCard d5) -> {
+             if(d5 instanceof Knight){
+                 thisPlayer.largestArmyAdd();
+                 if(thisPlayer.getLargestArmy()>=3){
+                     if(getPlayerWithLargestArmy)
+                 }
+                     
+                     
+             }
+         });
+         }
+               
+               
+                   
+  
+       
+    public boolean chooseSteelYoP(){
+        return true;
+        
+    }
+    public boolean chooseGlassYoP(){
+        return true;
+    }
+    public boolean chooseHempYoP(){
+        return true;
+       
+    }
+    public boolean chooseSoyYoP(){
+        return true;
+    }
+    public boolean choosePlasticYoP(){
+        return true;
+    }
+        
+    
 
 
 	private int getPlayerNum() {
