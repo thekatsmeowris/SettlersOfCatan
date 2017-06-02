@@ -62,26 +62,7 @@ public class Player {
 
 	public void setVictoryPoints(int value) {
 		victoryPoints = value;
-		victoryPointGauge.setLength(((double) value / (double) VICTORY_POINT_MAX) * 360); // 3.6
-																							// is
-																							// 360
-																							// divided
-																							// by
-																							// the
-																							// 100
-																							// for
-																							// the
-																							// 100
-																							// we
-																							// would
-																							// have
-																							// multiplied
-																							// the
-																							// value/vpMax
-																							// to
-																							// get
-																							// a
-																							// percentage.
+		victoryPointGauge.setLength(((double) value / (double) VICTORY_POINT_MAX) * 360);
 		System.out.println(pnPlayerInfo.getWidth());
 
 		if (victoryPoints > 6) {
