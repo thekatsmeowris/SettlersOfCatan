@@ -292,6 +292,7 @@ public class GameScreenController implements Initializable {
 		fillPlayerInfo();
 		// TODO: reorganize
 		rob.setPlayerArray(players);
+		rob.setbank(resourceBank);
 		cancelBuildBtn.setVisible(false);
 
 		setGameState(NEW_GAME);
