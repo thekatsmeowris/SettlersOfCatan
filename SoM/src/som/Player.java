@@ -27,6 +27,7 @@ import som.assets.*;
  * @author makogenq
  */
 public class Player {
+
     final int VICTORY_POINT_MAX=10;
     Integer diceRoll;
     private TradePack tradePack= new TradePack(this);
@@ -93,8 +94,23 @@ public class Player {
 	public void buy(){
 		// resources.bankDrawResource("SOY", 10);
 		// resources.printResourceList();
-
         }
+	public void setVictoryPoints(int value) {
+		victoryPoints = value;
+		victoryPointGauge.setLength(((double) value / (double) VICTORY_POINT_MAX) * 360);
+		System.out.println(pnPlayerInfo.getWidth());
+
+		if (victoryPoints > 6) {
+			MediaClass.playMusic2();
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException ex) {
+				Logger.getLogger(GameRoomSelectController.class.getName()).log(Level.SEVERE, null, ex);
+			}
+			// SoM.mMusic1.stop();
+		}
+
+	}
     public void setTradePack(TradePack tradePack) {
         this.tradePack = tradePack;
     }
@@ -113,11 +129,7 @@ public class Player {
 	}
 
 
-		
-
-
-
-
+	
 
     Player(String name, int[] resources, Color playerColor) {
         this.nickname=name;
@@ -167,20 +179,7 @@ public class Player {
     public void useRoadBuilding(DevelopmentCard d){
         
     }
-    public void setVictoryPoints(int value){
-        victoryPoints=value;
-        victoryPointGauge.setLength(((double)value/(double)VICTORY_POINT_MAX)*360);     //3.6 is 360 divided by the 100 for the 100 we would have multiplied the value/vpMax to get a percentage.
-        System.out.println(pnPlayerInfo.getWidth());
-        if (victoryPoints > 6) {
-			MediaClass.playMusic2();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException ex) {
-				Logger.getLogger(GameRoomSelectController.class.getName()).log(Level.SEVERE, null, ex);
-			}
-			// SoM.mMusic1.stop();
-		}
-    }
+ 
     
 	public int getFreeSettlements() {
 		return freeSettlements;
@@ -226,6 +225,8 @@ public int[] removeResources(int[] resources) {
 	public void setResource(int index, int value) {
 		this.resources[index] = value;
 	}
+
+
         public TradePack getTradePack() {
 		return tradePack;
 	}
@@ -238,6 +239,23 @@ public int[] removeResources(int[] resources) {
         return counter;
     }
     	
+
+
+	public void setDiceRoll(Integer rollDice) {
+		this.diceRoll = rollDice;
+	}
+
+	public Integer getDiceRoll() {
+		return this.diceRoll;
+	}
+
+	public boolean hasLargestArmy() {
+		return (GameScreenController.getPlayerWithLargestArmy() == this);
+	}
+
+	public boolean hasLongestRoad() {
+		return (GameScreenController.getPlayerWithLongestRoad() == this);
+	}
+
+
 }
-
-
