@@ -92,7 +92,7 @@ public class GameScreenController implements Initializable {
 	Node selectedItem;
 	int diceValue;
 	int longestRoadValue;
-	int largestArmyValue;
+        int largestArmyValue;
 	int resourcePass;
        
 	final int SETTLMENT_VP_VALUE = 1;
@@ -1120,9 +1120,20 @@ public class GameScreenController implements Initializable {
 		return currentPlayer;
 	}
 
-	public static Player getPlayerWithLargestArmy(ArrayList<Player> players) {
-            if(thisPlayer.getLargestArmy()==3)
-		return playerWithLargestArmy;
+	public static Player getPlayerWithLargestArmy() {
+            if (players.get(currentPlayerNumber).getLargestArmy() > largestArmyValue) {
+            } else {
+                largestArmyValue = players.get(currentPlayerNumber).getLargestArmy();
+            }
+
+		/*pgbLongestRoad.progressProperty()
+				.set((double) (players.get(currentPlayerNumber).assets.roads.size()) / longestRoadValue);
+		if (pgbLongestRoad.progressProperty().doubleValue() >= 100.0) {
+			pgbLongestRoad.getStyleClass().add("gold-bar");
+		} else {
+			pgbLongestRoad.getStyleClass().add("basic-bar");
+
+		}*/
 	}
 
 	public void setPlayerWithLargestArmy(Player player) {
@@ -1383,12 +1394,12 @@ public class GameScreenController implements Initializable {
          thisPlayer.hand.forEach((DevelopmentCard d5) -> {
              if(d5 instanceof Knight){
                  thisPlayer.largestArmyAdd();
-                 if(thisPlayer.getLargestArmy()>=3){
-                     if(getPlayerWithLargestArmy)
+                 
                  }
                      
                      
-             }
+             
+                 
          });
          }
                

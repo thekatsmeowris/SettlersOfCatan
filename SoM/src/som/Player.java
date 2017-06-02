@@ -34,7 +34,7 @@ public class Player {
     int resourceType;
     private int freeSettlements = 2;
     private int freeRoads = 2;
-    public int largestArmy=0;
+    public static int largestArmy=0;
     ArrayList<DevelopmentCard> hand;
     
   
@@ -157,6 +157,9 @@ public class Player {
         }
         public int getLargestArmy(){
             return largestArmy;
+        }
+        public int setLargestArmy(){
+            this.largestArmy=largestArmy;
         }
     int getVictoryPoints() {
         return victoryPoints;
