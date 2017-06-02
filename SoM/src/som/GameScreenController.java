@@ -82,7 +82,7 @@ public class GameScreenController implements Initializable {
 	Text txtThisPlayerName;
 
 	@FXML
-	ProgressBar pgbLongestRoad, pgbVictoryPoints;
+	ProgressBar pgbLongestRoad,pgbLargestArmy, pgbVictoryPoints;
 
 	@FXML
 	private HBox tradeResourceTrackers, tradeResponses, hbIncomingResources, hbOutgoingResources;
@@ -1120,21 +1120,24 @@ public class GameScreenController implements Initializable {
 		return currentPlayer;
 	}
 
-	public static Player getPlayerWithLargestArmy() {
-            if (players.get(currentPlayerNumber).getLargestArmy() > largestArmyValue) {
-            } else {
+	public void checkForLargestArmy() {
+            if (players.get(currentPlayerNumber).getLargestArmy() > largestArmyValue) 
                 largestArmyValue = players.get(currentPlayerNumber).getLargestArmy();
-            }
+           
 
-		/*pgbLongestRoad.progressProperty()
-				.set((double) (players.get(currentPlayerNumber).assets.roads.size()) / longestRoadValue);
-		if (pgbLongestRoad.progressProperty().doubleValue() >= 100.0) {
-			pgbLongestRoad.getStyleClass().add("gold-bar");
+	if (players.get(currentPlayerNumber).getLargestArmy() > largestArmyValue)
+			largestArmyValue = players.get(currentPlayerNumber).getLargestArmy();
+
+		pgbLargestArmy.progressProperty()
+				.set((double) (players.get(currentPlayerNumber).getLargestArmy()) / largestArmyValue);
+		if (pgbLargestArmy.progressProperty().doubleValue() >= 100.0) {
+			pgbLargestArmy.getStyleClass().add("gold-bar");
 		} else {
-			pgbLongestRoad.getStyleClass().add("basic-bar");
+			pgbLargestArmy.getStyleClass().add("basic-bar");
 
-		}*/
+		}
 	}
+
 
 	public void setPlayerWithLargestArmy(Player player) {
 		this.playerWithLargestArmy = player;
@@ -1390,16 +1393,12 @@ public class GameScreenController implements Initializable {
          });
      }
      
-     public void useKnightCard(ActionEvent e) throws IOException{
+     public void keepKnightCard(){
          thisPlayer.hand.forEach((DevelopmentCard d5) -> {
              if(d5 instanceof Knight){
                  thisPlayer.largestArmyAdd();
-                 
-                 }
-                     
-                     
-             
-                 
+                 checkForLargestArmy();
+             }       
          });
          }
                

@@ -59,7 +59,7 @@
                                     </Text>
                                  </children>
                               </Group>
-                              <Group layoutX="973.0" layoutY="151.0">
+                              <Group id="pgbLargestArmy" layoutX="973.0" layoutY="151.0">
                                  <children>
                                     <Circle fill="#bdb7a2" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
                                     <Text fx:id="txtRes03Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
@@ -128,7 +128,7 @@
                                           <Font size="17.0" />
                                        </font>
                                     </Text>
-                                    <ProgressBar layoutY="30.0" prefHeight="18.0" prefWidth="136.0" progress="0.0" />
+                                    <ProgressBar fx:id="pgbLargestArmy" layoutY="30.0" prefHeight="18.0" prefWidth="136.0" progress="0.0" />
                                  </children>
                               </Group>
                               <Text fx:id="txtThisPlayerName" layoutX="591.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAME" textAlignment="CENTER" wrappingWidth="140.107421875">
