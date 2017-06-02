@@ -32,7 +32,7 @@
                <children>
                   <BorderPane prefHeight="720.0" prefWidth="1300.0">
                      <bottom>
-                        <AnchorPane id="playerInfoPane" fx:id="playerInfoPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="151.0" prefWidth="1311.0" BorderPane.alignment="CENTER">
+                        <AnchorPane id="playerInfoPane" fx:id="playerInfoPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="171.0" prefWidth="1311.0" BorderPane.alignment="CENTER">
                            <children>
                               <Group layoutX="14.0" layoutY="14.0">
                                  <children>
@@ -45,58 +45,110 @@
                                     <Button id="devBtn" fx:id="devBtn" layoutX="14.0" layoutY="35.0" mnemonicParsing="false" onAction="#openDevelopDialog" prefHeight="24.0" prefWidth="96.0" text="DEVELOP CARD" />
                                     <Button id="endBtn" fx:id="endBtn" layoutX="14.0" layoutY="60.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="24.0" prefWidth="96.0" text="ADVANCE TURN" />
                                     <!--<Button layoutX="144.0" layoutY="28.0" mnemonicParsing="false" onAction="#simulateTradeRequest" prefHeight="54.0" prefWidth="96.0" text="Function" />-->
-
-
                                  </children>
                               </Group>
-                              <Group layoutX="1261.0" layoutY="151.0">
+                              <Group layoutX="1200.0" layoutY="110.0">
                                  <children>
-                                    <Circle fill="#ae9c9e" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text fx:id="txtRes04Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
+                           			<StackPane>
+	                                    <Circle fill="#ae9c9e" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
+	                                    <VBox alignment="TOP_CENTER" >
+	                                    	<padding><Insets top="10" right="25" bottom="0" left="25"/></padding>
+		                                    <Text layoutX="0.0" layoutY="-20.0" strokeType="OUTSIDE" strokeWidth="1.0" text="Plastic" textAlignment="CENTER">
+		                                    	<font>
+		                                    		<Font size="18.0" />
+		                                    	</font>
+		                                    </Text>
+	                                    </VBox>
+	                                    <Text fx:id="txtRes04Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+	                                       <font>
+	                                          <Font size="24.0" />
+	                                       </font>
+	                                    </Text>
+                                    </StackPane>
                                  </children>
                               </Group>
+<<<<<<< HEAD
                               <Group id="pgbLargestArmy" layoutX="973.0" layoutY="151.0">
+=======
+                              <Group layoutX="912.0" layoutY="110.0">
+>>>>>>> master
                                  <children>
-                                    <Circle fill="#bdb7a2" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text fx:id="txtRes03Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
+	                                 <StackPane>
+	                                    <Circle fill="#bdb7a2" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
+	                                    <VBox alignment="TOP_CENTER" >
+	                                    	<padding><Insets top="10" right="25" bottom="0" left="25"/></padding>
+		                                    <Text layoutX="0.0" layoutY="-20.0" strokeType="OUTSIDE" strokeWidth="1.0" text="Soy" textAlignment="CENTER">
+		                                    	<font>
+		                                    		<Font size="18.0" />
+		                                    	</font>
+		                                    </Text>
+	                                    </VBox>
+	                                    <Text fx:id="txtRes03Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+	                                       <font>
+	                                          <Font size="24.0" />
+	                                       </font>
+	                                    </Text>
+	                                 </StackPane>
                                  </children>
                               </Group>
-                              <Group layoutX="656.0" layoutY="151.0">
+                              <Group layoutX="596.0" layoutY="110.0">
                                  <children>
-                                    <Circle fill="#eed79b" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text fx:id="txtRes02Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
+	                                 <StackPane>
+	                                    <Circle fill="#eed79b" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
+	                                    <VBox alignment="TOP_CENTER" >
+	                                    	<padding><Insets top="10" right="25" bottom="0" left="25"/></padding>
+		                                    <Text layoutX="0.0" layoutY="-20.0" strokeType="OUTSIDE" strokeWidth="1.0" text="Hemp" textAlignment="CENTER">
+		                                    	<font>
+		                                    		<Font size="18.0" />
+		                                    	</font>
+		                                    </Text>
+	                                    </VBox>
+	                                    <Text fx:id="txtRes02Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+	                                       <font>
+	                                          <Font size="24.0" />
+	                                       </font>
+	                                    </Text>
+	                                 </StackPane>
                                  </children>
                               </Group>
-                              <Group layoutX="350.0" layoutY="151.0">
+                              <Group layoutX="290.0" layoutY="110.0">
                                  <children>
-                                    <Circle fill="#c16161" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text fx:id="txtRes01Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
+	                                 <StackPane>
+	                                    <Circle fill="#c16161" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
+	                                    <VBox alignment="TOP_CENTER" >
+	                                    	<padding><Insets top="10" right="25" bottom="0" left="25"/></padding>
+		                                    <Text layoutX="0.0" layoutY="-20.0" strokeType="OUTSIDE" strokeWidth="1.0" text="Glass" textAlignment="CENTER">
+		                                    	<font>
+		                                    		<Font size="18.0" />
+		                                    	</font>
+		                                    </Text>
+	                                    </VBox>
+	                                    <Text fx:id="txtRes01Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+	                                       <font>
+	                                          <Font size="24.0" />
+	                                       </font>
+	                                    </Text>
+	                                 </StackPane>
                                  </children>
                               </Group>
-                              <Group layoutX="74.0" layoutY="151.0">
+                              <Group layoutX="14.0" layoutY="110.0">
                                  <children>
-                                    <Circle fill="#7ea6c4" onMouseClicked="#offerResource" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text fx:id="txtRes00Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
+	                                 <StackPane>
+	                                    <Circle fill="#7ea6c4" onMouseClicked="#offerResource" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
+	                                    <VBox alignment="TOP_CENTER" >
+	                                    	<padding><Insets top="10" right="25" bottom="0" left="25"/></padding>
+		                                    <Text layoutX="0.0" layoutY="-20.0" strokeType="OUTSIDE" strokeWidth="1.0" text="Steel" textAlignment="CENTER">
+		                                    	<font>
+		                                    		<Font size="18.0" />
+		                                    	</font>
+		                                    </Text>
+	                                    </VBox>
+	                                    <Text fx:id="txtRes00Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+	                                       <font>
+	                                          <Font size="24.0" />
+	                                       </font>
+	                                    </Text>
+	                                 </StackPane>
                                  </children>
                               </Group>
                               <Group layoutX="587.0" layoutY="42.0">
@@ -148,9 +200,8 @@
                            <content>
                               <StackPane prefHeight="520.0" prefWidth="1300.0" style="-fx-background-color: #b05959;">
                                  <children>
-                                    <Pane fx:id="gameBoard" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" rotate="90.0" translateX="50.0" translateY="-50.0" />
+                                    <Pane fx:id="gameBoard" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" rotate="90.0" translateX="50.0" translateY="-50.0"/>
                                     <Pane fx:id="popupDialog" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" onMouseClicked="#handleClick" prefHeight="206.0" prefWidth="172.0" style="-fx-background-color: #c0c0c0;" visible="false">
-
                                        <children>
                                           <Text id="txtPopUpText" fx:id="txtPopUpText" layoutX="67.0" layoutY="41.0" mouseTransparent="true" onMouseClicked="#handleClick" strokeType="OUTSIDE" strokeWidth="0.0" text="Build (test)" />
                                           <Button layoutX="25.0" layoutY="68.0" mnemonicParsing="false" mouseTransparent="true" onAction="#placingSettlement" text="BUILD SETTLEMENT" />
@@ -160,6 +211,40 @@
                                           <Button layoutX="145.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeParentPane" text="X" />
                                        </children>
                                     </Pane>
+<!-- [[[[[[[[[[[[[[[[[[ DEVELOP DIALOG ]]]]]]]]]]]]]]]]]-->
+                                    <Pane fx:id="pnDevelopDialog" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" onMouseClicked="#handleClick" prefHeight="200.0" prefWidth="540.0" style="-fx-background-color: #c0c0c0;" visible="false">
+                                       <children>
+                                          <Button layoutX="510.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeDevCardsPane" text="X" />
+                                           
+                                          <Rectangle arcHeight="1.0" arcWidth="1.0" fill="WHITE" height="100.0" width="80.0" layoutX="20.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.0" />
+                                          <Button layoutX="32.0" layoutY="140.0" mnemonicParsing="false" mouseTransparent="true"  text="Knight" />
+
+                                          <Rectangle arcHeight="1.0" arcWidth="1.0" fill="WHITE" height="100.0" width="80.0" layoutX="118.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.0" />
+                                          <Button layoutX="108.0" layoutY="140.0" mnemonicParsing="false" mouseTransparent="true"  text="YearOfPlenty" />
+
+                                          <Rectangle arcHeight="1.0" arcWidth="1.0" fill="WHITE" height="100.0" width="80.0" layoutX="220.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.0" />
+                                          <Button layoutX="220.0" layoutY="140.0" mnemonicParsing="false" mouseTransparent="true"  text="Monopoly" />
+
+                                          <Rectangle arcHeight="1.0" arcWidth="1.0" fill="WHITE" height="100.0" width="80.0" layoutX="318.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.0" />
+                                          <Button layoutX="312.0" layoutY="140.0" mnemonicParsing="false" mouseTransparent="true"  text="RoadBuilding" />
+
+                                          <Rectangle arcHeight="1.0" arcWidth="1.0" fill="WHITE" height="100.0" width="80.0" layoutX="426.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.0" />
+                                          <Button layoutX="422.0" layoutY="140.0" mnemonicParsing="false" mouseTransparent="true"  text="VictoryPoint" />
+
+                                       </children>
+                                    </Pane>
+                                     <BorderPane fx:id="robberConfirmDialog" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="false" prefHeight="50.0" prefWidth="172.0" style="-fx-background-color: #c0c0c0;" visible="false">
+                                     	<padding><Insets top="15" right="25" bottom="10" left="25"/></padding>
+                                     	<top>
+                                     		<Text layoutX="67.0" layoutY="41.0" mouseTransparent="true" onMouseClicked="#handleClick" strokeType="OUTSIDE" strokeWidth="0.0" text="Place Robber Here?" />
+                                     	</top>
+                                     	<left>
+                                     		<Button layoutX="25.0" layoutY="68.0" mnemonicParsing="false" mouseTransparent="false" onAction="#confirmPlaceRobber" text="Yes" />
+                                     	</left>
+                                     	<right>
+                                     		<Button layoutX="21.0" layoutY="104.0" mnemonicParsing="false" mouseTransparent="false" onAction="#cancelPlaceRobber" text="No" />
+                                     	</right>
+                                     </BorderPane>
                                     <AnchorPane mouseTransparent="true" prefHeight="109.0" prefWidth="1309.0" style="-: #171717;" visible="true">
                                        <children>
                                           <Pane fx:id="pnAcceptTradeDialog" layoutX="541.0" layoutY="172.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #C97B84; -fx-border-color: #53e864;" visible="false">

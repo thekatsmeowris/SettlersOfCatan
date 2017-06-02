@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package som;
 
 import java.io.IOException;
@@ -1443,8 +1448,8 @@ public class GameScreenController implements Initializable {
 =======
 
 	@FXML
-	Pane gameLayer, gameBoard, playerGUI, popupDialog, dicePane, pnTradeDialog, pnPlayerLeft, pnPlayerMid,
-			pnPlayerRight, pnAcceptTradeDialog, pnBuild;
+	Pane gameLayer, gameBoard, playerGUI, popupDialog, dicePane, pnTradeDialog, robberConfirmDialog, pnPlayerLeft,
+			pnPlayerMid, pnPlayerRight, pnAcceptTradeDialog, pnBuild, pnDevelopDialog;
 
 	@FXML
 	Slider sldVictoryPoints;
@@ -1499,6 +1504,7 @@ public class GameScreenController implements Initializable {
 	public final static int PLACING_SETTLEMENT = 11;
 	public final static int PLACING_CITY = 12;
 	public final static int MOVING_ROBBER = 13;
+	public final static int CONFIRMING_ROBBER = 14;
 
 	public final static int PLAY_ROAD_BUILDING = 15;
 	public final static int PLAY_MONOPOLY = 16;
@@ -1527,7 +1533,6 @@ public class GameScreenController implements Initializable {
 
 	// -----------------------------------------------------//
 
-	Player thisPlayer = new Player("Mark", new int[] { 5, 5, 5, 5, 5 }, Color.GREEN);
 	TradePack thisPlayerTradePack;
 	ArrayList<Player> players;
 	DevelopmentDeck developmentDeck = new DevelopmentDeck();
@@ -1535,12 +1540,14 @@ public class GameScreenController implements Initializable {
 	HexBoard board;
 	int turnCount;
 	ResourceGenerator resourceGenerator;
+	Robber rob;
 	// ----------------------------------------------------------------//
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		currentPlayerNumber = 0;
 		board = new HexBoard();
+		rob = new Robber();
 		sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
 				for (Player p : players) {
@@ -1580,13 +1587,15 @@ public class GameScreenController implements Initializable {
 		freeRoad = 2;
 		resourcePass = 4;
 
-		// DEPRECATED CODE --> board.hexList stuff inaccessible under numberPane
 		for (Hex h : board.transHexList) {
 			h.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-				setSelectedItem(h);
-				// Robber bob.setPrevHex = currentHex
-				// currentHex = selectedItem (or h);
-				h.setFill(Color.SEAGREEN);
+				if (getGameState() == MOVING_ROBBER) {
+					setSelectedItem(board.hexList.get(h.getIndex()));
+					h.setFill(Color.rgb(25, 25, 200, 0.5));
+					robberConfirmDialog.setVisible(true);
+					robberConfirmDialog.toFront();
+					setGameState(CONFIRMING_ROBBER);
+				}
 			});
 		}
 		for (Hex hex : board.hexList) {
@@ -1619,13 +1628,8 @@ public class GameScreenController implements Initializable {
 			hexVertex.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
 				setSelectedItem(hexVertex);
 				try {
-					if (gameState == PLACING_SETTLEMENT) {
+					if (gameState == PLACING_SETTLEMENT || gameState == PLACING_FREE_SETTLEMENT) {
 						buildSettlement();
-						setGameState(MAIN_PHASE);
-					}
-					if (gameState == PLACING_FREE_SETTLEMENT) {
-						buildSettlement();
-						setGameState(PLACING_FREE_ROAD);
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -1681,6 +1685,9 @@ public class GameScreenController implements Initializable {
 		resGen = new ResourceGenerator(board);
 		createTestPlayers();
 		fillPlayerInfo();
+		// TODO: reorganize
+		rob.setPlayerArray(players);
+		rob.setBank(resourceBank);
 		cancelBuildBtn.setVisible(false);
 
 		setGameState(NEW_GAME);
@@ -1700,13 +1707,12 @@ public class GameScreenController implements Initializable {
 		leftDie.setText(r.toString());
 
 		r = z.nextInt(6) + 1;
-                System.out.println("second die: " + r);
 		diceValue += r;
 		rightDie.setText(r.toString());
 		System.out.println("total die: " + diceValue);
 		txtLastRoll.setText("Last Dice Roll: " + diceValue);
 		if (diceValue == 7) {
-			System.out.println("ROBBER!!!");
+			setGameState(MOVING_ROBBER);
 		}
 		if (gameState == PRE_ROLL) {
 			resGen.generateResources(diceValue);
@@ -1834,6 +1840,28 @@ public class GameScreenController implements Initializable {
 			cancelBuildBtn.setDisable(true);
 			endBtn.setDisable(false);
 			break;
+		case MOVING_ROBBER:
+			tradeBtn.setDisable(true);
+			diceRoller.setDisable(true);
+			startGameBtn.setDisable(true);
+			devBtn.setDisable(true);
+			gameBoard.setDisable(false);
+			buildBtn.setVisible(true);
+			buildBtn.setDisable(true);
+			cancelBuildBtn.setVisible(false);
+			endBtn.setDisable(true);
+			break;
+		case CONFIRMING_ROBBER:
+			tradeBtn.setDisable(true);
+			diceRoller.setDisable(true);
+			startGameBtn.setDisable(true);
+			devBtn.setDisable(true);
+			gameBoard.setDisable(true);
+			buildBtn.setVisible(true);
+			buildBtn.setDisable(true);
+			cancelBuildBtn.setVisible(false);
+			endBtn.setDisable(true);
+			break;
 		case PLACING_ROAD:
 		case PLACING_CITY:
 		case PLACING_SETTLEMENT:
@@ -1884,6 +1912,11 @@ public class GameScreenController implements Initializable {
 
 	}
 
+	public void closeDevCardsPane() throws IOException {
+		pnDevelopDialog.setMouseTransparent(true);
+		pnDevelopDialog.setVisible(false);
+	}
+
 	public void handleClick(MouseEvent e) throws IOException {
 
 		System.out.println("Clicked!!!" + e + "\n" + e.getSource().getClass() + "\n"
@@ -1919,12 +1952,24 @@ public class GameScreenController implements Initializable {
 
 	}
 
-	private void moveRobber() {
-		// if (canMoveRobber((Hex) selectedItem,
-		// players.get(currentPlayerNumber))) {
-		// ((Hex) selectedItem).setSandstorming(true);
-		// }
+	public void moveRobber(Robber rob) {
+		if (canMoveRobber((Hex) selectedItem, players.get(currentPlayerNumber))) {
+			((Hex) selectedItem).setSandstorming(true);
+			clearPreviousRobberHex(false);
+			rob.setCurrentHex((Hex) selectedItem);
+			rob.ActivateRobber(players.get(currentPlayerNumber), board);
+			updateResources();
+			setGameState(MAIN_PHASE);
+		}
+	}
 
+	private boolean canMoveRobber(Hex h, Player player) {
+
+		if (!h.isSandstorming()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public void buildSettlement() throws IOException {
@@ -1935,6 +1980,7 @@ public class GameScreenController implements Initializable {
 				players.get(currentPlayerNumber)
 						.setFreeSettlements(players.get(currentPlayerNumber).getFreeSettlements() - 1);
 				System.out.println("Free Settlements: " + players.get(currentPlayerNumber).getFreeSettlements());
+				setGameState(PLACING_FREE_ROAD);
 			} else {
 
 				resourceBank.bankReturnResource(players.get(currentPlayerNumber).removeResources(resourceBank
@@ -1942,6 +1988,7 @@ public class GameScreenController implements Initializable {
 				System.out.println("Current color: " + players.get(currentPlayerNumber).getPlayerColor());
 				System.out.println("Free Settlement greater than 0: fs = "
 						+ players.get(currentPlayerNumber).getFreeSettlements());
+				setGameState(MAIN_PHASE);
 			}
 
 			((HexVertex) selectedItem).addSettlement(players.get(currentPlayerNumber));
@@ -2447,6 +2494,10 @@ public class GameScreenController implements Initializable {
 	}
 
 	public void openDevelopDialog() {
+		if (!pnDevelopDialog.isVisible())
+			pnDevelopDialog.setVisible(true);
+		pnDevelopDialog.setMouseTransparent(false);
+
 		System.out.println("Develop Card Play!");
 	}
 
@@ -2622,7 +2673,7 @@ public class GameScreenController implements Initializable {
 		setUIFromGameState();
 	}
 
-	public int getGameState() {
+	public static int getGameState() {
 		return gameState;
 	}
 
@@ -2648,6 +2699,29 @@ public class GameScreenController implements Initializable {
 	public void cancelBuild() {
 		setGameState(MAIN_PHASE);
 		popupDialog.setVisible(false);
+	}
+
+	@FXML
+	private void confirmPlaceRobber() {
+		moveRobber(rob);
+		robberConfirmDialog.setVisible(false);
+	}
+
+	@FXML
+	private void cancelPlaceRobber() {
+		setGameState(MOVING_ROBBER);
+		boolean isCanceled = true;
+		clearPreviousRobberHex(isCanceled);
+		robberConfirmDialog.setVisible(false);
+	}
+
+	private void clearPreviousRobberHex(boolean wasCanceled) {
+		if (wasCanceled) {
+			board.transHexList.get(((Hex) selectedItem).getIndex()).setFill(Color.TRANSPARENT);
+		} else if (rob.getCurrentHex() != null) {
+			rob.setPreviousHex(rob.getCurrentHex());
+			board.transHexList.get(rob.getPreviousHex().getIndex()).setFill(Color.TRANSPARENT);
+		}
 	}
 
 	public void printPrettyGameState() {
@@ -2728,6 +2802,7 @@ public void playKnightCard(ActionEvent e) throws IOException{
 		}
 	}
 }
+<<<<<<< HEAD
 
 
 
@@ -2768,3 +2843,5 @@ public void playKnightCard(ActionEvent e) throws IOException{
 	}
 }
 
+=======
+>>>>>>> master
