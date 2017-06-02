@@ -1,6 +1,7 @@
 package som;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -44,16 +45,17 @@ public class Robber {
 	 */
 	private void SevenResourceCheck() {
 		int randomResourceNumber = 0;
+		int resourceCounter = 0;
 		for (int i = 0; i < robberPlayers.size(); i++) // for loop runs once for
 														// every player
 		{
 			if (robberPlayers.get(i).countResources() >= 7) // If the current
-															// player has more
 															// than 7 resource
 															// cards...
+				resourceCounter = robberPlayers.get(i).countResources() / 2;
 			{
-				System.out.println(robberPlayers.get(i).getNickname() + " lost:");
-				for (int j = 0; j < (robberPlayers.get(i).countResources() / 2); j++) {
+				System.out.println("\n" + robberPlayers.get(i).getNickname() + " lost:");
+				for (int j = 0; j < resourceCounter; j++) {
 					randomResourceNumber = RandomResourceValue(i);
 					robberPlayers.get(i).resources[randomResourceNumber]--;
 					resourceBank.bankReturnResource(randomResourceNumber, 1);
@@ -61,7 +63,7 @@ public class Robber {
 				} // end of inner for loop
 			} // end of inner if statment
 		} // end of for loop
-
+		System.out.println(Arrays.toString(resourceBank.resources));
 		checkHex(this.getCurrentHex());
 	}
 
@@ -70,21 +72,17 @@ public class Robber {
 	 * corresponding player has said resourceNumber in their resources[]
 	 */
 	private int RandomResourceValue(int playerNumber) {
-
 		ArrayList<Integer> excludedNumbers = new ArrayList<>();
-
 		for (int i = 0; i < CurrentPlayer.resources.length; i++) {
 			if (robberPlayers.get(playerNumber).resources[i] == 0)
 				excludedNumbers.add(i);
 		}
-
 		Random r = new Random();
 		int randomVariable = 0;
 		randomVariable = r.nextInt(5 - 0) + 0; // IF THERE IS AN INDEX
 												// ERROR:THIS MIGHT BE THE
 												// CAUSE: This should return a
 												// number between 0-4
-
 		while (excludedNumbers.contains(randomVariable)) { // While loop to run
 															// until the random
 															// number generated
@@ -96,7 +94,6 @@ public class Robber {
 													// CAUSE: This should return
 													// a number between 0-4
 		}
-
 		return randomVariable;
 	}
 
@@ -105,7 +102,6 @@ public class Robber {
 	 * Use this method for Knight card and use ActivateRobber method is a seven
 	 * on the dice are rolled
 	 */
-
 	/*
 	 * This method checks the specific hex for players
 	 */
@@ -115,7 +111,6 @@ public class Robber {
 		int vertexCounter = 0;
 		for (HexVertex vertex : currentHex.getVerticies()) {
 			vertex = board.vertexList.get(board.vertexList.indexOf(vertex));
-
 			if (vertex.getAsset() != null) {
 				Player p = vertex.getAsset().getPlayer();
 				System.out.println(p.toString());
@@ -123,10 +118,8 @@ public class Robber {
 			}
 			vertexCounter++;
 		}
-
 		System.out.println("List o' Playas: " + listOfPlayers);
 		stealResources(listOfPlayers);
-
 	}
 
 	/*
@@ -137,7 +130,6 @@ public class Robber {
 	private void stealResources(ArrayList<Player> listOfplayers) {
 		int randomResourceNumber = 0;
 		randomResourceNumber = RandomResourceValue(0);
-
 		if (listOfplayers.size() == 1) {
 			pickedPlayer = listOfplayers.get(0);
 			pickedPlayer.resources[randomResourceNumber]--;
@@ -155,7 +147,6 @@ public class Robber {
 								+ " from " + listOfplayers.get(i).getNickname());
 			}
 		}
-
 	}
 
 	public Hex getPreviousHex() {
@@ -176,5 +167,9 @@ public class Robber {
 
 	public void setPlayerArray(ArrayList<Player> players) {
 		this.robberPlayers = players;
+	}
+
+	public void setBank(ResourceBank resourceBank) {
+		this.resourceBank = resourceBank;
 	}
 }
