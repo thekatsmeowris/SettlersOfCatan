@@ -1,13 +1,10 @@
-    /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/*
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package som;
 
-import java.awt.Point;
-import java.io.IOException;
-import static java.lang.System.gc;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +12,7 @@ import java.util.Stack;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -22,35 +20,20 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import java.util.Collections;
-import java.util.List;
-import javafx.animation.Animation;
-import javafx.geometry.Pos;
-import static javafx.geometry.Pos.CENTER;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-
-import javafx.scene.shape.Shape;
-import javafx.util.Duration;
 
 /**
  *
  * @author makogenq
  */
 public class HexBoard {
-    
-   Image marsImage,spriteImage; //Image of Mars and sprite sheet of tornado
-    private static final int SPRITE_COLUMNS  =   5;
-    private static final int SPRITE_COUNT    =  5;
-    private static final int SPRITE_OFFSET_X =  0;
-    private static final int SPRITE_OFFSET_Y =  2;
-    private static final int SPRITE_WIDTH    = 95;
-    private static final int SPRITE_HEIGHT   = 168;
-    
+
+	Image marsImage, spriteImage; // Image of Mars and sprite sheet of tornado
+	private static final int SPRITE_COLUMNS = 5;
+	private static final int SPRITE_COUNT = 5;
+	private static final int SPRITE_OFFSET_X = 0;
+	private static final int SPRITE_OFFSET_Y = 2;
+	private static final int SPRITE_WIDTH = 95;
+	private static final int SPRITE_HEIGHT = 168;
 
 	public Color[] getColorPalette() {
 		return colorPalette;
@@ -65,6 +48,7 @@ public class HexBoard {
 
 	// These lists keep track of the components that make up the board
 	ArrayList<Hex> hexList; // the list of hexes in this board
+	ArrayList<Hex> transHexList;
 	ArrayList<HexVertex> vertexList; // the list of vertices in this board
 										// (removing duplicates)
 	ArrayList<HexEdge> edgeList; // the list of edges in this board (removing
@@ -78,6 +62,7 @@ public class HexBoard {
 							// vertices, and the edges together
 	Pane boardPane; // this is what contains the hexes once they're each drawn
 
+	Pane transHexPane;
 	static Pane numberPane;
 	Text t1;
 
@@ -103,10 +88,6 @@ public class HexBoard {
 			Color.web("#AFBDA8"), // dull green
 			Color.web("#AE9C9E"), // reddish GRAY 4
 			Color.web("#000000") }; // black null color 5
-	/*
-	 * Color[] colorPalette= new Color[]{ Color.VIOLET, Color.BLUE, Color.GREEN,
-	 * Color.YELLOW, Color.ORANGE, Color.web("#000000")}; //black null color 5
-	 */
 
 	List<Integer> possibleTokens = new ArrayList<Integer>(); // array of
 																// possible
@@ -173,6 +154,7 @@ public class HexBoard {
 		boardPane = new Pane(); // creates new board for boardpane
 		numberPane = new Pane();
 		numberPane.setRotate(30);
+		transHexPane = new Pane();
 		vertexPane = new Pane(); // creates new board for vertexpane
 
 		centerX = (float) (boardPane.getWidth() / 2); // assigns the center of
@@ -181,6 +163,7 @@ public class HexBoard {
 
 		hexList = new ArrayList<>(); // initializes the hex,vertex, and edge
 										// lists
+		transHexList = new ArrayList<>();
 		vertexList = new ArrayList<>();
 		edgeList = new ArrayList<>();
 		boardShell = new StackPane(); // creates the stackpane for boardshell
@@ -205,26 +188,15 @@ public class HexBoard {
 			System.out.println(numberPane.getChildren().get(i));
 		}
 
-		boardShell.getChildren().addAll(boardPane, numberPane, edgePane, vertexPane); // adds
-		// the
-		// 3
-		// panes
-		// to
-		// the
-		// stackpane
-		// and
-		// so
-		// publishes
-		// the
-		// constructed
-		// board.
-
+		boardShell.getChildren().addAll(boardPane, numberPane, transHexPane, edgePane, vertexPane); // adds
 	}
 
 	private void makeBoard() { // makes the board with the hexes,
 		int hexCounter = 0; // hexCounter keeps track of which hex is being
 							// genrated
 		Hex h; // a model hex to build the rest on
+		Hex transH;
+
 		double hexStartingPointY = 0; // the hex tarting point, to determine the
 										// verticies of the hex
 		// MAKE number tokens
@@ -240,6 +212,7 @@ public class HexBoard {
 		for (int i = 0; i < numberOfRows; i++) {
 			if (i > 0) {
 				h = (Hex) boardPane.getChildren().get(hexCounter - 1);
+				transH = (Hex) transHexPane.getChildren().get(hexCounter - 1);
 
 				hexStartingPointY = h.getPoints().get(5) + hexRadius;
 			} else {
@@ -262,12 +235,20 @@ public class HexBoard {
 				if (i == 2 && j == 2) { // the center hex is the "desert hex"
 					h = new Hex(hexCounter, 200 + (inRadius * (maxColumns - columnMax)) + (inRadius * j * 2),
 							hexStartingPointY, hexRadius, inRadius, Color.BLACK, 0, 5);
+					transH = new Hex(hexCounter, 200 + (inRadius * (maxColumns - columnMax)) + (inRadius * j * 2),
+							hexStartingPointY, hexRadius, inRadius, Color.TRANSPARENT);
+
 				} else {
 					h = new Hex(hexCounter, 200 + (inRadius * (maxColumns - columnMax)) + (inRadius * j * 2),
 							hexStartingPointY, hexRadius, inRadius, hexColor, (int) tokenStack.pop(),
 							(int) terrainStack.pop());
+
+					transH = new Hex(hexCounter, 200 + (inRadius * (maxColumns - columnMax)) + (inRadius * j * 2),
+							hexStartingPointY, hexRadius, inRadius, Color.TRANSPARENT);
+
 					// *********************************************************
-					// NEW CODE 5/27/2017 for Numbers and Terrain Type on Board
+					// NEW CODE 5/27/2017 for tokenValues and Terrain Type on
+					// Board
 					// --> Needs cleaning
 					Circle circle = new Circle(25);
 					circle.setFill(Color.ANTIQUEWHITE);
@@ -289,7 +270,11 @@ public class HexBoard {
 
 				boardPane.getChildren().add(h);
 
+				transHexPane.getChildren().add(transH);
+
 				hexList.add(h);
+				transHexList.add(transH);
+
 			}
 			if (i < 2) {
 
@@ -299,6 +284,19 @@ public class HexBoard {
 			}
 		}
 
+		for (Hex h2 : transHexList) {
+			h2.setOnMouseEntered(e -> {
+				if (GameScreenController.getGameState() == GameScreenController.MOVING_ROBBER) {
+					h2.setFill(Color.rgb(0, 0, 0, 0.3));
+				}
+			});
+
+			h2.setOnMouseExited(e -> {
+				if (GameScreenController.getGameState() == GameScreenController.MOVING_ROBBER) {
+					h2.setFill(Color.TRANSPARENT);
+				}
+			});
+		}
 	}
 
 	private void makeVertices() { // makes the vertices for the board
@@ -308,9 +306,7 @@ public class HexBoard {
 
 		for (Hex h : hexList) {
 			int j = 0;
-			h.setOnMouseEntered(e -> {
-				System.out.println("TERRAIN TYPE: " + h.terrainTypeToString() + "; Token Value: " + h.getTokenValue());
-			});
+
 			for (int i = 0; i < h.getPoints().size(); i = i + 2) {
 				Point2D p = new Point2D(h.getPoints().get(i), h.getPoints().get(i + 1));
 				HexVertex hV = new HexVertex(p, h);
@@ -425,35 +421,36 @@ public class HexBoard {
 					edgeList.get(edgeList.indexOf(hE)).addHex(h);
 
 				} else {
-                                        edgeList.add(hE);
-                
+					edgeList.add(hE);
 
-                                        //Circle c= new Circle(hV.position.getX(), hV.position.getY(),5,Color.BLACK);
+					// Circle c= new Circle(hV.position.getX(),
+					// hV.position.getY(),5,Color.BLACK);
 
-                                        // System.out.println(c);
-                                        edgePane.getChildren().add(hE);
+					// System.out.println(c);
+					edgePane.getChildren().add(hE);
 
 				}
 
 			}
 
 		}
-                  int hexCounter=0;
-         for (Hex hex: hexList){
-             int vertexCounter=0;
-             System.out.println("[\t\t\t\t\t"+hexCounter+"\t\t\t\t\t]");
-             for(HexVertex vertex: hex.getVerticies()){
-                 System.out.print(vertexCounter+"\t\t");
-                 System.out.print(vertex +"\n" );                 
-                 System.out.println("it's in the list on at index: "+vertexList.indexOf(vertex));
-                 System.out.println("BEFORE ASSN: "+ ((boolean)(vertex==vertexList.get(vertexList.indexOf(vertex)))));
-                 vertex=vertexList.get(vertexList.indexOf(vertex));
-                System.out.println("AFTER ASSN: "+ ((boolean)(vertex==vertexList.get(vertexList.indexOf(vertex)))));
+		int hexCounter = 0;
+		for (Hex hex : hexList) {
+			int vertexCounter = 0;
+			System.out.println("[\t\t\t\t\t" + hexCounter + "\t\t\t\t\t]");
+			for (HexVertex vertex : hex.getVerticies()) {
+				System.out.print(vertexCounter + "\t\t");
+				System.out.print(vertex + "\n");
+				System.out.println("it's in the list on at index: " + vertexList.indexOf(vertex));
+				System.out
+						.println("BEFORE ASSN: " + ((boolean) (vertex == vertexList.get(vertexList.indexOf(vertex)))));
+				vertex = vertexList.get(vertexList.indexOf(vertex));
+				System.out.println("AFTER ASSN: " + ((boolean) (vertex == vertexList.get(vertexList.indexOf(vertex)))));
 
-                 vertexCounter++;
-             }
-             hexCounter++;
-         } 
+				vertexCounter++;
+			}
+			hexCounter++;
+		}
 	}
 
 	public Pane getBoardPane() {

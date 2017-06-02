@@ -26,6 +26,8 @@ public class HexVertex extends Circle {
 	private Asset asset;
 	private Hex parentHex;
 
+	private boolean owned;
+
 	public Point2D getPosition() {
 		return position;
 	}
@@ -104,6 +106,7 @@ public class HexVertex extends Circle {
 
 	public Settlement addSettlement(Player player) {
 		this.asset = new Settlement(player, this);
+		this.owned = true;
 		this.setStroke(player.getPlayerColor());
 		this.setFill(player.getPlayerColor());
 
@@ -152,18 +155,26 @@ public class HexVertex extends Circle {
 				+ ", asset=" + asset + ", parentHex=" + parentHex + '}';
 	}
 
-    public City addCity(Player player) {
-            this.asset= new City(player,this);
-            this.setStroke(Color.GOLD);
-            this.setFill(player.getPlayerColor());
+	public City addCity(Player player) {
+		this.asset = new City(player, this);
+		this.setStroke(Color.GOLD);
+		this.setFill(player.getPlayerColor());
 
-         this.setOnMouseEntered(e ->{
-            System.out.println("THIS ASSET: "+ this.asset);
-        });
-       this.setOnMouseExited(e ->{
-        });
-        return (City) this.asset;
-    
-    }
+		this.setOnMouseEntered(e -> {
+			System.out.println("THIS ASSET: " + this.asset);
+		});
+		this.setOnMouseExited(e -> {
+		});
+		return (City) this.asset;
+
+	}
+
+	public boolean isOwned() {
+		return owned;
+	}
+
+	public void setOwned(boolean owned) {
+		this.owned = owned;
+	}
 
 }
