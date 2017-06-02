@@ -11,12 +11,14 @@ import devCards.Knight;
 import devCards.VictoryPoint;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import progressCards.Monopoly;
 import progressCards.RoadBuilding;
@@ -47,11 +49,14 @@ public class SoM extends Application {
 		resourceBank.printResourceList();
 		Scene scene = new Scene(root);
 
-		stage.setX(300);
-		stage.setY(0);
-
-		stage.setTitle("Title Screen");
+		stage.setTitle("Settlers of Mars");
 		stage.setScene(scene);
+
+		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+		stage.setX((primaryScreenBounds.getWidth() - stage.getWidth()) / 2);
+		stage.setY((primaryScreenBounds.getHeight() - stage.getHeight()) / 2);
+
+		stage.setResizable(false);
 		stage.show();
 
 		MediaClass mediaClass = new MediaClass();
