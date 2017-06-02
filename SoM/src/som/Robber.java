@@ -45,7 +45,6 @@ public class Robber {
 	 */
 	private void SevenResourceCheck() {
 		int randomResourceNumber = 0;
-<<<<<<< HEAD
 		int resourceCounter = 0;
 		for (int i = 0; i < robberPlayers.size(); i++) // for loop runs once for
 														// every player
@@ -58,28 +57,13 @@ public class Robber {
 				System.out.println("\n" + robberPlayers.get(i).getNickname() + " lost:");
 				for (int j = 0; j < resourceCounter; j++) {
 					randomResourceNumber = RandomResourceValue(i);
-=======
-                int resourceCounter = 0;
-		for (int i = 0; i < robberPlayers.size(); i++) // for loop runs once for every player													
-		{
-			if (robberPlayers.get(i).countResources() >= 7) // If the current than 7 resource cards...
-				resourceCounter = robberPlayers.get(i).countResources()/2;			
-			{
-				System.out.println("\n" + robberPlayers.get(i).getNickname() + " lost:");
-				for (int j = 0; j < resourceCounter; j++) {					
-                                        randomResourceNumber = RandomResourceValue(i);
->>>>>>> 80138ba1d33016ba79f376862acc41a4b6cebbb2
 					robberPlayers.get(i).resources[randomResourceNumber]--;
-					resourceBank.bankReturnResource(randomResourceNumber, 1);                                        
-					System.out.print(" one " + resourceBank.getResourceName(randomResourceNumber)");
+					resourceBank.bankReturnResource(randomResourceNumber, 1);
+					System.out.print(" one " + resourceBank.getResourceName(randomResourceNumber));
 				} // end of inner for loop
 			} // end of inner if statment
 		} // end of for loop
-<<<<<<< HEAD
 		System.out.println(Arrays.toString(resourceBank.resources));
-=======
-                System.out.println(Arrays.toString(resourceBank.resources));
->>>>>>> 80138ba1d33016ba79f376862acc41a4b6cebbb2
 		checkHex(this.getCurrentHex());
 	}
 
@@ -184,16 +168,8 @@ public class Robber {
 	public void setPlayerArray(ArrayList<Player> players) {
 		this.robberPlayers = players;
 	}
-<<<<<<< HEAD
 
 	public void setBank(ResourceBank resourceBank) {
 		this.resourceBank = resourceBank;
 	}
 }
-=======
-	public void setbank(ResourceBank resourceBank) {
-		this.resourceBank = resourceBank;
-	}
-}
-}
->>>>>>> 80138ba1d33016ba79f376862acc41a4b6cebbb2
