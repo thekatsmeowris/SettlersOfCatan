@@ -60,7 +60,7 @@ public class GameScreenController implements Initializable {
 	Slider sldVictoryPoints;
 
 	@FXML
-	Label txtCurrentStatus, txtLastRoll;
+	Label txtCurrentStatus, txtLastRoll, endGameText;
 
 	@FXML
 	Text txtPopUpText, leftDie, rightDie, txtRes00Text, txtRes01Text, txtRes02Text, txtRes03Text, txtRes04Text;
@@ -121,6 +121,7 @@ public class GameScreenController implements Initializable {
 
 	private static int currentPlayerNumber;
 	private boolean advanceBackwards;
+
 	/*
 	 * public final static int DISTR_RESOURCES = 20; public final static int
 	 * DISCARDING = 21; public final static int STEALING_RESOURCE = 22; public
@@ -191,7 +192,6 @@ public class GameScreenController implements Initializable {
 		largestArmyValue = 3;
 		freeRoad = 2;
 		resourcePass = 4;
-
 		for (Hex h : board.transHexList) {
 			h.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
 				if (getGameState() == MOVING_ROBBER) {
@@ -214,15 +214,18 @@ public class GameScreenController implements Initializable {
 				int vertexCounter = 0;
 				// System.out.println("[\t\t\t\t\t"+hexCounter+"\t\t\t\t\t]");
 				for (HexVertex vertex : hex.getVerticies()) {
-					System.out.print(vertexCounter + "\t\t");
-					System.out.print("BEFORE ASSN: \t" + vertex + "\n");
-					System.out.println("it's in the list on at index: " + board.vertexList.indexOf(vertex));
-					System.out.println("BEFORE ASSN: "
-							+ ((boolean) (vertex == board.vertexList.get(board.vertexList.indexOf(vertex)))));
+					// System.out.print(vertexCounter + "\t\t");
+					// System.out.print("BEFORE ASSN: \t" + vertex + "\n");
+					// System.out.println("it's in the list on at index: " +
+					// board.vertexList.indexOf(vertex));
+					// System.out.println("BEFORE ASSN: "
+					// + ((boolean) (vertex ==
+					// board.vertexList.get(board.vertexList.indexOf(vertex)))));
 					vertex = board.vertexList.get(board.vertexList.indexOf(vertex));
-					System.out.println("AFTER ASSN: "
-							+ ((boolean) (vertex == board.vertexList.get(board.vertexList.indexOf(vertex)))));
-					System.out.print("AFTER ASSN: \t" + vertex + "\n\n\n");
+					// System.out.println("AFTER ASSN: "
+					// + ((boolean) (vertex ==
+					// board.vertexList.get(board.vertexList.indexOf(vertex)))));
+					// System.out.print("AFTER ASSN: \t" + vertex + "\n\n\n");
 
 					vertexCounter++;
 				}
@@ -248,13 +251,13 @@ public class GameScreenController implements Initializable {
 				setSelectedItem(hexEdge);
 				popupDialog.setVisible(false);
 				try {
-					if (gameState == PLACING_ROAD) {
+					if (getGameState() == PLACING_ROAD) {
 						buildRoad();
 						setGameState(MAIN_PHASE);
 					} else {
 						printPrettyGameState();
 					}
-					if (gameState == PLACING_FREE_ROAD) {
+					if (getGameState() == PLACING_FREE_ROAD) {
 						buildRoad();
 						setGameState(PLACING_FREE_SETTLEMENT);
 						if ((currentPlayerNumber == players.size() - 1)
@@ -316,6 +319,7 @@ public class GameScreenController implements Initializable {
 		rightDie.setText(r.toString());
 		System.out.println("total die: " + diceValue);
 		txtLastRoll.setText("Last Dice Roll: " + diceValue);
+
 		if (diceValue == 7) {
 			setGameState(MOVING_ROBBER);
 		}
@@ -362,6 +366,8 @@ public class GameScreenController implements Initializable {
 
 	public void endTurn() {
 		System.out.println(gameStateToString());
+		System.out.println("Ending player: " + players.get(currentPlayerNumber).getNickname() + "; Victory Points: "
+				+ players.get(currentPlayerNumber).getVictoryPoints());
 		if (advanceBackwards) {
 			if (currentPlayerNumber == 0) {
 				setGameState(PRE_ROLL);
@@ -381,8 +387,12 @@ public class GameScreenController implements Initializable {
 		if (getGameState() != PLACING_FREE_SETTLEMENT) {
 			updateResources();
 		}
-		fillPlayerInfo();
-		newTurn();
+		if (getWinCondition()) {
+			setGameState(GAME_OVER);
+		} else {
+			fillPlayerInfo();
+			newTurn();
+		}
 	}
 
 	public void endTurnBackwards() {
@@ -409,6 +419,7 @@ public class GameScreenController implements Initializable {
 			gameBoard.setDisable(true);
 			buildBtn.setDisable(true);
 			endBtn.setDisable(true);
+			endGameText.setVisible(false);
 			break;
 		case INIT_BUILD_PHASE_A:
 		case INIT_BUILD_PHASE_B:
@@ -491,6 +502,20 @@ public class GameScreenController implements Initializable {
 			buildBtn.setDisable(true);
 			cancelBuildBtn.setVisible(false);
 			endBtn.setDisable(true);
+			break;
+		case GAME_OVER:
+			tradeBtn.setDisable(true);
+			diceRoller.setDisable(true);
+			startGameBtn.setDisable(true);
+			devBtn.setDisable(true);
+			gameBoard.setDisable(true);
+			buildBtn.setVisible(true);
+			buildBtn.setDisable(true);
+			cancelBuildBtn.setVisible(false);
+			endBtn.setDisable(true);
+			endGameText.setVisible(true);
+			break;
+
 		}
 	}
 
@@ -498,7 +523,6 @@ public class GameScreenController implements Initializable {
 		for (Player player : players) {
 			if (player.getVictoryPoints() >= 10) {
 				System.out.println("GAME OVER");
-
 				return true;
 			}
 		}
@@ -696,7 +720,6 @@ public class GameScreenController implements Initializable {
 			((HexEdge) selectedItem).setStroke((Paint) players.get(currentPlayerNumber).getPlayerColor());
 
 			updateResources();
-
 			checkForLongestRoad();
 
 			// System.out.println(((HexEdge)
@@ -756,7 +779,9 @@ public class GameScreenController implements Initializable {
 																		// for
 																		// road
 		// road requirements: BRICK AND LUMBER (plastic + glass) 1+4
-
+		if (getGameState() == PLACING_FREE_ROAD) {
+			return true;
+		}
 		return (isGreater(players.get(currentPlayerNumber).getResources(), new int[] { 0, 1, 0, 0, 1 }));
 
 	}
@@ -765,6 +790,9 @@ public class GameScreenController implements Initializable {
 																			// requirements
 																			// for
 																			// settlement
+		if (getGameState() == PLACING_FREE_SETTLEMENT) {
+			return true;
+		}
 		// road requirements: BRICK AND LUMBER (plastic + glass) 1+4
 		return (isGreater(players.get(currentPlayerNumber).getResources(), new int[] { 0, 1, 1, 1, 1 }));
 
@@ -875,18 +903,20 @@ public class GameScreenController implements Initializable {
 
 	}
 
-	private void generateResources(int diceValue) {
-		resourceGenerator.generateResources(diceValue);
-		updateResources();
-
-	}
-
 	public void createTestPlayers() {
 		players = new ArrayList<>();
-		Player mark = new Player("Mark", new int[] { 5, 5, 5, 5, 5 }, Color.CYAN);
-		Player dek = new Player("Dehkhoda", new int[] { 5, 5, 5, 5, 5 }, Color.RED);
-		Player lisa = new Player("Lisa", new int[] { 5, 5, 5, 5, 5 }, Color.BLUE);
-		Player mew = new Player("Mew", new int[] { 5, 5, 5, 5, 5 }, Color.VIOLET);
+		// Player mark = new Player("Mark", new int[] { 5, 5, 5, 5, 5 },
+		// Color.CYAN);
+		// Player dek = new Player("Dehkhoda", new int[] { 5, 5, 5, 5, 5 },
+		// Color.RED);
+		// Player lisa = new Player("Lisa", new int[] { 5, 5, 5, 5, 5 },
+		// Color.BLUE);
+		// Player mew = new Player("Mew", new int[] { 5, 5, 5, 5, 5 },
+		// Color.VIOLET);
+		Player mark = new Player("Mark", new int[] { 2, 2, 2, 2, 2 }, Color.CYAN);
+		Player dek = new Player("Dehkhoda", new int[] { 2, 2, 2, 2, 2 }, Color.MEDIUMSEAGREEN);
+		Player lisa = new Player("Lisa", new int[] { 2, 2, 2, 2, 2 }, Color.BLUE);
+		Player mew = new Player("Mew", new int[] { 2, 2, 2, 2, 2 }, Color.VIOLET);
 		players.add(mark);
 		players.add(dek);
 		players.add(lisa);
