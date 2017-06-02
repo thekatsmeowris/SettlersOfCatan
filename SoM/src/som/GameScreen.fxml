@@ -29,7 +29,7 @@
    <children>
       <StackPane prefHeight="720.0" prefWidth="1300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane maxHeight="720.0" maxWidth="1300.0" prefHeight="720.0" prefWidth="1306.0" StackPane.alignment="CENTER">
+            <AnchorPane maxHeight="720.0" maxWidth="1300.0" prefHeight="720.0" prefWidth="1306.0" StackPane.alignment="CENTER" >
                <children>
                   <BorderPane prefHeight="720.0" prefWidth="1300.0">
                      <bottom>
