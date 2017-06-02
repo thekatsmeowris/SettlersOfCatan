@@ -128,7 +128,7 @@
                                           <Font size="17.0" />
                                        </font>
                                     </Text>
-                                    <ProgressBar fx:id="pgbLargestArmy" layoutY="30.0" prefHeight="18.0" prefWidth="136.0" progress="0.0" />
+                                    <ProgressBar id="pgbLargestArmy" fx:id="pgbLargestArmy" layoutY="30.0" prefHeight="18.0" prefWidth="136.0" progress="0.0" />
                                  </children>
                               </Group>
                               <Text fx:id="txtThisPlayerName" layoutX="591.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAME" textAlignment="CENTER" wrappingWidth="140.107421875">

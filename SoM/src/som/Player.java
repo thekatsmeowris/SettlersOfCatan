@@ -129,7 +129,7 @@ public class Player {
         });
     }
    
-    
+     
     
     public void setVictoryPoints(int value){
         victoryPoints=value;
@@ -158,7 +158,7 @@ public class Player {
         public int getLargestArmy(){
             return largestArmy;
         }
-        public int setLargestArmy(){
+        public void setLargestArmy(){
             this.largestArmy=largestArmy;
         }
     int getVictoryPoints() {

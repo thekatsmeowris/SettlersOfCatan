@@ -1256,8 +1256,10 @@ public class GameScreenController implements Initializable {
                
                System.out.println("YOU'VE BUILT A DEV CARD");
                thisPlayer.ifDevCardVictoryPoint(thisPlayer.hand);
+               
                System.out.println("You've Checked if there is a VP in the Deck");
-              
+               keepKnightCard();
+               System.out.println("You've Checked if Knight gives you longest Road");
             }
         }
         }
@@ -1393,7 +1395,7 @@ public class GameScreenController implements Initializable {
          });
      }
      
-     public void keepKnightCard(){
+    public void keepKnightCard(){
          thisPlayer.hand.forEach((DevelopmentCard d5) -> {
              if(d5 instanceof Knight){
                  thisPlayer.largestArmyAdd();
@@ -1401,6 +1403,13 @@ public class GameScreenController implements Initializable {
              }       
          });
          }
+    public void playKnightCard(ActionEvent e) throws IOException{
+         thisPlayer.hand.forEach((DevelopmentCard d5) -> {
+             if(d5 instanceof Knight){
+                 
+             }
+         });   
+    }
                
                
                    
