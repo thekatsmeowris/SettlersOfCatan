@@ -53,7 +53,7 @@ import som.assets.Settlement;
 public class GameScreenController implements Initializable {
 
 	@FXML
-	Pane gameLayer, gameBoard, playerGUI, popupDialog, robberConfirmDialog, dicePane, pnTradeDialog, pnPlayerLeft,
+	Pane gameLayer, gameBoard, playerGUI, popupDialog, dicePane, pnTradeDialog, robberConfirmDialog, pnPlayerLeft,
 			pnPlayerMid, pnPlayerRight, pnAcceptTradeDialog, pnBuild;
 
 	@FXML
@@ -116,7 +116,11 @@ public class GameScreenController implements Initializable {
 	public final static int PLAY_KNIGHT = 17;
 	public final static int PLAY_VICTORY_POINT = 18;
 
+	public final static int PLACING_FREE_SETTLEMENT = 20;
+	public final static int PLACING_FREE_ROAD = 21;
+
 	private static int currentPlayerNumber;
+	private boolean advanceBackwards;
 	/*
 	 * public final static int DISTR_RESOURCES = 20; public final static int
 	 * DISCARDING = 21; public final static int STEALING_RESOURCE = 22; public
@@ -190,8 +194,6 @@ public class GameScreenController implements Initializable {
 
 		for (Hex h : board.transHexList) {
 			h.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-				// Robber bob.setPrevHex = currentHex
-				// currentHex = selectedItem (or h);
 				if (getGameState() == MOVING_ROBBER) {
 					setSelectedItem(board.hexList.get(h.getIndex()));
 					h.setFill(Color.rgb(25, 25, 200, 0.5));
@@ -231,9 +233,8 @@ public class GameScreenController implements Initializable {
 			hexVertex.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
 				setSelectedItem(hexVertex);
 				try {
-					if (gameState == PLACING_SETTLEMENT) {
+					if (gameState == PLACING_SETTLEMENT || gameState == PLACING_FREE_SETTLEMENT) {
 						buildSettlement();
-						setGameState(MAIN_PHASE);
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -252,6 +253,18 @@ public class GameScreenController implements Initializable {
 						setGameState(MAIN_PHASE);
 					} else {
 						printPrettyGameState();
+					}
+					if (gameState == PLACING_FREE_ROAD) {
+						buildRoad();
+						setGameState(PLACING_FREE_SETTLEMENT);
+						if ((currentPlayerNumber == players.size() - 1)
+								&& (players.get(players.size() - 1).getFreeRoads() > 0)) {
+							setAdvanceBackwards(true);
+						} else {
+							System.out.println(gameStateToString());
+							endTurn();
+						}
+
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -276,11 +289,9 @@ public class GameScreenController implements Initializable {
 		// Player GUI Stuff
 		resGen = new ResourceGenerator(board);
 		createTestPlayers();
-
+		fillPlayerInfo();
 		// TODO: reorganize
 		rob.setPlayerArray(players);
-
-		fillPlayerInfo();
 		cancelBuildBtn.setVisible(false);
 
 		setGameState(NEW_GAME);
@@ -305,7 +316,6 @@ public class GameScreenController implements Initializable {
 		System.out.println("total die: " + diceValue);
 		txtLastRoll.setText("Last Dice Roll: " + diceValue);
 		if (diceValue == 7) {
-			System.out.println("ROBBER!!!");
 			setGameState(MOVING_ROBBER);
 		}
 		if (gameState == PRE_ROLL) {
@@ -326,22 +336,12 @@ public class GameScreenController implements Initializable {
 		return players;
 	}
 
-	public void doInitialBuildPhase() {
-		for (int i = 0; i < players.size(); i++) {
-			players.get(i).buildInitial();
-		}
-		for (int i = players.size() - 1; i >= 0; i--) {
-			players.get(i).buildInitial();
-		}
-	}
-
-	public void buildPhase() {
-
-	}
-
 	public void startGame() {
 		getPlayerOrder(players);
-		setGameState(PRE_ROLL);
+
+		// setGameState(PRE_ROLL);
+		setGameState(INIT_BUILD_PHASE_A);
+
 		currentPlayer = players.get(0);
 		makeResources();
 		System.out.println(currentPlayer.toString());
@@ -349,27 +349,53 @@ public class GameScreenController implements Initializable {
 		System.out.println("//////////////////////////////////");
 		System.out.println("GAME STARTED");
 		System.out.println("//////////////////////////////////");
+		System.out.println(gameStateToString());
+		doInitBuildPhase();
 
 	}
 
+	public void doInitBuildPhase() {
+		int prevGS = getGameState();
+		setGameState(PLACING_FREE_SETTLEMENT);
+	}
+
 	public void endTurn() {
-		++currentPlayerNumber;
-		if (currentPlayerNumber == players.size()) {
-			currentPlayerNumber = 0;
+		System.out.println(gameStateToString());
+		if (advanceBackwards) {
+			if (currentPlayerNumber == 0) {
+				setGameState(PRE_ROLL);
+				setAdvanceBackwards(false);
+			} else {
+				currentPlayerNumber--;
+			}
+		} else {
+			++currentPlayerNumber;
+			if (currentPlayerNumber == players.size()) {
+				currentPlayerNumber = 0;
+			}
+			if (popupDialog.isVisible()) {
+				popupDialog.setVisible(false);
+			}
 		}
-		if (popupDialog.isVisible()) {
-			popupDialog.setVisible(false);
+		if (getGameState() != PLACING_FREE_SETTLEMENT) {
+			updateResources();
 		}
-		updateResources();
 		fillPlayerInfo();
 		newTurn();
 	}
 
+	public void endTurnBackwards() {
+
+	}
+
 	public void newTurn() {
+		System.out.println(gameStateToString());
 		System.out.println("/////////////////////////////////////");
 		currentPlayer = players.get(currentPlayerNumber);
 		System.out.println("Current Player: " + players.get(currentPlayerNumber).getNickname());
-		setGameState(PRE_ROLL);
+		if (getGameState() != PLACING_FREE_SETTLEMENT) {
+			setGameState(PRE_ROLL);
+		}
 	}
 
 	public void setUIFromGameState() {
@@ -383,6 +409,18 @@ public class GameScreenController implements Initializable {
 			buildBtn.setDisable(true);
 			endBtn.setDisable(true);
 			break;
+		case INIT_BUILD_PHASE_A:
+		case INIT_BUILD_PHASE_B:
+			tradeBtn.setDisable(true);
+			diceRoller.setDisable(true);
+			startGameBtn.setDisable(true);
+			devBtn.setDisable(true);
+			gameBoard.setDisable(false);
+			buildBtn.setDisable(true);
+			cancelBuildBtn.setVisible(false);
+			cancelBuildBtn.setDisable(true);
+			endBtn.setDisable(true);
+			break;
 		case PRE_ROLL:
 			tradeBtn.setDisable(true);
 			diceRoller.setDisable(false);
@@ -390,6 +428,8 @@ public class GameScreenController implements Initializable {
 			devBtn.setDisable(false);
 			gameBoard.setDisable(true);
 			buildBtn.setDisable(true);
+			cancelBuildBtn.setVisible(false);
+			cancelBuildBtn.setDisable(true);
 			endBtn.setDisable(true);
 			break;
 		case MAIN_PHASE:
@@ -401,6 +441,7 @@ public class GameScreenController implements Initializable {
 			buildBtn.setVisible(true);
 			buildBtn.setDisable(false);
 			cancelBuildBtn.setVisible(false);
+			cancelBuildBtn.setDisable(true);
 			endBtn.setDisable(false);
 			break;
 		case MOVING_ROBBER:
@@ -435,6 +476,19 @@ public class GameScreenController implements Initializable {
 			gameBoard.setDisable(false);
 			buildBtn.setVisible(false);
 			cancelBuildBtn.setVisible(true);
+			cancelBuildBtn.setDisable(false);
+			endBtn.setDisable(true);
+			break;
+		case PLACING_FREE_ROAD:
+		case PLACING_FREE_SETTLEMENT:
+			tradeBtn.setDisable(true);
+			diceRoller.setDisable(true);
+			startGameBtn.setDisable(true);
+			devBtn.setDisable(true);
+			gameBoard.setDisable(false);
+			buildBtn.setVisible(true);
+			buildBtn.setDisable(true);
+			cancelBuildBtn.setVisible(false);
 			endBtn.setDisable(true);
 		}
 	}
@@ -525,6 +579,7 @@ public class GameScreenController implements Initializable {
 				players.get(currentPlayerNumber)
 						.setFreeSettlements(players.get(currentPlayerNumber).getFreeSettlements() - 1);
 				System.out.println("Free Settlements: " + players.get(currentPlayerNumber).getFreeSettlements());
+				setGameState(PLACING_FREE_ROAD);
 			} else {
 
 				resourceBank.bankReturnResource(players.get(currentPlayerNumber).removeResources(resourceBank
@@ -532,6 +587,7 @@ public class GameScreenController implements Initializable {
 				System.out.println("Current color: " + players.get(currentPlayerNumber).getPlayerColor());
 				System.out.println("Free Settlement greater than 0: fs = "
 						+ players.get(currentPlayerNumber).getFreeSettlements());
+				setGameState(MAIN_PHASE);
 			}
 
 			((HexVertex) selectedItem).addSettlement(players.get(currentPlayerNumber));
@@ -704,7 +760,6 @@ public class GameScreenController implements Initializable {
 																			// for
 																			// settlement
 		// road requirements: BRICK AND LUMBER (plastic + glass) 1+4
-
 		return (isGreater(players.get(currentPlayerNumber).getResources(), new int[] { 0, 1, 1, 1, 1 }));
 
 	}
@@ -1192,6 +1247,10 @@ public class GameScreenController implements Initializable {
 		case PLACING_CITY:
 		case PLACING_SETTLEMENT:
 			return "Placing asset piece";
+		case PLACING_FREE_ROAD:
+			return "Placing Free Road";
+		case PLACING_FREE_SETTLEMENT:
+			return "Placing Free Settlement";
 		case MOVING_ROBBER:
 			return "Moving Robber";
 		case PLAY_ROAD_BUILDING:
@@ -1211,6 +1270,10 @@ public class GameScreenController implements Initializable {
 
 	public static int getGameState() {
 		return gameState;
+	}
+
+	private void setAdvanceBackwards(boolean bool) {
+		advanceBackwards = bool;
 	}
 
 	public void placingSettlement() {

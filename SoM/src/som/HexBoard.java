@@ -286,11 +286,15 @@ public class HexBoard {
 
 		for (Hex h2 : transHexList) {
 			h2.setOnMouseEntered(e -> {
-				// h2.setFill(Color.PEACHPUFF);
+				if (GameScreenController.getGameState() == GameScreenController.MOVING_ROBBER) {
+					h2.setFill(Color.rgb(0, 0, 0, 0.3));
+				}
 			});
 
 			h2.setOnMouseExited(e -> {
-
+				if (GameScreenController.getGameState() == GameScreenController.MOVING_ROBBER) {
+					h2.setFill(Color.TRANSPARENT);
+				}
 			});
 		}
 	}

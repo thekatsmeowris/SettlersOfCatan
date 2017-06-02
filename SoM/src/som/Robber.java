@@ -15,8 +15,8 @@ public class Robber {
 	private Player pickedPlayer;
 	private ArrayList<Player> robberPlayers = new ArrayList<>();
 	private ResourceBank resourceBank = new ResourceBank();
-	private Hex currentHex = new Hex();
-	private Hex previousHex = new Hex();
+	private Hex currentHex;
+	private Hex previousHex;
 	private HexBoard board;
 
 	// Only available constructor: clones ArrayList<Player> from
