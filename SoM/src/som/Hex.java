@@ -8,7 +8,9 @@ package som;
 import java.util.ArrayList;
 
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 
 /**
@@ -34,7 +36,7 @@ public class Hex extends Polygon {
 	private final static int STEEL = 0;
 	private final static int GLASS = 1;
 	private final static int HEMP = 2;
-	private final static int SOY = 3;
+	private final static int WATER = 3;
 	private final static int PLASTIC = 4;
 
 	Hex() {
@@ -72,6 +74,11 @@ public class Hex extends Polygon {
 		this.setFill(hexColor);
 		this.tokenValue = tokenValue;
 		this.terrainType = terrainType;
+		// System.out.println("src/som/graphics/hex" + this.getTerrainType() +
+		// ".png");
+		Image img = new Image("file:src/som/graphics/hex" + this.getTerrainType() + ".png");
+		ImagePattern imgPatt = new ImagePattern(img);
+		this.setFill(imgPatt);
 	}
 
 	// Constructor without token/terrain values
@@ -141,8 +148,8 @@ public class Hex extends Polygon {
 			return "Glass";
 		case HEMP:
 			return "Hemp";
-		case SOY:
-			return "Soy";
+		case WATER:
+			return "Water";
 		case PLASTIC:
 			return "Plastic";
 		default:

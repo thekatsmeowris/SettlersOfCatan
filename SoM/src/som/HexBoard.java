@@ -18,6 +18,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -251,11 +253,14 @@ public class HexBoard {
 					// Board
 					// --> Needs cleaning
 					Circle circle = new Circle(25);
-					circle.setFill(Color.ANTIQUEWHITE);
+					circle.setFill(Color.rgb(250, 235, 215, 0.7));
 					circle.setLayoutX(205 + (inRadius * (maxColumns - columnMax)) + (inRadius * j * 2));
 					circle.setLayoutY(hexStartingPointY);
+					circle.setStroke(Color.BLACK);
+					circle.setStrokeWidth(2.0);
 					numberPane.getChildren().add(circle);
 					t1 = new Text(20, 20, "" + h.terrainTypeToString() + "\n" + h.getTokenValue());
+					t1.setFont(Font.font("Impact", FontWeight.BOLD, 14));
 					t1.setLayoutX(170 + (inRadius * (maxColumns - columnMax)) + (inRadius * j * 2));
 					t1.setLayoutY(hexStartingPointY - inRadius + 20);
 					t1.setRotate(270);
