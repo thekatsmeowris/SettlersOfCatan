@@ -74,7 +74,7 @@
 	                                    <Circle fill="#bdb7a2" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
 	                                    <VBox alignment="TOP_CENTER" >
 	                                    	<padding><Insets top="10" right="25" bottom="0" left="25"/></padding>
-		                                    <Text layoutX="0.0" layoutY="-20.0" strokeType="OUTSIDE" strokeWidth="1.0" text="Soy" textAlignment="CENTER">
+		                                    <Text layoutX="0.0" layoutY="-20.0" strokeType="OUTSIDE" strokeWidth="1.0" text="Water" textAlignment="CENTER">
 		                                    	<font>
 		                                    		<Font size="18.0" />
 		                                    	</font>
