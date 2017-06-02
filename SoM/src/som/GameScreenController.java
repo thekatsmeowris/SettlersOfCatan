@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package som;
 
 import java.io.IOException;
@@ -236,6 +231,10 @@ public class GameScreenController implements Initializable {
 					if (gameState == PLACING_SETTLEMENT || gameState == PLACING_FREE_SETTLEMENT) {
 						buildSettlement();
 					}
+					if (gameState == PLACING_FREE_SETTLEMENT) {
+						buildSettlement();
+						setGameState(PLACING_FREE_ROAD);
+					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -312,6 +311,7 @@ public class GameScreenController implements Initializable {
 		leftDie.setText(r.toString());
 
 		r = z.nextInt(6) + 1;
+                System.out.println("second die: " + r);
 		diceValue += r;
 		rightDie.setText(r.toString());
 		System.out.println("total die: " + diceValue);
@@ -359,6 +359,8 @@ public class GameScreenController implements Initializable {
 		int prevGS = getGameState();
 		setGameState(PLACING_FREE_SETTLEMENT);
 	}
+
+
 
 	public void endTurn() {
 		System.out.println(gameStateToString());

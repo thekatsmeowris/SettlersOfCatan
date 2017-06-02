@@ -1,16 +1,25 @@
 package som;
 
+
+
 // DevelopmentCard.java
 public class DevelopmentCard{
 	private String name;
 	private String description;
 	private String imagePathName;
+        
+        
+        
+        
+        
 
 
         public DevelopmentCard(){
             name="dvCard";
             description="";
             imagePathName="";
+            //progressCards= new ArrayList<>();
+            //knights=new ArrayList
         }
 	public DevelopmentCard(String n, String d, String imgName){
 		setName(n);
