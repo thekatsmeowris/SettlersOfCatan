@@ -167,11 +167,25 @@ public class Player {
     Color getPlayerColor() {
         return playerColor;
     }
-
-
-
-
-
-
- 
+    
+    public boolean isCpu(){
+        String className=this.getClass().getSimpleName();
+        if(className.equals("Player"))
+        {
+            return false;
+        }
+        else{
+        return true;
+        }
+    }
+    public boolean isCpu(Player currentPlayer){
+        String className=currentPlayer.getClass().getSimpleName();
+        if(className.equals("Player"))
+        {
+            return false;
+        }
+        else{
+        return true;
+        }
+    }
 }

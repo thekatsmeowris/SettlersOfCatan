@@ -14,15 +14,30 @@ import javafx.scene.paint.Paint;
  *
  * @author david
  */
-public class Cpu extends Player{
-    
-    GameScreenController gm=new GameScreenController();
-    
+public class Cpu extends Player {
+
     private int victoryPoints;
-    private TradePack tradePack= new TradePack(this);
+    private TradePack tradePack = new TradePack(this);
     private int priority;
-    static GameScreenController gsc=new GameScreenController();
+    private int preference;
+    private int action;
     HexBoard board;
+
+    public int getPreference() {
+        return preference;
+    }
+
+    public void setPreference(int preference) {
+        this.preference = preference;
+    }
+
+    public int getAction() {
+        return action;
+    }
+
+    public void setAction(int action) {
+        this.action = action;
+    }
 
     public HexBoard getBoard() {
         return board;
@@ -55,139 +70,175 @@ public class Cpu extends Player{
     public void setPriority(int priority) {
         this.priority = priority;
     }
-       
-    Cpu(){
+
+    Cpu() {
         super();
-        assets=new Assets();
-        resources= new int[]{0,0,0,0,0}; 
-        victoryPoints=0;
+        assets = new Assets();
+        resources = new int[]{0, 0, 0, 0, 0};
+        victoryPoints = 0;
         setBoard(board);
-        int prio=(int)(Math.random()*(7-0+1)+0);
-        setPriority(prio);
-        
+        int pref = (int) (Math.random() * (7 - 0 + 1) + 0);
+        this.setPreference(pref);
+
     }
 
     Cpu(String name, Color playerColor, HexBoard board) {
-        super(name,playerColor);
-        assets=new Assets();
-            nickname=name;
-            this.playerColor=playerColor;
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.       
+        super(name, playerColor);
+        assets = new Assets();
+        nickname = name;
+        this.playerColor = playerColor;
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.       
         setBoard(board);
-        int prio=(int)(Math.random()*(7-0+1)+0);
-        setPriority(prio);
+        int pref = (int) (Math.random() * (7 - 0 + 1) + 0);
+        this.setPreference(pref);
     }
 
-    Cpu(String name, int[] resources, Color playerColor,HexBoard board) {
-        super(name,resources,playerColor);
-        this.nickname=name;
-        this.resources=resources;
-        this.victoryPoints=4;
-        assets=new Assets();
-        this.playerColor=playerColor;           
+    Cpu(String name, int[] resources, Color playerColor, HexBoard board) {
+        super(name, resources, playerColor);
+        this.nickname = name;
+        this.resources = resources;
+        this.victoryPoints = 4;
+        assets = new Assets();
+        this.playerColor = playerColor;
         setBoard(board);
-        int prio=(int)(Math.random()*(7-0+1)+0);
-        setPriority(prio);
+        int pref = (int) (Math.random() * (7 - 0 + 1) + 0);
+        this.setPreference(pref);
+        this.setPriority(1);
     }
-    public synchronized void play() throws IOException
-    {
-         /*resource numbers:
+
+    Cpu(String name, int[] resources, Color playerColor, HexBoard board, int priority) {
+        super(name, resources, playerColor);
+        this.nickname = name;
+        this.resources = resources;
+        this.victoryPoints = 4;
+        assets = new Assets();
+        this.playerColor = playerColor;
+        setBoard(board);
+        int pref = (int) (Math.random() * (7 - 0 + 1) + 0);
+        this.setPreference(pref);
+        this.setPriority(priority);
+    }
+
+    public synchronized void play() throws IOException {
+        /*resource numbers:
             0 = steel = ore
             1 = glass = brick
             2 = hemp = sheep
             3 = soy = wheat
             4 = plastic = lumber
-            */
-        int steel=resources[0],glass=resources[1],hemp=resources[2],soy=resources[3],plastic=resources[4];
+         */
+        int steel = resources[0], glass = resources[1], hemp = resources[2], water = resources[3], plastic = resources[4];
 
-        if(priority==1) //priority 1 the cpu prefferences is on building settlement 
-        {           
-            if((steel==4) && (glass==4) && (soy==4) && (plastic==4))
-            {
-                buildSettlement(this.board);
-            }
-            else
-                
-            {
-                int action=(int)(Math.random()*(5-0+1)+0);
-                if(action==1)
-                {
-                    //build road, if not enough resources incriment action +1 so the next if can be executed
+        if (preference == 1) //preference 1 the cpu prefferences is on building settlement 
+        {
+            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                this.setAction(1);//buildSettlement(this.board);
+            } else {
+                int actionOther = (int) (Math.random() * (5 - 0 + 1) + 0);
+                if (actionOther == 1) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(3);//build city, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+
                 }
-                if(action==2)
-                {
-                    //trade, if not enough resources incriment action +1 so the next if can be executed
+                if (actionOther == 2) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(3);//build city, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(3);//build city, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
                 }
-                if(action==3)
-                {
-                    //upgrade settlement to city, if not enough resources incriment action +1 so the next if can be executed
+                if (actionOther == 3) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(3);//build city, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(1);//build settlement, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
                 }
-                if(action==4)
-                {
-                    //dev card,if not enough resources incriment action +1 so the next if can be executed
+                if (actionOther == 4) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(1);//build settlement, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(5);//dev card, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
                 }
-                if(action==5)
-                {
+                if (actionOther == 5) {
                     //progress card, if not enough resources incriment action +1 so the next if can be executed
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(5);//dev card, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
                 }
-                if(action==6)
-                {
+                if (actionOther == 6) {
                     //pass without doing anything
-                }                
+                }
             }
-        }
-        else if(priority==2)//priority 2 the cpu focuse on building road 
-        {
-            if((steel==4) && (glass==4) && (soy==4) && (plastic==4))
-            {
-                BuildRoad(board);
-            }
-            else
-            {
-                int action=(int)(Math.random()*(5-0+1)+0);
-                if(action==1)
-                {
-                    //build road, if not enough resources incriment action +1 so the next if can be executed
-                }
-                if(action==2)
-                {
-                    //trade, if not enough resources incriment action +1 so the next if can be executed
-                }
-                if(action==3)
-                {
-                    //upgrade settlement to city, if not enough resources incriment action +1 so the next if can be executed
-                }
-                if(action==4)
-                {
-                    //dev card,if not enough resources incriment action +1 so the next if can be executed
-                }
-                if(action==5)
-                {
-                    //progress card, if not enough resources incriment action +1 so the next if can be executed
-                }
-                if(action==6)
-                {
-                    //pass without doing anything
-                }                
-            }
-        }
-        else if(priority==3)
-        {
-        }
-        else if(priority==4)
-        {
-        }
-        else if(priority==5)
-        {
-        }
-        else if(priority==6)
-        {
-        }
-        else
-        {
         }
     }
-    
+    /*
     public static void buildSettlement(HexBoard board) throws IOException
     {
         ArrayList<HexVertex>listOfVertexAvailable= new ArrayList<>();
@@ -207,7 +258,7 @@ public class Cpu extends Player{
         //this index is where the AI will built the settlement
         int indexForBuildInVertex = (int)(Math.random()*(listOfVertexAvailable.size()-0+1)+0);
         HexVertex selectedItem = listOfVertexAvailable.get(indexForBuildInVertex);
-        gsc.buildSettlement(selectedItem);
+        //gsc.buildSettlement(selectedItem);
               
    }
     
@@ -223,7 +274,7 @@ public class Cpu extends Player{
         }
          int indexForBuildInEdge = (int)(Math.random()*(listOfEgdeAvailable.size()-0+1)+0);
          HexEdge selectedItem = listOfEgdeAvailable.get(indexForBuildInEdge);
-        gsc.buildRoad(selectedItem);
+        //gsc.buildRoad(selectedItem);
     }
      public static void tradeRessource()
     {
@@ -250,9 +301,9 @@ public class Cpu extends Player{
         //this number will be use as index where the AI will built the city
         int indexForBuildInVertex = (int)(Math.random()*(listOfPlayerVertexToUpgrade.size()-0+1)+0);
         
-        /*
-        code for upgradind the settlement to a city here
-        */
+        
+        code for upgradind the settlement to a city here       
         
    }
+     */
 }
