@@ -173,3 +173,4 @@ public class Robber {
 		this.resourceBank = resourceBank;
 	}
 }
+
