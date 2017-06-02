@@ -30,11 +30,7 @@ import progressCards.YearOfPlenty;
  */
 public class SoM extends Application {
 
-	// private static URL musicURL1, musicURL2;
-	// static AudioClip aMusic1, aMusic2;
-	String music1Path = "src/res/WASTELAND1.wav";
-
-	Media mMusic1 = new Media(new File(music1Path).toURI().toString());
+	
 	static MediaPlayer mediaPlayer;
 	MediaView mediaView;
 	// Connect to Online
@@ -74,17 +70,7 @@ public class SoM extends Application {
 	}
 
 	// Test comment
-	private void loadAudioAssets() {
-
-		// comment
-
-		/*
-		 * musicURL1 = getClass().getResource("/WASTELAND1.wav"); aMusic1 = new
-		 * AudioClip(musicURL1.toString()); musicURL2 =
-		 * getClass().getResource("/WASTELAND2.wav"); aMusic2 = new
-		 * AudioClip(musicURL2.toString());
-		 */
-	}
+	
 
 	public static void playMusic1() {
 		// aMusic1.setCycleCount(AudioClip.INDEFINITE);
