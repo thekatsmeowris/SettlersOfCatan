@@ -25,6 +25,7 @@ public class HexVertex extends Circle {
 	private ArrayList<HexEdge> adjacentEdge;
 	private Asset asset;
 	private Hex parentHex;
+        private boolean owned;
 
 	private boolean owned;
 
@@ -160,6 +161,19 @@ public class HexVertex extends Circle {
 		this.setStroke(Color.GOLD);
 		this.setFill(player.getPlayerColor());
 
+<<<<<<< HEAD
+         this.setOnMouseEntered(e ->{
+            System.out.println("THIS ASSET: "+ this.asset);
+        });
+       this.setOnMouseExited(e ->{
+        });
+        return (City) this.asset;
+    
+    }
+    public boolean isOwned() {
+		return owned;
+	}
+=======
 		this.setOnMouseEntered(e -> {
 			System.out.println("THIS ASSET: " + this.asset);
 		});
@@ -176,5 +190,6 @@ public class HexVertex extends Circle {
 	public void setOwned(boolean owned) {
 		this.owned = owned;
 	}
+>>>>>>> origin/katie_mowris
 
 }
