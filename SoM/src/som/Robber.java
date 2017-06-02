@@ -79,20 +79,12 @@ public class Robber {
 		}
 		Random r = new Random();
 		int randomVariable = 0;
-		randomVariable = r.nextInt(5 - 0) + 0; // IF THERE IS AN INDEX
-												// ERROR:THIS MIGHT BE THE
-												// CAUSE: This should return a
-												// number between 0-4
-		while (excludedNumbers.contains(randomVariable)) { // While loop to run
-															// until the random
-															// number generated
-															// is not in the
-															// excludedNumber
-															// arrayList
-			randomVariable = r.nextInt(5 - 0) + 0; // IF THERE IS AN INDEX
-													// ERROR:THIS MIGHT BE THE
-													// CAUSE: This should return
-													// a number between 0-4
+		randomVariable = r.nextInt(5 - 0) + 0;
+
+		if (excludedNumbers.size() < 5) {
+			while (excludedNumbers.contains(randomVariable)) {
+				randomVariable = r.nextInt(5 - 0) + 0;
+			}
 		}
 		return randomVariable;
 	}
