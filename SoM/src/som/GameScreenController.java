@@ -53,8 +53,8 @@ import som.assets.Settlement;
 public class GameScreenController implements Initializable {
 
 	@FXML
-	Pane gameLayer, gameBoard, playerGUI, popupDialog, dicePane, pnTradeDialog, pnPlayerLeft, pnPlayerMid,
-			pnPlayerRight, pnAcceptTradeDialog, pnBuild;
+	Pane gameLayer, gameBoard, playerGUI, popupDialog, robberConfirmDialog, dicePane, pnTradeDialog, pnPlayerLeft,
+			pnPlayerMid, pnPlayerRight, pnAcceptTradeDialog, pnBuild;
 
 	@FXML
 	Slider sldVictoryPoints;
@@ -109,6 +109,7 @@ public class GameScreenController implements Initializable {
 	public final static int PLACING_SETTLEMENT = 11;
 	public final static int PLACING_CITY = 12;
 	public final static int MOVING_ROBBER = 13;
+	public final static int CONFIRMING_ROBBER = 14;
 
 	public final static int PLAY_ROAD_BUILDING = 15;
 	public final static int PLAY_MONOPOLY = 16;
@@ -140,13 +141,14 @@ public class GameScreenController implements Initializable {
 	HexBoard board;
 	int turnCount;
 	ResourceGenerator resourceGenerator;
+	Robber rob;
 	// ----------------------------------------------------------------//
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		currentPlayerNumber = 0;
 		board = new HexBoard();
-		Robber rob = new Robber();
+		rob = new Robber();
 		sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
 				for (Player p : players) {
@@ -192,11 +194,10 @@ public class GameScreenController implements Initializable {
 				// currentHex = selectedItem (or h);
 				if (getGameState() == MOVING_ROBBER) {
 					setSelectedItem(board.hexList.get(h.getIndex()));
-					h.setFill(Color.SEAGREEN);
-					moveRobber(rob);
-					System.out.println(rob.getCurrentHex().terrainTypeToString());
-					setGameState(MAIN_PHASE);
-					updateResources();
+					h.setFill(Color.rgb(25, 25, 200, 0.5));
+					robberConfirmDialog.setVisible(true);
+					robberConfirmDialog.toFront();
+					setGameState(CONFIRMING_ROBBER);
 				}
 			});
 		}
@@ -413,6 +414,17 @@ public class GameScreenController implements Initializable {
 			cancelBuildBtn.setVisible(false);
 			endBtn.setDisable(true);
 			break;
+		case CONFIRMING_ROBBER:
+			tradeBtn.setDisable(true);
+			diceRoller.setDisable(true);
+			startGameBtn.setDisable(true);
+			devBtn.setDisable(true);
+			gameBoard.setDisable(true);
+			buildBtn.setVisible(true);
+			buildBtn.setDisable(true);
+			cancelBuildBtn.setVisible(false);
+			endBtn.setDisable(true);
+			break;
 		case PLACING_ROAD:
 		case PLACING_CITY:
 		case PLACING_SETTLEMENT:
@@ -488,8 +500,11 @@ public class GameScreenController implements Initializable {
 	public void moveRobber(Robber rob) {
 		if (canMoveRobber((Hex) selectedItem, players.get(currentPlayerNumber))) {
 			((Hex) selectedItem).setSandstorming(true);
+			clearPreviousRobberHex(false);
 			rob.setCurrentHex((Hex) selectedItem);
 			rob.ActivateRobber(players.get(currentPlayerNumber), board);
+			updateResources();
+			setGameState(MAIN_PHASE);
 		}
 	}
 
@@ -1216,6 +1231,29 @@ public class GameScreenController implements Initializable {
 	public void cancelBuild() {
 		setGameState(MAIN_PHASE);
 		popupDialog.setVisible(false);
+	}
+
+	@FXML
+	private void confirmPlaceRobber() {
+		moveRobber(rob);
+		robberConfirmDialog.setVisible(false);
+	}
+
+	@FXML
+	private void cancelPlaceRobber() {
+		setGameState(MOVING_ROBBER);
+		boolean isCanceled = true;
+		clearPreviousRobberHex(isCanceled);
+		robberConfirmDialog.setVisible(false);
+	}
+
+	private void clearPreviousRobberHex(boolean wasCanceled) {
+		if (wasCanceled) {
+			board.transHexList.get(((Hex) selectedItem).getIndex()).setFill(Color.TRANSPARENT);
+		} else if (rob.getCurrentHex() != null) {
+			rob.setPreviousHex(rob.getCurrentHex());
+			board.transHexList.get(rob.getPreviousHex().getIndex()).setFill(Color.TRANSPARENT);
+		}
 	}
 
 	public void printPrettyGameState() {
