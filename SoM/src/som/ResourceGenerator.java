@@ -101,10 +101,9 @@ public class ResourceGenerator {
 		for (Hex hex : board.hexList) {
 			if ((hex.getTokenValue() == diceValue) && (hex.isSandstorming() == false)) {
 				hex.setFill(Color.GOLD);
-
 				listOfHexes.add(hex);
 			} else {
-				hex.setFill(hex.getHexColor());
+				hex.setImage();
 			}
 
 		}
@@ -184,28 +183,7 @@ public class ResourceGenerator {
 			// 3) give the player that number of resources of this hex's terrain
 			// type
 			resourceBank.bankDrawResource(resourceType, asset.getType());
-			asset.getPlayer().addResource(resourceType, asset.getType()); // adds
-																			// the
-																			// number
-																			// of
-																			// resources
-																			// equal
-																			// to
-																			// the
-																			// assetType
-																			// (0
-																			// for
-																			// roads,
-																			// 1
-																			// for
-																			// settlemts,
-																			// 2
-																			// for
-																			// cities)
-																			// to
-																			// the
-																			// players
-																			// resources)
+			asset.getPlayer().addResource(resourceType, asset.getType());
 
 		}
 

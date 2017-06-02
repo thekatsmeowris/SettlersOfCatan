@@ -222,6 +222,12 @@ public class Hex extends Polygon {
 		this.sandstorming = sandstorming;
 	}
 
+	public void setImage() {
+		Image img = new Image("file:src/som/graphics/hex" + this.getTerrainType() + ".png");
+		ImagePattern imgPatt = new ImagePattern(img);
+		this.setFill(imgPatt);
+	}
+
 	@Override
 	public String toString() {
 
