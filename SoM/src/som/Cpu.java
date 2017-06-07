@@ -237,6 +237,333 @@ public class Cpu extends Player {
                 }
             }
         }
+        
+        if (preference == 2) //preference 1 the cpu prefferences is on building settlement 
+        {
+            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                this.setAction(2);//build road(this.board);
+            } else {
+                int actionOther = (int) (Math.random() * (5 - 0 + 1) + 0);
+                if (actionOther == 1) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(5);//progress card, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed                            
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(3);//build city, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+
+                }
+                if (actionOther == 2) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(3);//build city, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {                            
+                        this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(1);//build settlement, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+                }
+                if (actionOther == 3) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(5);//dev card, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(4);//trade road, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(1);//build settlement, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+                }
+                if (actionOther == 4) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(5);//dev card, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+                }
+                if (actionOther == 5) {
+                    //progress card, if not enough resources incriment action +1 so the next if can be executed
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(5);//dev card, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+                }
+                if (actionOther == 6) {
+                    //pass without doing anything
+                }
+            }
+        }
+        
+        if (preference == 4) //preference 1 the cpu prefferences is on trade 
+        {
+            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                this.setAction(4);//trade;
+            } else {
+                int actionOther = (int) (Math.random() * (5 - 0 + 1) + 0);
+                if (actionOther == 1) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(3);//build city, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+
+                }
+                if (actionOther == 2) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(5);//dev card, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(3);//build city, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+                }
+                if (actionOther == 3) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(5);//dev card, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(1);//build settlement, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+                }
+                if (actionOther == 4) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(5);//dev card, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+                }
+                if (actionOther == 5) {
+                    //progress card, if not enough resources incriment action +1 so the next if can be executed
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(5);//dev card, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(3);//city, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+                }
+                if (actionOther == 6) {
+                    //pass without doing anything
+                }
+            }
+        }
+        
+        if (preference == 4) //preference 1 the cpu prefferences is on building dev card 
+        {
+            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                this.setAction(5);//dev card;
+            } else {
+                int actionOther = (int) (Math.random() * (5 - 0 + 1) + 0);
+                if (actionOther == 1) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(2);//road, if not enough resources incriment action +1 so the next if can be executed                            
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(1);//build settlement, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+
+                }
+                if (actionOther == 2) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(3);//build city, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {                            
+                        this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+                }
+                if (actionOther == 3) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(2);//road, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(4);//trade road, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(1);//build settlement, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+                }
+                if (actionOther == 4) {
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(5);//dev card, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+                }
+                if (actionOther == 5) {
+                    //progress card, if not enough resources incriment action +1 so the next if can be executed
+                    if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                        this.setAction(2);//road, if not enough resources incriment action +1 so the next if can be executed
+                    } else {
+                        actionOther++;
+                        if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                            this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                        } else {
+                            actionOther++;
+                            if ((steel == 4) && (glass == 4) && (water == 4) && (plastic == 4)) {
+                                this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
+                            } else {
+                                actionOther = 6;
+
+                            }
+                        }
+
+                    }
+                }
+                if (actionOther == 6) {
+                    //pass without doing anything
+                }
+            }
+        }
     }
     /*
     public static void buildSettlement(HexBoard board) throws IOException
