@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -32,6 +33,19 @@ public class GameRoomSelectController implements Initializable {
     }   
      public void handleButtonAction(ActionEvent event) throws IOException {
         System.out.println("You clicked me!");
+        //Testing cpu Class---------------------------------------
+        HexBoard board=new HexBoard();
+        int[] r =new int[5];
+        for(int i=0;i<5;i++){
+        r[i]=4;}
+        Cpu cpu =new Cpu("name",r, Color.BEIGE, board, 1);
+        boolean iscpu=cpu.isCpu();
+        cpu.play();
+        System.out.println("*************************************************************************************************************************************************************************************************action : "+cpu.getAction());
+        System.out.println("*************************************************************************************************************************************************************************************************preference : "+cpu.getPreference());
+        System.out.println("*************************************************************************************************************************************************************************************************priority : "+cpu.getPriority());
+        
+        //---------------------------------------------------------
         //label.setText("Hello World!");
         Parent game_room_parent = FXMLLoader.load(getClass().getResource("GameScreen.fxml"));
         Scene game_room_scene = new Scene(game_room_parent);
