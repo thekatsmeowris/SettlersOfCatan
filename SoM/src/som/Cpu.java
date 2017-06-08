@@ -134,7 +134,7 @@ public class Cpu extends Player {
             if ((hemp >= 1) && (glass >= 1) && (water >= 1) && (plastic >= 1)) {
                 this.setAction(1);//buildSettlement(this.board);
             } else {
-                int actionOther = (int) (Math.random() * (5 - 0 + 1) + 0);
+                int actionOther = (int) (Math.random() * (6 - 0 + 1) + 1);
                 if (actionOther == 1) {
                     if ((glass >= 1)&&(plastic >= 1)) {
                         this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
@@ -242,7 +242,7 @@ public class Cpu extends Player {
             if ((glass >= 1)&&(plastic >= 1)) {
                 this.setAction(2);//build road(this.board);
             } else {
-                int actionOther = (int) (Math.random() * (5 - 0 + 1) + 0);
+                int actionOther = (int) (Math.random() * (6 - 0 + 1) + 1);
                 if (actionOther == 1) {
                     if ((steel >=1) && (hemp >=1) && (water >=1)) {
                         this.setAction(5);//progress card, if not enough resources incriment action +1 so the next if can be executed
@@ -351,7 +351,7 @@ public class Cpu extends Player {
             if ((steel >0) || (glass>0) || (water>0) || (plastic>0) || (hemp >0)) {
                 this.setAction(4);//trade;
             } else {
-                int actionOther = (int) (Math.random() * (5 - 0 + 1) + 0);
+                int actionOther = (int) (Math.random() * (6 - 0 + 1) + 1);
                 if (actionOther == 1) {
                     if ((glass >= 1)&&(plastic >= 1)) {
                         this.setAction(2);//build road, if not enough resources incriment action +1 so the next if can be executed
@@ -460,7 +460,7 @@ public class Cpu extends Player {
             if ((steel >=1) && (hemp >=1) && (water >=1)) {
                 this.setAction(5);//dev card;
             } else {
-                int actionOther = (int) (Math.random() * (5 - 0 + 1) + 0);
+                int actionOther = (int) (Math.random() * (6 - 0 + 1) + 1);
                 if (actionOther == 1) {
                     if ((steel >0) || (glass>0) || (water>0) || (plastic>0) || (hemp >0)) {
                         this.setAction(4);//trade, if not enough resources incriment action +1 so the next if can be executed
