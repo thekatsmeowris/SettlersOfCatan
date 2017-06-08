@@ -29,7 +29,7 @@ public class ResourceGenerator {
 	private ArrayList<Hex> hexes;
 	private int diceValue;
 	private HexBoard board;
-	private ResourceBank resourceBank = new ResourceBank();
+	public ResourceBank resourceBank = new ResourceBank();
 
 	public ResourceGenerator(HexBoard board) {
 		this.players = new ArrayList<>();
@@ -100,10 +100,12 @@ public class ResourceGenerator {
 		ArrayList<Hex> listOfHexes = new ArrayList<>();
 		for (Hex hex : board.hexList) {
 			if ((hex.getTokenValue() == diceValue) && (hex.isSandstorming() == false)) {
-				hex.setFill(Color.GOLD);
+				board.transHexList.get(hex.getIndex()).setFill(Color.rgb(255, 255, 0, 0.5));
 				listOfHexes.add(hex);
 			} else {
-				hex.setImage();
+				if (!hex.isSandstorming()) {
+					board.transHexList.get(hex.getIndex()).setFill(Color.TRANSPARENT);
+				}
 			}
 
 		}

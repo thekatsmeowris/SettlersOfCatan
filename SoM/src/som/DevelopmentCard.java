@@ -30,7 +30,7 @@ public class DevelopmentCard{
 		imagePathName = img;
 	}
 
-	private String getName(){
+	public String getName(){
 		return name;
 	}
 	

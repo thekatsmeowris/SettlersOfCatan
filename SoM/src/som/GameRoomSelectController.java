@@ -35,6 +35,7 @@ public class GameRoomSelectController implements Initializable {
 	}
 
 	public void handleButtonAction(ActionEvent event) throws IOException {
+		GameScreenController.audio.playClips(8);
 		System.out.println("You clicked me!");
 		// label.setText("Hello World!");
 		Parent game_room_parent = FXMLLoader.load(getClass().getResource("GameScreen.fxml"));

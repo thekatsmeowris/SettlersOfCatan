@@ -5,12 +5,17 @@
  */
 package som;
 
+import devCards.VictoryPoint;
+import devCards.Knight;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
+import java.util.Iterator;
+
 
 /**
  *
@@ -27,20 +32,32 @@ public class Player {
 	Arc victoryPointGauge = new Arc();
 
 	int[] resources;
+        ArrayList<DevelopmentCard> hand;
+        ArrayList<DevelopmentCard> removevp;
 	private int freeSettlements = 2;
 	private int freeRoads = 2;
+        int resourceType;
+        public static int largestArmy;
+       
+    
+        
+
 	ResourceManager resourceManager = new ResourceManager();
 	private int victoryPoints;
 
 	Color playerColor;
 	String nickname;
 	PlayerAssets assets;
+        DevelopmentDeck deck;
+        DevelopmentCard card;//Creates an object instance of the card from the development deck
+
 
 	Player() {
 
 		assets = new PlayerAssets();
 		resources = new int[] { 0, 0, 0, 0, 0 };
-		victoryPoints = 0;
+		hand=new ArrayList<>();
+                victoryPoints = 0;
 
 	}
 
@@ -59,21 +76,76 @@ public class Player {
 		assets = new PlayerAssets();
 		this.playerColor = playerColor;
 	}
+       public void addCard(DevelopmentCard d){
+		hand=new ArrayList<>();
+		hand.add(d);
+	}
+        public void removeCard(DevelopmentCard d){
+            hand.remove(d);
+        }
+            public void ifDevCardVictoryPoint(ArrayList<DevelopmentCard> hand1){
+        /*for (Iterator<DevelopmentCard> it = hand.iterator(); it.hasNext();) {
+        DevelopmentCard d1 = it.next();
+        VictoryPoint vp=new VictoryPoint();
+        if(d1==VictoryPoint vp)
+        victoryPoints+=1;
+        }*/
+       removevp=new ArrayList<>();
+        hand.forEach((DevelopmentCard d1) -> {//Go through whole deck 
+            //if("Victory Point".equals(d1.getName()))
+            if(d1 instanceof VictoryPoint) {//check if the card is an instance of VictoryPoint
+                victoryPoints+=1;
+                removevp.add(d1);
+                //add to the VictoryPoints of the player
+                //remove the card that was a VictoryPoint
+                System.out.println("There is a VP in deck");
+                
+            }
+            else{
+                System.out.println("There is no VP in deck");
+            }
+                
+          
+           
+        });
+        removeDevelopmentCardArrayList(removevp);
+    }
+
+public void ifKnightAddToLargestArmy(ArrayList<DevelopmentCard> hand2){
+   
+    hand.forEach((DevelopmentCard d1) -> {//Go through whole deck 
+            //if("Victory Point".equals(d1.getName()))
+            if(d1 instanceof Knight) {//check if the card is an instance of VictoryPoint
+                largestArmy+=1;//add to the VictoryPoints of the player
+                //remove the card that was a VictoryPoint
+                System.out.println("There is a KC in deck");
+               
+            }
+            else{
+                System.out.println("There is no KC in deck");
+            }
+                
+           
+           
+        });
+       
+    
+}
+    public void removeDevelopmentCardArrayList(ArrayList<DevelopmentCard> newArrayList){
+      newArrayList.forEach((DevelopmentCard d5) -> {
+          hand.remove(hand.indexOf(newArrayList.get(newArrayList.indexOf(d5))));
+      });
+            
+  }
+
 
 	public void setVictoryPoints(int value) {
 		victoryPoints = value;
 		victoryPointGauge.setLength(((double) value / (double) VICTORY_POINT_MAX) * 360);
-		System.out.println(pnPlayerInfo.getWidth());
+		GameScreenController.audio.changeMusic();
+                System.out.println(pnPlayerInfo.getWidth());
 
-		if (victoryPoints > 6) {
-			MediaClass.playMusic2();
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException ex) {
-				Logger.getLogger(GameRoomSelectController.class.getName()).log(Level.SEVERE, null, ex);
-			}
-			// SoM.mMusic1.stop();
-		}
+		
 
 	}
 
@@ -97,6 +169,23 @@ public class Player {
 		// resources.printResourceList();
 
 	}
+        public int largestArmyAdd(){
+            largestArmy+=1;
+            return largestArmy;
+            
+        }
+        public int largestArmySubtract(){
+            largestArmy-=1;
+            return largestArmy;
+        }
+        public int getLargestArmy(){
+            return largestArmy;
+        }
+        public void setLargestArmy(){
+            this.largestArmy=largestArmy;
+        }
+
+
 
 	int getVictoryPoints() {
 		return victoryPoints;
@@ -117,7 +206,9 @@ public class Player {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-
+        public ArrayList<DevelopmentCard> getHand(){
+            return hand;
+        }
 	public int[] getResources() {
 		return resources;
 	}

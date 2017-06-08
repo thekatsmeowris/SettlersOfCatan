@@ -14,13 +14,13 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 import customcontrols.TradeResourceTracker;
+import devCards.Knight;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,9 +31,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -43,6 +40,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import progressCards.Monopoly;
+import progressCards.RoadBuilding;
+import progressCards.YearOfPlenty;
 import som.assets.Settlement;
 
 /**
@@ -54,7 +54,7 @@ public class GameScreenController implements Initializable {
 
 	@FXML
 	Pane gameLayer, gameBoard, playerGUI, popupDialog, dicePane, pnTradeDialog, robberConfirmDialog, pnPlayerLeft,
-			pnPlayerMid, pnPlayerRight, pnAcceptTradeDialog, pnBuild, pnDevelopDialog;
+			pnPlayerMid, pnPlayerRight, pnAcceptTradeDialog, pnBuild, pnDevelopDialog, pnYOP, pnMon;
 
 	@FXML
 	Slider sldVictoryPoints;
@@ -75,7 +75,7 @@ public class GameScreenController implements Initializable {
 	Text txtThisPlayerName;
 
 	@FXML
-	ProgressBar pgbLongestRoad, pgbVictoryPoints;
+	ProgressBar pgbLongestRoad, pgbLargestArmy, pgbVictoryPoints;
 
 	@FXML
 	private HBox tradeResourceTrackers, tradeResponses, hbIncomingResources, hbOutgoingResources;
@@ -87,16 +87,28 @@ public class GameScreenController implements Initializable {
 	int longestRoadValue;
 	int largestArmyValue;
 	int resourcePass;
+	ArrayList<DevelopmentCard> removeList;
 	final int SETTLMENT_VP_VALUE = 1;
-	ResourceBank resourceBank = new ResourceBank(19);
-	ResourceGenerator resGen;
 
 	public final static int MAX_PLAYERS = 4;
 	private static Player currentPlayer;
 	private static Player playerWithLongestRoad;
 	private static Player playerWithLargestArmy;
 	private static int gameState;
+	private static int previousGameState;
+	private static int resourceState;
+	private static int itsSteel;
+	private static int itsGlass;
+	private static int itsHemp;
+	private static int itsWater;
+	private static int itsPlastic;
 
+	static Audio audio = new Audio();
+	public final static int chooseSteelYOP = 0;
+	public final static int chooseGlassYOP = 1;
+	public final static int chooseHempYOP = 2;
+	public final static int chooseWaterYOP = 3;
+	public final static int choosePlasticYOP = 4;
 	public final static int GAME_OVER = 404;
 	public final static int NEW_GAME = 0;
 	public final static int DETERMINE_PLAYER_ORDER = 1;
@@ -118,6 +130,7 @@ public class GameScreenController implements Initializable {
 
 	public final static int PLACING_FREE_SETTLEMENT = 20;
 	public final static int PLACING_FREE_ROAD = 21;
+	public final static int MOVING_KNIGHT = 22;
 
 	private static int currentPlayerNumber;
 	private boolean advanceBackwards;
@@ -140,19 +153,30 @@ public class GameScreenController implements Initializable {
 	// -----------------------------------------------------//
 
 	TradePack thisPlayerTradePack;
-	ArrayList<Player> players;
+	static ArrayList<Player> players;
 	DevelopmentDeck developmentDeck = new DevelopmentDeck();
 	DevelopmentCard thisCard;
 	HexBoard board;
+	ResourceGenerator resGen;
+	ResourceBank resourceBank;
 	int turnCount;
 	ResourceGenerator resourceGenerator;
 	Robber rob;
+	/*
+	 * Knight k; VictoryPoint vp; YearOfPlenty yop; Monopoly mp; RoadBuilding
+	 * rb;
+	 */
+
 	// ----------------------------------------------------------------//
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		currentPlayerNumber = 0;
 		board = new HexBoard();
+		audio.playMusic1();
+		resGen = new ResourceGenerator(board);
+		resourceBank = resGen.getResourceBank();
+
 		rob = new Robber();
 		sldVictoryPoints.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
@@ -194,7 +218,9 @@ public class GameScreenController implements Initializable {
 		resourcePass = 4;
 		for (Hex h : board.transHexList) {
 			h.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-				if (getGameState() == MOVING_ROBBER) {
+				if (getGameState() == MOVING_ROBBER || getGameState() == MOVING_KNIGHT) {
+					if (getGameState() == MOVING_KNIGHT)
+						setPreviousGameState(MOVING_KNIGHT);
 					setSelectedItem(board.hexList.get(h.getIndex()));
 					h.setFill(Color.rgb(25, 25, 200, 0.5));
 					robberConfirmDialog.setVisible(true);
@@ -206,7 +232,7 @@ public class GameScreenController implements Initializable {
 		for (Hex hex : board.hexList) {
 			hex.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
 				setSelectedItem(hex);
-				hex.setFill(Color.YELLOW);
+				hex.setFill(Color.rgb(0, 255, 255, 0.5));
 				System.out.println(
 				// hex.getTokenValue()+"\n"
 				// +hex.getVerticies()+"\n+---------+\n"
@@ -236,8 +262,11 @@ public class GameScreenController implements Initializable {
 			hexVertex.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
 				setSelectedItem(hexVertex);
 				try {
-					if (gameState == PLACING_SETTLEMENT || gameState == PLACING_FREE_SETTLEMENT) {
+					if (getGameState() == PLACING_SETTLEMENT || getGameState() == PLACING_FREE_SETTLEMENT) {
+						if (getGameState() == PLACING_FREE_SETTLEMENT)
+							setPreviousGameState(PLACING_FREE_SETTLEMENT);
 						buildSettlement();
+
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -259,10 +288,12 @@ public class GameScreenController implements Initializable {
 					}
 					if (getGameState() == PLACING_FREE_ROAD) {
 						buildRoad();
-						setGameState(PLACING_FREE_SETTLEMENT);
+						if (getPreviousGameState() == PLACING_FREE_SETTLEMENT)
+							setGameState(PLACING_FREE_SETTLEMENT);
 						if ((currentPlayerNumber == players.size() - 1)
 								&& (players.get(players.size() - 1).getFreeRoads() > 0)) {
 							setAdvanceBackwards(true);
+
 						} else {
 							System.out.println(gameStateToString());
 							endTurn();
@@ -290,7 +321,7 @@ public class GameScreenController implements Initializable {
 		gameBoard.getChildren().add(board.getBoardPane());
 
 		// Player GUI Stuff
-		resGen = new ResourceGenerator(board);
+		// resGen = new ResourceGenerator(board);
 		createTestPlayers();
 		fillPlayerInfo();
 		// TODO: reorganize
@@ -306,6 +337,8 @@ public class GameScreenController implements Initializable {
 	}
 
 	public int rollDice() {
+		audio.playClips(6);
+
 		btnRollDice.setDisable(true);
 		Integer r;
 		Random z = new Random();
@@ -328,6 +361,8 @@ public class GameScreenController implements Initializable {
 			setGameState(MAIN_PHASE);
 		}
 
+		// resourceBank.bankReturnResource(players.get(currentPlayerNumber).removeResources(
+		// );
 		updateResources();
 		return diceValue;
 
@@ -356,12 +391,14 @@ public class GameScreenController implements Initializable {
 		System.out.println("//////////////////////////////////");
 		System.out.println(gameStateToString());
 		doInitBuildPhase();
+		audio.playClips(8);
 
 	}
 
 	public void doInitBuildPhase() {
-		int prevGS = getGameState();
 		setGameState(PLACING_FREE_SETTLEMENT);
+		setPreviousGameState(getGameState());
+		// setGameState(PLACING_FREE_SETTLEMENT);
 	}
 
 	public void endTurn() {
@@ -384,6 +421,7 @@ public class GameScreenController implements Initializable {
 				popupDialog.setVisible(false);
 			}
 		}
+
 		if (getGameState() != PLACING_FREE_SETTLEMENT) {
 			updateResources();
 		}
@@ -457,6 +495,7 @@ public class GameScreenController implements Initializable {
 			endBtn.setDisable(false);
 			break;
 		case MOVING_ROBBER:
+		case MOVING_KNIGHT:
 			tradeBtn.setDisable(true);
 			diceRoller.setDisable(true);
 			startGameBtn.setDisable(true);
@@ -467,6 +506,7 @@ public class GameScreenController implements Initializable {
 			cancelBuildBtn.setVisible(false);
 			endBtn.setDisable(true);
 			break;
+
 		case CONFIRMING_ROBBER:
 			tradeBtn.setDisable(true);
 			diceRoller.setDisable(true);
@@ -546,6 +586,16 @@ public class GameScreenController implements Initializable {
 		pnDevelopDialog.setVisible(false);
 	}
 
+	public void closeYOPPane() throws IOException {
+		pnYOP.setMouseTransparent(true);
+		pnYOP.setVisible(false);
+	}
+
+	public void closeMONPane() throws IOException {
+		pnMon.setMouseTransparent(true);
+		pnMon.setVisible(false);
+	}
+
 	public void handleClick(MouseEvent e) throws IOException {
 
 		System.out.println("Clicked!!!" + e + "\n" + e.getSource().getClass() + "\n"
@@ -561,6 +611,7 @@ public class GameScreenController implements Initializable {
 		 * popupDialog.getParent().setMouseTransparent(true);
 		 * System.out.println("BOOM"); }
 		 */
+		audio.playClips(8);
 	}
 
 	public void handleButtonAction(ActionEvent event) throws IOException {
@@ -586,7 +637,10 @@ public class GameScreenController implements Initializable {
 			((Hex) selectedItem).setSandstorming(true);
 			clearPreviousRobberHex(false);
 			rob.setCurrentHex((Hex) selectedItem);
-			rob.ActivateRobber(players.get(currentPlayerNumber), board);
+			if (getPreviousGameState() != MOVING_KNIGHT)
+				rob.ActivateRobber(players.get(currentPlayerNumber), board, false);
+			else
+				rob.ActivateRobber(players.get(currentPlayerNumber), board, true);
 			updateResources();
 			setGameState(MAIN_PHASE);
 		}
@@ -625,6 +679,9 @@ public class GameScreenController implements Initializable {
 			players.get(currentPlayerNumber)
 					.setVictoryPoints((players.get(currentPlayerNumber).getVictoryPoints()) + SETTLMENT_VP_VALUE);
 
+			if (!Audio.soundClips.isPlaying()) {
+				audio.playClips(5);
+			}
 			updateResources();
 
 			for (HexEdge edge : ((HexVertex) selectedItem).getAdjacentEdge()) {
@@ -719,6 +776,9 @@ public class GameScreenController implements Initializable {
 			players.get(currentPlayerNumber).assets.add(players.get(currentPlayerNumber), ((HexEdge) selectedItem));
 			((HexEdge) selectedItem).setStroke((Paint) players.get(currentPlayerNumber).getPlayerColor());
 
+			if (!Audio.soundClips.isPlaying()) {
+				audio.playClips(5);
+			}
 			updateResources();
 			checkForLongestRoad();
 
@@ -852,6 +912,33 @@ public class GameScreenController implements Initializable {
 
 	}
 
+	public void checkForLargestArmy(ArrayList<DevelopmentCard> hand2) {
+		players.get(currentPlayerNumber).hand.forEach((DevelopmentCard d1) -> {// Go
+																				// through
+																				// whole
+																				// deck
+			// if("Victory Point".equals(d1.getName()))
+			if (d1 instanceof Knight) {// check if the card is an instance of
+										// VictoryPoint
+				if (players.get(currentPlayerNumber).getLargestArmy() > largestArmyValue) {
+					largestArmyValue = players.get(currentPlayerNumber).getLargestArmy();
+
+					pgbLargestArmy.progressProperty()
+							.set((double) (players.get(currentPlayerNumber).getLargestArmy()) / largestArmyValue);
+				}
+				if (pgbLargestArmy.progressProperty().doubleValue() >= 100.0) {
+					pgbLargestArmy.getStyleClass().add("gold-bar");
+				} else {
+					pgbLargestArmy.getStyleClass().add("basic-bar");
+
+				}
+
+			}
+
+		});
+
+	}
+
 	public void buildCity() {
 		System.out.println("BUILD CITY DIALOG");
 		if (canBuildCity((HexVertex) selectedItem)) {
@@ -899,6 +986,7 @@ public class GameScreenController implements Initializable {
 		// vp
 		// for
 		// thisPlayer
+		audio.playClips(5);
 		updateResources();
 
 	}
@@ -913,10 +1001,10 @@ public class GameScreenController implements Initializable {
 		// Color.BLUE);
 		// Player mew = new Player("Mew", new int[] { 5, 5, 5, 5, 5 },
 		// Color.VIOLET);
-		Player mark = new Player("Mark", new int[] { 2, 2, 2, 2, 2 }, Color.CYAN);
-		Player dek = new Player("Dehkhoda", new int[] { 2, 2, 2, 2, 2 }, Color.MEDIUMSEAGREEN);
+		Player mark = new Player("Mark", new int[] { 2, 2, 2, 2, 2 }, Color.rgb(0, 225, 225));
+		Player dek = new Player("Dehkhoda", new int[] { 2, 2, 2, 2, 2 }, Color.DARKORANGE);
 		Player lisa = new Player("Lisa", new int[] { 2, 2, 2, 2, 2 }, Color.BLUE);
-		Player mew = new Player("Mew", new int[] { 2, 2, 2, 2, 2 }, Color.VIOLET);
+		Player mew = new Player("Mew", new int[] { 2, 2, 2, 2, 2 }, Color.DARKVIOLET);
 		players.add(mark);
 		players.add(dek);
 		players.add(lisa);
@@ -1132,6 +1220,9 @@ public class GameScreenController implements Initializable {
 		if (!pnDevelopDialog.isVisible())
 			pnDevelopDialog.setVisible(true);
 		pnDevelopDialog.setMouseTransparent(false);
+		for (Node n : popupDialog.getChildren()) {
+			n.setMouseTransparent(false);
+		}
 
 		System.out.println("Develop Card Play!");
 	}
@@ -1146,8 +1237,33 @@ public class GameScreenController implements Initializable {
 		}
 	}
 
-	public void buildDevCard() {
-		System.out.println("Buy/Build dev card stuff here");
+	/*
+	 * public void buildDevCard() {
+	 * System.out.println("Buy/Build dev card stuff here"); }
+	 */
+
+	public void openYOPDialog() {
+		pnDevelopDialog.setMouseTransparent(true);
+		pnDevelopDialog.setVisible(false);
+		if (!pnYOP.isVisible()) {
+			pnYOP.setVisible(true);
+		}
+		pnYOP.setMouseTransparent(false);
+		for (Node n : pnYOP.getChildren()) {
+			n.setMouseTransparent(false);
+		}
+	}
+
+	public void openMONDialog() {
+		pnDevelopDialog.setMouseTransparent(true);
+		pnDevelopDialog.setVisible(false);
+		if (!pnMon.isVisible()) {
+			pnMon.setVisible(true);
+		}
+		pnMon.setMouseTransparent(false);
+		for (Node n : pnMon.getChildren()) {
+			n.setMouseTransparent(false);
+		}
 	}
 
 	private int[] addTwoResourceSets(int[] a, int[] b) {
@@ -1236,9 +1352,16 @@ public class GameScreenController implements Initializable {
 		if (gameState != NEW_GAME)
 
 		{
-			playerInfoPane
-					.setBackground(new Background(new BackgroundFill(players.get(currentPlayerNumber).getPlayerColor(),
-							CornerRadii.EMPTY, Insets.EMPTY)));
+			// playerInfoPane
+			// .setBackground(new Background(new
+			// BackgroundFill(players.get(currentPlayerNumber).getPlayerColor(),
+			// CornerRadii.EMPTY, Insets.EMPTY)));
+			String colorString = String.format("#%02X%02X%02X",
+					(int) (players.get(currentPlayerNumber).getPlayerColor().getRed() * 255),
+					(int) (players.get(currentPlayerNumber).getPlayerColor().getGreen() * 255),
+					(int) (players.get(currentPlayerNumber).getPlayerColor().getBlue() * 255));
+			playerInfoPane.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #884444, "
+					+ colorString + ", #884444);");
 		}
 
 	}
@@ -1293,6 +1416,8 @@ public class GameScreenController implements Initializable {
 			return "Placing Free Settlement";
 		case MOVING_ROBBER:
 			return "Moving Robber";
+		case MOVING_KNIGHT:
+			return "Moving Robber and Using Knight Card";
 		case PLAY_ROAD_BUILDING:
 		case PLAY_MONOPOLY:
 		case PLAY_KNIGHT:
@@ -1344,10 +1469,21 @@ public class GameScreenController implements Initializable {
 
 	@FXML
 	private void cancelPlaceRobber() {
-		setGameState(MOVING_ROBBER);
+		if (getPreviousGameState() == MOVING_KNIGHT)
+			setGameState(MOVING_KNIGHT);
+		else
+			setGameState(MOVING_ROBBER);
 		boolean isCanceled = true;
 		clearPreviousRobberHex(isCanceled);
 		robberConfirmDialog.setVisible(false);
+	}
+
+	private void setPreviousGameState(int gs) {
+		previousGameState = gs;
+	}
+
+	private int getPreviousGameState() {
+		return previousGameState;
 	}
 
 	private void clearPreviousRobberHex(boolean wasCanceled) {
@@ -1379,7 +1515,335 @@ public class GameScreenController implements Initializable {
 
 	}
 
-	public void buildDev() {
+	public void buildDev(ActionEvent e) throws IOException {
+		System.out.println("You clicked me");
+
+		if (canBuyDev(players.get(currentPlayerNumber))) {// check if player has
+															// the requirements
+															// to buy dev card
+			System.out.println("You have enough resources");
+			if (!developmentDeck.isEmpty()) {// check there is a dev card to
+												// take
+				System.out.println("There are enough Development Cards");
+				/*
+				 * resourceBank.bankReturnResource(2,1);//return 1 hemp to bank
+				 * System.out.println("You returned Hemp");
+				 * resourceBank.bankReturnResource(3, 1);//return 1 soy to bank
+				 * System.out.println("You Returned Soy");
+				 * resourceBank.bankReturnResource(0, 1);//return 1 steel to
+				 * bank System.out.println("You Returned Steel");
+				 * System.out.println("RETURNED TO BANK");
+				 * players.get(currentPlayerNumber).setResources(
+				 * subtractTwoResourceSets(players.get(currentPlayerNumber).
+				 * getResources(), new int[]{1,0,1,1,0}));//subtract resources
+				 * used from player's resources
+				 * System.out.println("SUBTRACTED RESOURCES");
+				 */
+				resourceBank.bankReturnResource(
+						players.get(currentPlayerNumber).removeResources(resourceBank.getResourceCost(thisCard)));
+				System.out.println(Arrays.toString(players.get(currentPlayerNumber).getResources()));
+				System.out.println(Arrays.toString(resourceBank.getResourceBank()));
+				thisCard = developmentDeck.drawCard();// take development card
+														// from deck
+				System.out.println("SAVED CARD FROM DECK");
+				thisCard = developmentDeck.drawCard();
+				players.get(currentPlayerNumber).addCard(thisCard);
+				System.out.println(thisCard);
+
+				System.out.println("YOU'VE BUILT A DEV CARD");
+				players.get(currentPlayerNumber).ifDevCardVictoryPoint(players.get(currentPlayerNumber).hand);
+				System.out.println("You've Checked if there is a VP in the Deck");
+				players.get(currentPlayerNumber).ifKnightAddToLargestArmy(players.get(currentPlayerNumber).hand);
+				checkForLargestArmy(players.get(currentPlayerNumber).hand);
+
+				System.out.println("You've Checked if Knight gives you largest Army");
+
+				updateResources();
+			}
+		}
+	}
+
+	public void useMonopolyCard(ArrayList<Player> listOfPlayers) {
+		removeList = new ArrayList<>();
+		players.get(currentPlayerNumber).hand.forEach((DevelopmentCard d3) -> {
+			if (d3 instanceof Monopoly) {
+				getResourceState();
+				switch (resourceState) {
+				case chooseSteelYOP:
+					for (int i = 0; i < listOfPlayers.size(); i++) {
+						int[] monRes = players.get(i).getResources();
+						if (monRes[0] > 0) {
+							int numResource = monRes[0];
+							players.get(currentPlayerNumber).addResource(0, numResource);
+							monRes[0] = 0;
+
+						}
+
+					}
+					break;
+				case chooseGlassYOP:
+					for (int i = 0; i < listOfPlayers.size(); i++) {
+						int[] monRes = players.get(i).getResources();
+						if (monRes[1] > 0) {
+							int numResource = monRes[1];
+							players.get(currentPlayerNumber).addResource(1, numResource);
+							monRes[1] = 0;
+
+						}
+
+					}
+
+					break;
+				case chooseHempYOP:
+
+					for (int i = 0; i < listOfPlayers.size(); i++) {
+						int[] monRes = players.get(i).getResources();
+						if (monRes[2] > 0) {
+							int numResource = monRes[2];
+							players.get(currentPlayerNumber).addResource(2, numResource);
+							monRes[2] = 0;
+
+						}
+
+					}
+					break;
+				case chooseWaterYOP:
+
+					for (int i = 0; i < listOfPlayers.size(); i++) {
+						int[] monRes = players.get(i).getResources();
+						if (monRes[3] > 0) {
+							int numResource = monRes[3];
+							players.get(currentPlayerNumber).addResource(3, numResource);
+							monRes[3] = 0;
+
+						}
+
+					}
+					break;
+
+				case choosePlasticYOP:
+
+					for (int i = 0; i < listOfPlayers.size(); i++) {
+						int[] monRes = players.get(i).getResources();
+						if (monRes[4] > 0) {
+							int numResource = monRes[4];
+							players.get(currentPlayerNumber).addResource(4, numResource);
+							monRes[4] = 0;
+
+						}
+
+					}
+					break;
+
+				}
+				removeList.add(d3);
+				updateResources();
+
+			}
+
+			players.get(currentPlayerNumber).removeDevelopmentCardArrayList(removeList);
+			System.out.println("You removed Year Of Plenty");
+
+		});
+	}
+
+	public void useRoadBuildingCard(ActionEvent e) throws IOException {
+		System.out.println("You Clicked me");
+		removeList = new ArrayList<>();
+		players.get(currentPlayerNumber).hand.forEach((DevelopmentCard d4) -> {
+			System.out.println("Looking for Cards");
+			if (d4 instanceof RoadBuilding) {
+				pnDevelopDialog.setMouseTransparent(true);
+				pnDevelopDialog.setVisible(false);
+				System.out.println("Instance of Road Building");
+				players.get(currentPlayerNumber).setFreeRoads(2);
+				setPreviousGameState(getGameState());
+				setGameState(PLACING_FREE_ROAD);
+				removeList.add(d4);
+			}
+
+		});
+		players.get(currentPlayerNumber).removeDevelopmentCardArrayList(removeList);
+
+	}
+
+	public void playKnightCard1(ActionEvent e) throws IOException {
+		pnDevelopDialog.setMouseTransparent(true);
+		pnDevelopDialog.setVisible(false);
+		removeList = new ArrayList<>();
+		System.out.println("You Clicked me");
+		// System.out.println(Arrays.toString(players.get(currentPlayerNumber).getResources()));
+		players.get(currentPlayerNumber).hand.forEach((DevelopmentCard d5) -> {
+			if (d5 instanceof Knight) {
+				System.out.println("You have a night to Pay");
+				setGameState(MOVING_KNIGHT);
+				removeList.add(d5);
+
+				System.out.println(Arrays.toString(players.get(currentPlayerNumber).getResources()));
+				System.out.println("You stole resources");
+
+			}
+
+		});
+		players.get(currentPlayerNumber).removeDevelopmentCardArrayList(removeList);
+		System.out.println("You removed Knight");
+
+	}
+
+	public void setSteelYOP(int s) {
+		itsSteel = s;
+	}
+
+	public int getSteelYOP() {
+		return itsSteel;
+	}
+
+	public void setGlassYOP(int g) {
+		itsGlass = g;
+	}
+
+	public int getGlassYOP() {
+		return itsGlass;
+	}
+
+	public void setHempYOP(int h) {
+		itsHemp = h;
+	}
+
+	public int getHempYOP() {
+		return itsHemp;
+	}
+
+	public void setWaterYOP(int w) {
+		itsWater = w;
+	}
+
+	public int getWaterYOP() {
+		return itsWater;
+	}
+
+	public void setPlasticYOP(int p) {
+		itsPlastic = p;
+	}
+
+	public int getPlasticYOP() {
+		return itsPlastic;
+	}
+
+	public void setResourceState(int rs) {
+		this.resourceState = rs;
+
+	}
+
+	public static int getResourceState() {
+		return resourceState;
+	}
+
+	public void useYearOfPlenty() {
+		removeList = new ArrayList<>();
+		players.get(currentPlayerNumber).hand.forEach((DevelopmentCard d2) -> {
+			if (d2 instanceof YearOfPlenty) {
+				getResourceState();
+				switch (resourceState) {
+				case chooseSteelYOP:
+					resourceBank.bankDrawResource(0, 2);
+					players.get(currentPlayerNumber).addResource(0, 2);
+					break;
+				case chooseGlassYOP:
+					resourceBank.bankDrawResource(1, 2);
+					players.get(currentPlayerNumber).addResource(1, 2);
+					break;
+				case chooseHempYOP:
+					resourceBank.bankDrawResource(2, 2);
+					players.get(currentPlayerNumber).addResource(2, 2);
+					break;
+				case chooseWaterYOP:
+					resourceBank.bankDrawResource(3, 2);
+					players.get(currentPlayerNumber).addResource(3, 2);
+					break;
+				case choosePlasticYOP:
+					resourceBank.bankDrawResource(3, 2);
+					players.get(currentPlayerNumber).addResource(3, 2);
+					break;
+
+				}
+				removeList.add(d2);
+			}
+
+			players.get(currentPlayerNumber).removeDevelopmentCardArrayList(removeList);
+			System.out.println("You removed Year Of Plenty");
+
+		});
+		// players.get(currentPlayerNumber).removeDevelopmentCardArrayList(removeList);
+		// System.out.println("You removed Year Of Plenty");
+
+	}
+
+	public void clickSteel() {
+		setSteelYOP(chooseSteelYOP);
+		setResourceState(getSteelYOP());
+		useYearOfPlenty();
+	}
+
+	public void clickGlass() {
+		setGlassYOP(chooseGlassYOP);
+		setResourceState(getGlassYOP());
+		useYearOfPlenty();
+
+	}
+
+	public void clickHemp() {
+		setGlassYOP(chooseHempYOP);
+		setResourceState(getHempYOP());
+		useYearOfPlenty();
+
+	}
+
+	public void clickWater() {
+		setGlassYOP(chooseWaterYOP);
+		setResourceState(getWaterYOP());
+		useYearOfPlenty();
+
+	}
+
+	public void clickPlastic() {
+		setGlassYOP(choosePlasticYOP);
+		setResourceState(getPlasticYOP());
+		useYearOfPlenty();
+
+	}
+
+	public void clickSteel1() {
+		setSteelYOP(chooseSteelYOP);
+		setResourceState(getSteelYOP());
+		useMonopolyCard(players);
+	}
+
+	public void clickGlass1() {
+		setGlassYOP(chooseGlassYOP);
+		setResourceState(getGlassYOP());
+		useMonopolyCard(players);
+
+	}
+
+	public void clickHemp1() {
+		setGlassYOP(chooseHempYOP);
+		setResourceState(getHempYOP());
+		useMonopolyCard(players);
+
+	}
+
+	public void clickWater1() {
+		setGlassYOP(chooseWaterYOP);
+		setResourceState(getWaterYOP());
+		useMonopolyCard(players);
+
+	}
+
+	public void clickPlastic1() {
+		setGlassYOP(choosePlasticYOP);
+		setResourceState(getPlasticYOP());
+		useMonopolyCard(players);
 
 	}
 

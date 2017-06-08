@@ -33,10 +33,12 @@ public class Robber {
 	 * 
 	 * @param players ArrayList of players
 	 */
-	public void ActivateRobber(Player player, HexBoard board) {
-		CurrentPlayer = player;
-		this.board = board;
+	public void ActivateRobber(Player player, HexBoard board, boolean isKnight) {
+            CurrentPlayer=player;
+                this.board=board;
+            if(!isKnight)
 		SevenResourceCheck();
+            checkHex(this.getCurrentHex());     
 	}
 
 	/*
@@ -64,7 +66,7 @@ public class Robber {
 			} // end of inner if statment
 		} // end of for loop
 		System.out.println(Arrays.toString(resourceBank.resources));
-		checkHex(this.getCurrentHex());
+		//checkHex(this.getCurrentHex());
 	}
 
 	/*
@@ -119,7 +121,7 @@ public class Robber {
 	 * give it to the current player or will and remove a random resource from
 	 * all players on the specific hex and give them to the current player
 	 */
-	private void stealResources(ArrayList<Player> listOfplayers) {
+	public void stealResources(ArrayList<Player> listOfplayers) {
 		int randomResourceNumber = 0;
 		randomResourceNumber = RandomResourceValue(0);
 		if (listOfplayers.size() == 1) {
