@@ -73,7 +73,7 @@ public class Cpu extends Player {
 
     Cpu() {
         super();
-        assets = new Assets();
+        assets = new PlayerAssets();
         resources = new int[]{0, 0, 0, 0, 0};
         victoryPoints = 0;
         setBoard(board);
@@ -84,7 +84,7 @@ public class Cpu extends Player {
 
     Cpu(String name, Color playerColor, HexBoard board) {
         super(name, playerColor);
-        assets = new Assets();
+        assets = new PlayerAssets();
         nickname = name;
         this.playerColor = playerColor;
         // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.       
@@ -98,7 +98,7 @@ public class Cpu extends Player {
         this.nickname = name;
         this.resources = resources;
         this.victoryPoints = 4;
-        assets = new Assets();
+        assets = new PlayerAssets();
         this.playerColor = playerColor;
         setBoard(board);
         int pref = (int) (Math.random() * (5 - 0 + 1) + 1);
@@ -111,7 +111,7 @@ public class Cpu extends Player {
         this.nickname = name;
         this.resources = resources;
         this.victoryPoints = 4;
-        assets = new Assets();
+        assets = new PlayerAssets();
         this.playerColor = playerColor;
         setBoard(board);
         int pref = (int) (Math.random() * (5 - 0 + 1) + 1);

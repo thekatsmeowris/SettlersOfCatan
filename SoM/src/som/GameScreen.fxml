@@ -20,75 +20,132 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import customcontrols.TradeResourceTracker?>
+<?import customcontrols.TradeResourceTracker?> 
+
 <!-- <?import customcontrols.TradeResourceTracker?> -->
+
 
 <AnchorPane id="AnchorPane" fx:id="lastAnchorPane" minHeight="600.0" minWidth="800.0" prefHeight="720.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="som.GameScreenController">
    <children>
       <StackPane prefHeight="720.0" prefWidth="1300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane maxHeight="720.0" maxWidth="1300.0" prefHeight="720.0" prefWidth="1306.0" StackPane.alignment="CENTER">
+            <AnchorPane maxHeight="720.0" maxWidth="1300.0" prefHeight="720.0" prefWidth="1306.0" StackPane.alignment="CENTER" >
                <children>
                   <BorderPane prefHeight="720.0" prefWidth="1300.0">
                      <bottom>
-                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="151.0" prefWidth="1311.0" BorderPane.alignment="CENTER">
+                        <AnchorPane id="playerInfoPane" fx:id="playerInfoPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="171.0" prefWidth="1311.0" BorderPane.alignment="CENTER">
                            <children>
                               <Group layoutX="14.0" layoutY="14.0">
                                  <children>
+                                	<Button id="gameStateBtn" fx:id="gameStateBtn" layoutX="144.0" layoutY="10.0" mnemonicParsing="false" onAction="#printPrettyGameState" prefHeight="27.0" prefWidth="96.0" text="Game State?" />
+                                    <Button id="diceRoller" fx:id="diceRoller" layoutX="144.0" layoutY="40.0" mnemonicParsing="false" onAction="#rollDice" prefHeight="27.0" prefWidth="96.0" text="Roll Dice" />
+                                    <Button id="buildBtn" fx:id="buildBtn" layoutX="144.0" layoutY="70.0" mnemonicParsing="false" onAction="#openBuildDialog" prefHeight="27.0" prefWidth="96.0" text="Build" />
+                                    <Button id="cancelBuildBtn" fx:id="cancelBuildBtn" layoutX="144.0" layoutY="70.0" mnemonicParsing="false" onAction="#cancelBuild" prefHeight="27.0" prefWidth="96.0" text="Cancel" />
+                                    <Button id="startGameBtn" fx:id="startGameBtn" layoutX="144.0" layoutY="100.0" mnemonicParsing="false" onAction="#startGame" prefHeight="27.0" prefWidth="96.0" text="Start Game" />
+                                    <Button id="tradeBtn" fx:id="tradeBtn" layoutX="14.0" layoutY="10" mnemonicParsing="false" onAction="#openTradeDialog" prefHeight="24.0" prefWidth="96.0" text="TRADE" />
+                                    <Button id="devBtn" fx:id="devBtn" layoutX="14.0" layoutY="35.0" mnemonicParsing="false" onAction="#openDevelopDialog" prefHeight="24.0" prefWidth="96.0" text="DEVELOP CARD" />
+                                    <Button id="endBtn" fx:id="endBtn" layoutX="14.0" layoutY="60.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="24.0" prefWidth="96.0" text="ADVANCE TURN" />
                                     <!--<Button layoutX="144.0" layoutY="28.0" mnemonicParsing="false" onAction="#simulateTradeRequest" prefHeight="54.0" prefWidth="96.0" text="Function" />-->
-                                    <Button layoutX="144.0" layoutY="28.0" mnemonicParsing="false" onAction="#function" prefHeight="54.0" prefWidth="96.0" text="Function" />
-                                    <Button mnemonicParsing="false" onAction="#openTradeDialog" prefHeight="47.0" prefWidth="96.0" text="TRADE" />
-                                    <Button layoutX="14.0" layoutY="34.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="96.0" text="DEVELOP" />
                                  </children>
                               </Group>
-                              <Group layoutX="1261.0" layoutY="151.0">
+                              <Group layoutX="1200.0" layoutY="110.0">
                                  <children>
-                                    <Circle fill="#ae9c9e" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text fx:id="txtRes04Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
+                           			<StackPane>
+	                                    <Circle fill="#ae9c9e" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
+	                                    <VBox alignment="TOP_CENTER" >
+	                                    	<padding><Insets top="10" right="25" bottom="0" left="25"/></padding>
+		                                    <Text layoutX="0.0" layoutY="-20.0" strokeType="OUTSIDE" strokeWidth="1.0" text="Plastic" textAlignment="CENTER">
+		                                    	<font>
+		                                    		<Font size="18.0" />
+		                                    	</font>
+		                                    </Text>
+	                                    </VBox>
+	                                    <Text fx:id="txtRes04Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+	                                       <font>
+	                                          <Font size="24.0" />
+	                                       </font>
+	                                    </Text>
+                                    </StackPane>
                                  </children>
                               </Group>
-                              <Group layoutX="973.0" layoutY="151.0">
+                              <Group layoutX="912.0" layoutY="110.0">
                                  <children>
-                                    <Circle fill="#bdb7a2" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text fx:id="txtRes03Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
+	                                 <StackPane>
+	                                    <Circle fill="#bdb7a2" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
+	                                    <VBox alignment="TOP_CENTER" >
+	                                    	<padding><Insets top="10" right="25" bottom="0" left="25"/></padding>
+		                                    <Text layoutX="0.0" layoutY="-20.0" strokeType="OUTSIDE" strokeWidth="1.0" text="Water" textAlignment="CENTER">
+		                                    	<font>
+		                                    		<Font size="18.0" />
+		                                    	</font>
+		                                    </Text>
+	                                    </VBox>
+	                                    <Text fx:id="txtRes03Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+	                                       <font>
+	                                          <Font size="24.0" />
+	                                       </font>
+	                                    </Text>
+	                                 </StackPane>
                                  </children>
                               </Group>
-                              <Group layoutX="656.0" layoutY="151.0">
+                              <Group layoutX="596.0" layoutY="110.0">
                                  <children>
-                                    <Circle fill="#eed79b" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text fx:id="txtRes02Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
+	                                 <StackPane>
+	                                    <Circle fill="#eed79b" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
+	                                    <VBox alignment="TOP_CENTER" >
+	                                    	<padding><Insets top="10" right="25" bottom="0" left="25"/></padding>
+		                                    <Text layoutX="0.0" layoutY="-20.0" strokeType="OUTSIDE" strokeWidth="1.0" text="Hemp" textAlignment="CENTER">
+		                                    	<font>
+		                                    		<Font size="18.0" />
+		                                    	</font>
+		                                    </Text>
+	                                    </VBox>
+	                                    <Text fx:id="txtRes02Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+	                                       <font>
+	                                          <Font size="24.0" />
+	                                       </font>
+	                                    </Text>
+	                                 </StackPane>
                                  </children>
                               </Group>
-                              <Group layoutX="350.0" layoutY="151.0">
+                              <Group layoutX="290.0" layoutY="110.0">
                                  <children>
-                                    <Circle fill="#c16161" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text fx:id="txtRes01Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
+	                                 <StackPane>
+	                                    <Circle fill="#c16161" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
+	                                    <VBox alignment="TOP_CENTER" >
+	                                    	<padding><Insets top="10" right="25" bottom="0" left="25"/></padding>
+		                                    <Text layoutX="0.0" layoutY="-20.0" strokeType="OUTSIDE" strokeWidth="1.0" text="Glass" textAlignment="CENTER">
+		                                    	<font>
+		                                    		<Font size="18.0" />
+		                                    	</font>
+		                                    </Text>
+	                                    </VBox>
+	                                    <Text fx:id="txtRes01Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+	                                       <font>
+	                                          <Font size="24.0" />
+	                                       </font>
+	                                    </Text>
+	                                 </StackPane>
                                  </children>
                               </Group>
-                              <Group layoutX="74.0" layoutY="151.0">
+                              <Group layoutX="14.0" layoutY="110.0">
                                  <children>
-                                    <Circle fill="#7ea6c4" onMouseClicked="#offerResource" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text fx:id="txtRes00Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Text>
+	                                 <StackPane>
+	                                    <Circle fill="#7ea6c4" onMouseClicked="#offerResource" radius="50.0" stroke="BLACK" strokeType="INSIDE" />
+	                                    <VBox alignment="TOP_CENTER" >
+	                                    	<padding><Insets top="10" right="25" bottom="0" left="25"/></padding>
+		                                    <Text layoutX="0.0" layoutY="-20.0" strokeType="OUTSIDE" strokeWidth="1.0" text="Steel" textAlignment="CENTER">
+		                                    	<font>
+		                                    		<Font size="18.0" />
+		                                    	</font>
+		                                    </Text>
+	                                    </VBox>
+	                                    <Text fx:id="txtRes00Text" layoutX="-6.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER">
+	                                       <font>
+	                                          <Font size="24.0" />
+	                                       </font>
+	                                    </Text>
+	                                 </StackPane>
                                  </children>
                               </Group>
                               <Group layoutX="587.0" layoutY="42.0">
@@ -98,8 +155,9 @@
                                           <Font size="17.0" />
                                        </font>
                                     </Text>
-                                    <ProgressBar fx:id="pgbVictoryPoints" layoutX="-37.0" layoutY="34.0" prefHeight="16.0" prefWidth="200.0" progress="0.0" />
+                                    <ProgressBar fx:id="pgbVictoryPointGuage" layoutX="-37.0" layoutY="34.0" prefHeight="16.0" prefWidth="200.0" progress="0.0" />
                                     <Slider fx:id="sldVictoryPoints" blockIncrement="1.0" layoutX="-7.0" layoutY="11.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickMarks="true" snapToTicks="true" />
+
                                  </children>
                               </Group>
                               <Group layoutX="926.0" layoutY="20.0">
@@ -127,6 +185,7 @@
                                     <Font size="17.0" />
                                  </font>
                               </Text>
+                             <!-- <Slider fx:id="sldVictoryPoints" blockIncrement="1.0" layoutX="393.0" layoutY="123.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickMarks="true" snapToTicks="true" />-->
                            </children>
                         </AnchorPane>
                      </bottom>
@@ -138,17 +197,52 @@
                            <content>
                               <StackPane prefHeight="520.0" prefWidth="1300.0" style="-fx-background-color: #b05959;">
                                  <children>
-                                    <Pane fx:id="gameBoard" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" rotate="90.0" translateX="50.0" translateY="-50.0" />
-                                    <Pane fx:id="popupDialog" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" onMouseClicked="#handleClick" prefHeight="176.0" prefWidth="172.0" style="-fx-background-color: #c0c0c0;" visible="false">
+                                    <Pane fx:id="gameBoard" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" rotate="90.0" translateX="50.0" translateY="-50.0"/>
+                                    <Pane fx:id="popupDialog" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" onMouseClicked="#handleClick" prefHeight="206.0" prefWidth="172.0" style="-fx-background-color: #c0c0c0;" visible="false">
                                        <children>
-                                          <Text id="txtPopUpText" fx:id="txtPopUpText" layoutX="67.0" layoutY="41.0" mouseTransparent="true" onMouseClicked="#handleClick" strokeType="OUTSIDE" strokeWidth="0.0" text="testing" />
-                                          <Button layoutX="25.0" layoutY="68.0" mnemonicParsing="false" mouseTransparent="true" onAction="#buildSettlement" text="BUILD SETTLEMENT" />
-                                          <Button layoutX="21.0" layoutY="104.0" mnemonicParsing="false" mouseTransparent="true" onAction="#buildCity" text="UPGRADE Settlement" />
-                                          <Button layoutX="45.0" layoutY="135.0" mnemonicParsing="false" mouseTransparent="true" onAction="#buildRoad" text="BUILD ROAD" />
+                                          <Text id="txtPopUpText" fx:id="txtPopUpText" layoutX="67.0" layoutY="41.0" mouseTransparent="true" onMouseClicked="#handleClick" strokeType="OUTSIDE" strokeWidth="0.0" text="Build (test)" />
+                                          <Button layoutX="25.0" layoutY="68.0" mnemonicParsing="false" mouseTransparent="true" onAction="#placingSettlement" text="BUILD SETTLEMENT" />
+                                          <Button layoutX="21.0" layoutY="104.0" mnemonicParsing="false" mouseTransparent="true" onAction="#placingCity" text="UPGRADE SETTLEMENT" />
+                                          <Button layoutX="45.0" layoutY="135.0" mnemonicParsing="false" mouseTransparent="true" onAction="#placingRoad" text="BUILD ROAD" />
+                                          <Button layoutX="40.0" layoutY="166.0" mnemonicParsing="false" mouseTransparent="true" onAction="#buildDevCard" text="BUY DEV CARD" />
                                           <Button layoutX="145.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeParentPane" text="X" />
                                        </children>
                                     </Pane>
-                                    <AnchorPane mouseTransparent="true" prefHeight="574.0" prefWidth="1311.0" style="-: #171717;">
+<!-- [[[[[[[[[[[[[[[[[[ DEVELOP DIALOG ]]]]]]]]]]]]]]]]]-->
+                                    <Pane fx:id="pnDevelopDialog" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" onMouseClicked="#handleClick" prefHeight="200.0" prefWidth="540.0" style="-fx-background-color: #c0c0c0;" visible="false">
+                                       <children>
+                                          <Button layoutX="510.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeDevCardsPane" text="X" />
+                                           
+                                          <Rectangle arcHeight="1.0" arcWidth="1.0" fill="WHITE" height="100.0" width="80.0" layoutX="20.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.0" />
+                                          <Button layoutX="32.0" layoutY="140.0" mnemonicParsing="false" mouseTransparent="true"  text="Knight" />
+
+                                          <Rectangle arcHeight="1.0" arcWidth="1.0" fill="WHITE" height="100.0" width="80.0" layoutX="118.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.0" />
+                                          <Button layoutX="108.0" layoutY="140.0" mnemonicParsing="false" mouseTransparent="true"  text="YearOfPlenty" />
+
+                                          <Rectangle arcHeight="1.0" arcWidth="1.0" fill="WHITE" height="100.0" width="80.0" layoutX="220.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.0" />
+                                          <Button layoutX="220.0" layoutY="140.0" mnemonicParsing="false" mouseTransparent="true"  text="Monopoly" />
+
+                                          <Rectangle arcHeight="1.0" arcWidth="1.0" fill="WHITE" height="100.0" width="80.0" layoutX="318.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.0" />
+                                          <Button layoutX="312.0" layoutY="140.0" mnemonicParsing="false" mouseTransparent="true"  text="RoadBuilding" />
+
+                                          <Rectangle arcHeight="1.0" arcWidth="1.0" fill="WHITE" height="100.0" width="80.0" layoutX="426.0" layoutY="40.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.0" />
+                                          <Button layoutX="422.0" layoutY="140.0" mnemonicParsing="false" mouseTransparent="true"  text="VictoryPoint" />
+
+                                       </children>
+                                    </Pane>
+                                     <BorderPane fx:id="robberConfirmDialog" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="false" prefHeight="50.0" prefWidth="172.0" style="-fx-background-color: #c0c0c0;" visible="false">
+                                     	<padding><Insets top="15" right="25" bottom="10" left="25"/></padding>
+                                     	<top>
+                                     		<Text layoutX="67.0" layoutY="41.0" mouseTransparent="true" onMouseClicked="#handleClick" strokeType="OUTSIDE" strokeWidth="0.0" text="Place Robber Here?" />
+                                     	</top>
+                                     	<left>
+                                     		<Button layoutX="25.0" layoutY="68.0" mnemonicParsing="false" mouseTransparent="false" onAction="#confirmPlaceRobber" text="Yes" />
+                                     	</left>
+                                     	<right>
+                                     		<Button layoutX="21.0" layoutY="104.0" mnemonicParsing="false" mouseTransparent="false" onAction="#cancelPlaceRobber" text="No" />
+                                     	</right>
+                                     </BorderPane>
+                                    <AnchorPane mouseTransparent="true" prefHeight="109.0" prefWidth="1309.0" style="-: #171717;" visible="true">
                                        <children>
                                           <Pane fx:id="pnAcceptTradeDialog" layoutX="541.0" layoutY="172.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #C97B84; -fx-border-color: #53e864;" visible="false">
                                              <children>
@@ -308,7 +402,7 @@
                                                       <Font name="Arial Black" size="49.0" />
                                                    </font>
                                                 </Text>
-                                                <Button id="btnRollDice" fx:id="btnRollDice" layoutX="640.0" layoutY="399.0" mnemonicParsing="false" onAction="#rollDice" text="ROLL DICE" />
+                                                <Button id="btnRollDice" fx:id="btnRollDice" layoutX="640.0" layoutY="399.0" mnemonicParsing="false" onAction="#rollDice" text="ROLL DICE"/>
                                              </children>
                                           </Pane>
                                           <Pane id="pnPlayerLeft" fx:id="pnPlayerLeft" layoutX="30.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.5" prefHeight="80.0" prefWidth="60.0" styleClass="opponentInfo">
@@ -331,7 +425,7 @@
                                                 </Label>
                                              </children>
                                           </Pane>
-                                          <Pane id="pnPlayerLeft" fx:id="pnPlayerMid" layoutX="620.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.5" prefHeight="80.0" prefWidth="60.0" styleClass="opponentInfo">
+                                          <Pane id="pnPlayerMid" fx:id="pnPlayerMid" layoutX="620.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.5" prefHeight="80.0" prefWidth="60.0" styleClass="opponentInfo">
                                              <children>
                                                 <Circle fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radius="60.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
                                                 <Arc fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radiusX="30.0" radiusY="30.0" startAngle="270.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
@@ -351,7 +445,7 @@
                                                 </Label>
                                              </children>
                                           </Pane>
-                                          <Pane id="pnPlayerLeft" fx:id="pnPlayerRight" layoutX="1209.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.5" prefHeight="80.0" prefWidth="60.0" styleClass="opponentInfo">
+                                          <Pane id="pnPlayerRight" fx:id="pnPlayerRight" layoutX="1209.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.5" prefHeight="80.0" prefWidth="60.0" styleClass="opponentInfo">
                                              <children>
                                                 <Circle fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radius="60.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
                                                 <Arc fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radiusX="30.0" radiusY="30.0" startAngle="270.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
@@ -373,11 +467,49 @@
                                           </Pane>
                                           <Pane fx:id="pnStatusPane" layoutX="167.0" layoutY="-10.0" prefHeight="101.0" prefWidth="274.0">
                                              <children>
-                                                <Label fx:id="txtCurrentStatus" layoutX="75.0" layoutY="51.0" text="Status">
+                                                <Label fx:id="txtCurrentStatus" layoutX="75.0" layoutY="51.0" text="Game State">
                                                    <font>
                                                       <Font size="22.0" />
                                                    </font>
                                                 </Label>
+                                                <Label fx:id="txtLastRoll" layoutX="75.0" layoutY="81.0" text="">
+
+                                                   <font>
+                                                      <Font size="22.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="endGameText" layoutX="75.0" layoutY="110.0" text="Game Over!">
+                                                	<font>
+                                                		<Font size="22.0"/>
+                                                	</font>
+                                                </Label>
+                                             </children>
+                                          </Pane>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane mouseTransparent="true" prefHeight="200.0" prefWidth="200.0" visible="false">
+                                       <children>
+                                          <Pane id="pnBuild" fx:id="pnBuild" layoutX="5.0" layoutY="22.0" mouseTransparent="true" prefHeight="521.0" prefWidth="1300.0" style="-fx-background-color: #c0c0c0;" visible="false">
+                                             <children>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="521.0" layoutY="24.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                                                <Text layoutX="546.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Road=0VP" />
+                                                <Text layoutX="546.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settlement=1VP" />
+                                                <Text layoutX="546.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City=2VPs" />
+                                                <Text layoutX="546.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dev Card=? VPs" />
+                                                <Text layoutX="607.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Building Costs" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="57.0" layoutY="224.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="363.0" layoutY="224.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="703.0" layoutY="224.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="1043.0" layoutY="224.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                                                <Text layoutX="129.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dev Card" />
+                                                <Text layoutX="449.0" layoutY="321.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Road" />
+                                                <Text layoutX="789.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settlement" />
+                                                <Text layoutX="1129.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CIty" />
+                                                <Button layoutX="84.0" layoutY="424.0" mnemonicParsing="false" onAction="#buildDev" text="Buy Development Card" />
+                                                <Button layoutX="435.0" layoutY="424.0" mnemonicParsing="false" text="Buy Road" />
+                                                <Button layoutX="744.0" layoutY="424.0" mnemonicParsing="false" text="Buy Settlement" />
+                                                <Button layoutX="1114.0" layoutY="424.0" mnemonicParsing="false" text="Buy City" />
+                                                <Button layoutX="1214.0" layoutY="11.0" mnemonicParsing="false" onAction="#closeBuild" text="X" />
                                              </children>
                                           </Pane>
                                        </children>
