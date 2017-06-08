@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import progressCards.Monopoly;
@@ -43,6 +44,8 @@ public class SoM extends Application {
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 		stage.setX((primaryScreenBounds.getWidth() - stage.getWidth()) / 2);
 		stage.setY((primaryScreenBounds.getHeight() - stage.getHeight()) / 2);
+
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("graphics/som-icon.png")));
 
 		stage.setResizable(false);
 		stage.show();
