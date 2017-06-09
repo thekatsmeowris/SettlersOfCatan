@@ -39,6 +39,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer.Status;
+import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Arc;
@@ -57,8 +59,8 @@ import som.assets.Settlement;
 public class GameScreenController implements Initializable {
 
 	@FXML
-	Pane gameLayer, gameBoard, playerGUI, popupDialog, dicePane, pnTradeDialog, robberConfirmDialog, pnPlayerLeft,
-			pnPlayerMid, pnPlayerRight, pnAcceptTradeDialog, pnBuild, pnDevelopDialog, pnYOP, pnMon, playerStackPane;
+	Pane gameLayer, gameBoard, playerGUI, dicePane, pnTradeDialog, robberConfirmDialog, pnPlayerLeft, pnPlayerMid,
+			pnPlayerRight, pnAcceptTradeDialog, pnBuild, pnDevelopDialog, pnYOP, pnMon, playerStackPane;
 
 	@FXML
 	Slider sldVictoryPoints;
@@ -84,7 +86,7 @@ public class GameScreenController implements Initializable {
 	@FXML
 	private HBox tradeResourceTrackers, tradeResponses, hbIncomingResources, hbOutgoingResources;
 	@FXML
-	private VBox vbTradeContents;
+	private VBox vbTradeContents, popupDialog;
 
 	Node selectedItem;
 	int diceValue;
@@ -166,6 +168,11 @@ public class GameScreenController implements Initializable {
 	int turnCount;
 	ResourceGenerator resourceGenerator;
 	Robber rob;
+
+	Image turnGif;
+	ImageView gifView;
+
+	AnimatedMedia animatedMedia;
 	/*
 	 * Knight k; VictoryPoint vp; YearOfPlenty yop; Monopoly mp; RoadBuilding
 	 * rb;
@@ -178,10 +185,18 @@ public class GameScreenController implements Initializable {
 		currentPlayerNumber = 0;
 		board = new HexBoard();
 
+		animatedMedia = new AnimatedMedia();
+
+		for (MediaView mv : animatedMedia.getMediaViews()) {
+			lastAnchorPane.getChildren().add(mv);
+			mv.toBack();
+			mv.setMouseTransparent(true);
+		}
+
 		String sandTexture = getClass().getResource("graphics/red-sand-texture.png").toExternalForm();
 		playerStackPane.setStyle("-fx-background-image: url('" + sandTexture
 				+ "'); -fx-background-position: center center; -fx-background-repeat: stretch;");
-		audio.playMusic1();
+		Audio.playMusic1();
 		resGen = new ResourceGenerator(board);
 		resourceBank = resGen.getResourceBank();
 
@@ -359,9 +374,10 @@ public class GameScreenController implements Initializable {
 		diceValue += r;
 		rightDie.setText(r.toString());
 		System.out.println("total die: " + diceValue);
-		txtLastRoll.setText("Last Dice Roll: " + diceValue);
+		txtLastRoll.setText("LAST DICE ROLL: " + diceValue);
 
 		if (diceValue == 7) {
+			handleAnimation(AnimatedMedia.ROBBER);
 			setGameState(MOVING_ROBBER);
 		}
 		if (gameState == PRE_ROLL) {
@@ -434,6 +450,8 @@ public class GameScreenController implements Initializable {
 			updateResources();
 		}
 		if (getWinCondition()) {
+			handleAnimation(currentPlayerNumber + 10);
+			handleAnimation(AnimatedMedia.GAME_OVER);
 			setGameState(GAME_OVER);
 		} else {
 			fillPlayerInfo();
@@ -448,6 +466,10 @@ public class GameScreenController implements Initializable {
 	public void newTurn() {
 		System.out.println(gameStateToString());
 		System.out.println("/////////////////////////////////////");
+
+		handleAnimation(currentPlayerNumber + 1);
+
+		System.out.println("Current player number for da animation: " + (currentPlayerNumber + 1));
 		currentPlayer = players.get(currentPlayerNumber);
 		System.out.println("Current Player: " + players.get(currentPlayerNumber).getNickname());
 		if (getGameState() != PLACING_FREE_SETTLEMENT) {
@@ -1569,6 +1591,9 @@ public class GameScreenController implements Initializable {
 	}
 
 	public void useMonopolyCard(ArrayList<Player> listOfPlayers) {
+
+		handleAnimation(AnimatedMedia.MONOPOLY);
+
 		removeList = new ArrayList<>();
 		players.get(currentPlayerNumber).hand.forEach((DevelopmentCard d3) -> {
 			if (d3 instanceof Monopoly) {
@@ -1654,6 +1679,7 @@ public class GameScreenController implements Initializable {
 
 	public void useRoadBuildingCard(ActionEvent e) throws IOException {
 		System.out.println("You Clicked me");
+		handleAnimation(AnimatedMedia.ROAD_BUILDING);
 		removeList = new ArrayList<>();
 		players.get(currentPlayerNumber).hand.forEach((DevelopmentCard d4) -> {
 			System.out.println("Looking for Cards");
@@ -1675,6 +1701,9 @@ public class GameScreenController implements Initializable {
 	public void playKnightCard1(ActionEvent e) throws IOException {
 		pnDevelopDialog.setMouseTransparent(true);
 		pnDevelopDialog.setVisible(false);
+
+		handleAnimation(AnimatedMedia.KNIGHT);
+
 		removeList = new ArrayList<>();
 		System.out.println("You Clicked me");
 		// System.out.println(Arrays.toString(players.get(currentPlayerNumber).getResources()));
@@ -1745,6 +1774,9 @@ public class GameScreenController implements Initializable {
 	}
 
 	public void useYearOfPlenty() {
+
+		handleAnimation(AnimatedMedia.YEAR_OF_PLENTY);
+
 		removeList = new ArrayList<>();
 		players.get(currentPlayerNumber).hand.forEach((DevelopmentCard d2) -> {
 			if (d2 instanceof YearOfPlenty) {
@@ -1858,5 +1890,27 @@ public class GameScreenController implements Initializable {
 		} catch (Exception e) {
 			return -1;
 		}
+	}
+
+	private void handleAnimation(int fileNum) {
+		lastAnchorPane.toFront();
+		animatedMedia.getMediaViews().get(fileNum - 1).toFront();
+		if (animatedMedia.getMediaPlayers().get(fileNum - 1).getStatus() == Status.PLAYING) {
+			animatedMedia.getMediaPlayers().get(fileNum - 1).stop();
+		}
+		animatedMedia.getMediaViews().get(fileNum - 1).setLayoutY(0);
+		animatedMedia.getMediaViews().get(fileNum - 1).setLayoutX(-320);
+		animatedMedia.getMediaViews().get(fileNum - 1).setVisible(true);
+		animatedMedia.getMediaPlayers().get(fileNum - 1).play();
+
+		System.out.println("Hey im working here");
+
+		animatedMedia.getMediaPlayers().get(fileNum - 1).setOnEndOfMedia(new Runnable() {
+			public void run() {
+				animatedMedia.getMediaViews().get(fileNum - 1).toBack();
+				lastAnchorPane.toBack();
+			}
+		});
+
 	}
 }

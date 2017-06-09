@@ -191,16 +191,17 @@
                                           <RadioButton layoutX="80.0" layoutY="100.0" mnemonicParsing="false" onAction="#clickPlastic" rotate="-90.0" text="Plastic" />
                                        </children>
                                     </Pane>
-                                    <Pane fx:id="popupDialog" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" onMouseClicked="#handleClick" prefHeight="206.0" prefWidth="172.0" style="-fx-background-color: #c0c0c0;" visible="false">
+                                    <VBox fx:id="popupDialog" alignment="CENTER" spacing="10" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" onMouseClicked="#handleClick" prefHeight="206.0" prefWidth="172.0" style="-fx-background-color: #c0c0c0;" visible="false">
+                                       <padding><Insets top="10" right="15" bottom="10" left="15"></Insets></padding>
                                        <children>
-                                          <Text styleClass="text" id="txtPopUpText" fx:id="txtPopUpText" layoutX="67.0" layoutY="41.0" mouseTransparent="true" onMouseClicked="#handleClick" strokeType="OUTSIDE" strokeWidth="0.0" text="Build (test)" />
+                                          <Text styleClass="text" id="txtPopUpText" fx:id="txtPopUpText" layoutX="67.0" layoutY="41.0" mouseTransparent="true" onMouseClicked="#handleClick" strokeType="OUTSIDE" strokeWidth="0.0" text="Build Menu" />
                                           <Button layoutX="25.0" layoutY="68.0" mnemonicParsing="false" mouseTransparent="true" onAction="#placingSettlement" text="BUILD SETTLEMENT" />
-                                          <Button layoutX="21.0" layoutY="104.0" mnemonicParsing="false" mouseTransparent="true" onAction="#placingCity" text="UPGRADE SETTLEMENT" />
+                                          <Button layoutX="17.0" layoutY="104.0" mnemonicParsing="false" mouseTransparent="true" onAction="#placingCity" text="BUILD CITY" />
                                           <Button layoutX="45.0" layoutY="135.0" mnemonicParsing="false" mouseTransparent="true" onAction="#placingRoad" text="BUILD ROAD" />
                                           <Button layoutX="40.0" layoutY="166.0" mnemonicParsing="false" mouseTransparent="true" onAction="#buildDev" text="BUY DEV CARD" />
-                                          <Button layoutX="145.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeParentPane" text="X" />
+                                          <Button layoutX="172.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeParentPane" text="CANCEL" />
                                        </children>
-                                    </Pane>
+                                    </VBox>
                                      <BorderPane fx:id="robberConfirmDialog" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="false" prefHeight="50.0" prefWidth="172.0" style="-fx-background-color: #c0c0c0;" visible="false">
                                      	<padding><Insets bottom="10" left="25" right="25" top="15" /></padding>
                                      	<top>
@@ -464,10 +465,9 @@
                                                       <Font size="22.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="txtLastRoll" layoutX="75.0" layoutY="81.0" text="">
-
-                                                         <font>
-                                                      <Font size="22.0" />
+                                                <Label fx:id="txtLastRoll" layoutX="-100.0" layoutY="81.0" style="-fx-text-fill: orange; -fx-font-size: 32;" text="">
+                                                   <font>
+                                                      <Font size="72.0"/>
                                                    </font>
                                                 </Label>
                                                 <Label fx:id="endGameText" layoutX="75.0" layoutY="110.0" text="Game Over!">
