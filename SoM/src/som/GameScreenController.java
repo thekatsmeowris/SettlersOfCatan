@@ -21,6 +21,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,6 +32,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -54,7 +58,7 @@ public class GameScreenController implements Initializable {
 
 	@FXML
 	Pane gameLayer, gameBoard, playerGUI, popupDialog, dicePane, pnTradeDialog, robberConfirmDialog, pnPlayerLeft,
-			pnPlayerMid, pnPlayerRight, pnAcceptTradeDialog, pnBuild, pnDevelopDialog, pnYOP, pnMon;
+			pnPlayerMid, pnPlayerRight, pnAcceptTradeDialog, pnBuild, pnDevelopDialog, pnYOP, pnMon, playerStackPane;
 
 	@FXML
 	Slider sldVictoryPoints;
@@ -173,6 +177,10 @@ public class GameScreenController implements Initializable {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		currentPlayerNumber = 0;
 		board = new HexBoard();
+
+		String sandTexture = getClass().getResource("graphics/red-sand-texture.png").toExternalForm();
+		playerStackPane.setStyle("-fx-background-image: url('" + sandTexture
+				+ "'); -fx-background-position: center center; -fx-background-repeat: stretch;");
 		audio.playMusic1();
 		resGen = new ResourceGenerator(board);
 		resourceBank = resGen.getResourceBank();
@@ -1356,12 +1364,9 @@ public class GameScreenController implements Initializable {
 			// .setBackground(new Background(new
 			// BackgroundFill(players.get(currentPlayerNumber).getPlayerColor(),
 			// CornerRadii.EMPTY, Insets.EMPTY)));
-			String colorString = String.format("#%02X%02X%02X",
-					(int) (players.get(currentPlayerNumber).getPlayerColor().getRed() * 255),
-					(int) (players.get(currentPlayerNumber).getPlayerColor().getGreen() * 255),
-					(int) (players.get(currentPlayerNumber).getPlayerColor().getBlue() * 255));
-			playerInfoPane.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #884444, "
-					+ colorString + ", #884444);");
+
+			playerInfoPane.setBackground(new Background(new BackgroundFill(
+					players.get(currentPlayerNumber).getPlayerColorGradient(), CornerRadii.EMPTY, Insets.EMPTY)));
 		}
 
 	}
