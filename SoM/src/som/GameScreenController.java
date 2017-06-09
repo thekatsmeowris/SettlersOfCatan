@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 
 import customcontrols.TradeResourceTracker;
 import devCards.Knight;
+import devCards.VictoryPoint;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -520,6 +521,7 @@ public class GameScreenController implements Initializable {
 			gameBoard.setDisable(true);
 			buildBtn.setVisible(true);
 			buildBtn.setDisable(false);
+			popupDialog.setVisible(false);
 			cancelBuildBtn.setVisible(false);
 			cancelBuildBtn.setDisable(true);
 			endBtn.setDisable(false);
@@ -1577,6 +1579,18 @@ public class GameScreenController implements Initializable {
 				players.get(currentPlayerNumber).addCard(thisCard);
 				System.out.println(thisCard);
 
+				if (thisCard instanceof YearOfPlenty) {
+					handleAnimation(AnimatedMedia.YEAR_OF_PLENTY);
+				} else if (thisCard instanceof Knight) {
+					handleAnimation(AnimatedMedia.KNIGHT);
+				} else if (thisCard instanceof RoadBuilding) {
+					handleAnimation(AnimatedMedia.ROAD_BUILDING);
+				} else if (thisCard instanceof Monopoly) {
+					handleAnimation(AnimatedMedia.MONOPOLY);
+				} else if (thisCard instanceof VictoryPoint) {
+					handleAnimation(AnimatedMedia.VICTORY_POINT);
+				}
+
 				System.out.println("YOU'VE BUILT A DEV CARD");
 				players.get(currentPlayerNumber).ifDevCardVictoryPoint(players.get(currentPlayerNumber).hand);
 				System.out.println("You've Checked if there is a VP in the Deck");
@@ -1585,6 +1599,7 @@ public class GameScreenController implements Initializable {
 
 				System.out.println("You've Checked if Knight gives you largest Army");
 
+				setGameState(MAIN_PHASE);
 				updateResources();
 			}
 		}
