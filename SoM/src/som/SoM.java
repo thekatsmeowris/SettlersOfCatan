@@ -37,6 +37,7 @@ public class SoM extends Application {
 		ResourceBank resourceBank = new ResourceBank();
 		resourceBank.printResourceList();
 		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("som.css").toExternalForm());
 
 		stage.setTitle("Settlers of Mars");
 		stage.setScene(scene);
