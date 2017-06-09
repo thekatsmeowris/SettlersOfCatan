@@ -34,6 +34,14 @@ public class HexEdge extends Line {
 	private ArrayList<HexEdge> adjacentEdge;
 	private ArrayList<HexVertex> adjacentVertex;
 	private Asset asset;
+
+    public Asset getAsset() {
+        return asset;
+    }
+
+    public void setAsset(Asset asset) {
+        this.asset = asset;
+    }
 	private Boolean owned;
 	private Player owner;
 

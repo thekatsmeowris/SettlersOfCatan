@@ -7,6 +7,14 @@ public class Settlement extends Asset {
     private HexVertex hexVertex;
     //hexVertex holds the 2dPoint position
 
+    public HexVertex getHexVertex() {
+        return hexVertex;
+    }
+
+    public void setHexVertex(HexVertex hexVertex) {
+        this.hexVertex = hexVertex;
+    }
+
 
 
     /*public Settlement(Player player, HexBoard board, Hex hex, int[] coord) {
@@ -35,31 +43,5 @@ public class Settlement extends Asset {
     public int getType(){
         return 1;
     }
-        
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-                
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
 }

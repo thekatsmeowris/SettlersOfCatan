@@ -36,6 +36,14 @@ public class Player {
 	String nickname;
 	PlayerAssets assets;
 
+    public PlayerAssets getAssets() {
+        return assets;
+    }
+
+    public void setAssets(PlayerAssets assets) {
+        this.assets = assets;
+    }
+
 	Player() {
 
 		assets = new PlayerAssets();

@@ -101,7 +101,7 @@ public class Cpu extends Player {
         assets = new PlayerAssets();
         this.playerColor = playerColor;
         setBoard(board);
-        int pref = (int) (Math.random() * (5 - 0 + 1) + 1);
+        int pref = (int) (Math.random() * (4 - 0 + 1) + 1);
         this.setPreference(pref);
         this.setPriority(1);
     }
@@ -114,7 +114,7 @@ public class Cpu extends Player {
         assets = new PlayerAssets();
         this.playerColor = playerColor;
         setBoard(board);
-        int pref = (int) (Math.random() * (5 - 0 + 1) + 1);
+        int pref = (int) (Math.random() * (4 - 0 + 1) + 1);
         this.setPreference(pref);
         this.setPriority(priority);
     }
