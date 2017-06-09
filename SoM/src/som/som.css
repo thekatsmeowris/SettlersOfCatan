@@ -1,0 +1,10 @@
+@font-face {
+	src: url('graphics/space_age.ttf');
+}
+
+.root {
+	-fx-font-family: 'space age';
+}
+.text {
+	-fx-font-family: 'space age';
+}

@@ -25,7 +25,7 @@ public class ResourceBank {
 	private final static int STEEL = 0;
 	private final static int GLASS = 1;
 	private final static int HEMP = 2;
-	private final static int SOY = 3;
+	private final static int WATER = 3;
 	private final static int PLASTIC = 4;
 	private int bankQuantity;
 	ArrayList<Resource> resourceList = new ArrayList<>(); // creating an
@@ -36,7 +36,7 @@ public class ResourceBank {
 	public ResourceBank() {
 		bankQuantity = 19;
 		resources = new int[] { 19, 19, 19, 19, 19 };
-		Resource soy = new Resource(); // creating objects from Resource class
+		Resource water = new Resource(); // creating objects from Resource class
 		Resource hemp = new Resource();
 		Resource plastic = new Resource();
 		Resource glass = new Resource();
@@ -45,14 +45,14 @@ public class ResourceBank {
 		resourceList.add(steel); // Value 0 in arrayList
 		resourceList.add(glass); // Value 1 in arrayList
 		resourceList.add(hemp); // Value 2 in ArrayList
-		resourceList.add(soy); // Value 3 in ArrayList
+		resourceList.add(water); // Value 3 in ArrayList
 		resourceList.add(plastic); // Value 4 in arrayList
 	}
 
 	public ResourceBank(int qty) {
 		bankQuantity = qty;
 		resources = new int[] { qty, qty, qty, qty, qty };
-		Resource soy = new Resource(); // creating objects from Resource class
+		Resource water = new Resource(); // creating objects from Resource class
 		Resource hemp = new Resource();
 		Resource plastic = new Resource();
 		Resource glass = new Resource();
@@ -62,7 +62,7 @@ public class ResourceBank {
 		resourceList.add(steel); // Value 0 in arrayList
 		resourceList.add(glass); // Value 1 in arrayList
 		resourceList.add(hemp); // Value 2 in ArrayList
-		resourceList.add(soy); // Value 3 in ArrayList
+		resourceList.add(water); // Value 3 in ArrayList
 		resourceList.add(plastic); // Value 4 in arrayList
 
 	}
@@ -90,28 +90,31 @@ public class ResourceBank {
 		// }
 	}
 
-	public void printResourceList() // method to print out resourceList
-	{
-		// String resourceName = new String(); //String variable to keep track
-		// of resource Name
-
-	}
+	public void printResourceList()
+        {
+            
+        }
+        public int[] getResourceBank(){
+            return resources;
+        }
+     
 
 	public static void driver() {
 
 		ResourceBank TheResourceBank = new ResourceBank();
 
-		TheResourceBank.bankDrawResource(SOY, 15);
+		TheResourceBank.bankDrawResource(WATER, 15);
 		TheResourceBank.bankDrawResource(PLASTIC, 2);
 
-		TheResourceBank.bankDrawResource(SOY, 1);
-		TheResourceBank.bankReturnResource(SOY, 16);
+		TheResourceBank.bankDrawResource(WATER, 1);
+		TheResourceBank.bankReturnResource(WATER, 16);
 
 		TheResourceBank.bankReturnResource(GLASS, 1);
 
-		TheResourceBank.printResourceList();
+		//TheResourceBank.printResourceList();
 
 	}
+        
 
 	public int[] getResourceCost(Settlement settlement) {
 		return new int[] { 0, 1, 1, 1, 1 };
@@ -151,7 +154,7 @@ public class ResourceBank {
 			resourceString = "HEMP";
 			break;
 		case 3:
-			resourceString = "SOY";
+			resourceString = "WATER";
 			break;
 		case 4:
 			resourceString = "PLASTIC";

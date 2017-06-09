@@ -5,8 +5,6 @@
  */
 package som;
 
-import java.io.File;
-
 import devCards.Knight;
 import devCards.VictoryPoint;
 import javafx.application.Application;
@@ -14,10 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
+import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import progressCards.Monopoly;
@@ -30,20 +25,19 @@ import progressCards.YearOfPlenty;
  */
 public class SoM extends Application {
 
-	
-	static MediaPlayer mediaPlayer;
-	MediaView mediaView;
+	// static MediaPlayer mediaPlayer;
+	// MediaView mediaView;
 	// Connect to Online
 	static ObjectClient client;
 
 	@Override
 	public void start(Stage stage) throws Exception {
-
 		Parent root = FXMLLoader.load(getClass().getResource("TitleScreen.fxml"));
 
 		ResourceBank resourceBank = new ResourceBank();
 		resourceBank.printResourceList();
 		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("som.css").toExternalForm());
 
 		stage.setTitle("Settlers of Mars");
 		stage.setScene(scene);
@@ -52,10 +46,12 @@ public class SoM extends Application {
 		stage.setX((primaryScreenBounds.getWidth() - stage.getWidth()) / 2);
 		stage.setY((primaryScreenBounds.getHeight() - stage.getHeight()) / 2);
 
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("graphics/som-icon.png")));
+
 		stage.setResizable(false);
 		stage.show();
 
-		MediaClass mediaClass = new MediaClass();
+		// MediaClass mediaClass = new MediaClass();
 
 	}
 
@@ -70,23 +66,22 @@ public class SoM extends Application {
 	}
 
 	// Test comment
-	
 
-	public static void playMusic1() {
-		// aMusic1.setCycleCount(AudioClip.INDEFINITE);
-		// aMusic1.play();
-
-		mediaPlayer.setCycleCount(AudioClip.INDEFINITE);
-		mediaPlayer.play();
-	}
-
-	public static void playMusic2() {
-		// aMusic2.setCycleCount(AudioClip.INDEFINITE);
-		// aMusic2.play();
-
-		mediaPlayer.setCycleCount(AudioClip.INDEFINITE);
-		mediaPlayer.play();
-	}
+	// public static void playMusic1() {
+	// // aMusic1.setCycleCount(AudioClip.INDEFINITE);
+	// // aMusic1.play();
+	//
+	// mediaPlayer.setCycleCount(AudioClip.INDEFINITE);
+	// mediaPlayer.play();
+	// }
+	//
+	// public static void playMusic2() {
+	// // aMusic2.setCycleCount(AudioClip.INDEFINITE);
+	// // aMusic2.play();
+	//
+	// mediaPlayer.setCycleCount(AudioClip.INDEFINITE);
+	// mediaPlayer.play();
+	// }
 
 	/*
 	 * public AudioClip getaMusic1() { return aMusic1; }
