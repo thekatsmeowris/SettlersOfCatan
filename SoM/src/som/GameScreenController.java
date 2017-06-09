@@ -75,6 +75,9 @@ public class GameScreenController implements Initializable {
 	@FXML
 	Button diceRoller, btnRollDice, startGameBtn, tradeBtn, buildBtn, cancelBuildBtn, gameStateBtn, endBtn, devBtn;
 
+        @FXML
+        RadioButton glassYOP, steelYOP, hempYOP, waterYOP, plasticYOP, glassMON, steelMON, hempMON, waterMON, plasticMON;
+
 	@FXML
 	Text txtThisPlayerName;
 
@@ -106,6 +109,16 @@ public class GameScreenController implements Initializable {
 	private static int itsHemp;
 	private static int itsWater;
 	private static int itsPlastic;
+        public final static int GLASS_CLICK = 23;
+        public final static int GLASS_CLICK1 = 24;
+        public final static int STEEL_CLICK = 25;
+        public final static int STEEL_CLICK1 = 26;
+        public final static int HEMP_CLICK = 27;
+        public final static int HEMP_CLICK1 = 28;
+        public final static int WATER_CLICK = 29;
+        public final static int WATER_CLICK1 = 30;
+        public final static int PLASTIC_CLICK = 31;
+        public final static int PLASTIC_CLICK1 = 32;
 
 	static Audio audio = new Audio();
 	public final static int chooseSteelYOP = 0;
@@ -563,6 +576,76 @@ public class GameScreenController implements Initializable {
 			endBtn.setDisable(true);
 			endGameText.setVisible(true);
 			break;
+                case GLASS_CLICK:
+                steelYOP.setDisable(true);
+                hempYOP.setDisable(true);
+                waterYOP.setDisable(true);
+                plasticYOP.setDisable(true);
+
+                break;
+                case GLASS_CLICK1:
+                steelMON.setDisable(true);
+                hempMON.setDisable(true);
+                waterMON.setDisable(true);
+                plasticMON.setDisable(true);
+
+                break;
+                case STEEL_CLICK:
+                glassYOP.setDisable(true);
+                hempYOP.setDisable(true);
+                waterYOP.setDisable(true);
+                plasticYOP.setDisable(true);
+
+                break;
+                case STEEL_CLICK1:
+                glassMON.setDisable(true);
+                hempMON.setDisable(true);
+                waterMON.setDisable(true);
+                plasticMON.setDisable(true);
+
+                break;
+                case HEMP_CLICK:
+                steelYOP.setDisable(true);
+                glassYOP.setDisable(true);
+                waterYOP.setDisable(true);
+                plasticYOP.setDisable(true);
+
+                break;
+                case HEMP_CLICK1:
+                steelMON.setDisable(true);
+                glassMON.setDisable(true);
+                waterMON.setDisable(true);
+                plasticMON.setDisable(true);
+
+                break;
+                case WATER_CLICK:
+                steelYOP.setDisable(true);
+                hempYOP.setDisable(true);
+                glassYOP.setDisable(true);
+                plasticYOP.setDisable(true);
+
+                break;
+                case WATER_CLICK1:
+                steelMON.setDisable(true);
+                hempMON.setDisable(true);
+                glassMON.setDisable(true);
+                plasticMON.setDisable(true);
+
+                break;
+                case PLASTIC_CLICK:
+                steelYOP.setDisable(true);
+                hempYOP.setDisable(true);
+                waterYOP.setDisable(true);
+                glassYOP.setDisable(true);
+
+                break;
+                case PLASTIC_CLICK1:
+                steelMON.setDisable(true);
+                hempMON.setDisable(true);
+                waterMON.setDisable(true);
+                glassMON.setDisable(true);
+
+                break;
 
 		}
 	}
@@ -1569,6 +1652,8 @@ public class GameScreenController implements Initializable {
 	}
 
 	public void useMonopolyCard(ArrayList<Player> listOfPlayers) {
+            pnDevelopDialog.setMouseTransparent(true);
+            pnDevelopDialog.setVisible(false);
 		removeList = new ArrayList<>();
 		players.get(currentPlayerNumber).hand.forEach((DevelopmentCard d3) -> {
 			if (d3 instanceof Monopoly) {
@@ -1642,18 +1727,23 @@ public class GameScreenController implements Initializable {
 
 				}
 				removeList.add(d3);
-				updateResources();
 
 			}
 
-			players.get(currentPlayerNumber).removeDevelopmentCardArrayList(removeList);
-			System.out.println("You removed Year Of Plenty");
+			
 
 		});
+                updateResources();
+
+                players.get(currentPlayerNumber).removeDevelopmentCardArrayList(removeList);
+			System.out.println("You removed Year Of Plenty");
 	}
 
 	public void useRoadBuildingCard(ActionEvent e) throws IOException {
-		System.out.println("You Clicked me");
+                System.out.println("You Clicked me");
+
+                pnDevelopDialog.setMouseTransparent(true);
+                pnAcceptTradeDialog.setVisible(false);
 		removeList = new ArrayList<>();
 		players.get(currentPlayerNumber).hand.forEach((DevelopmentCard d4) -> {
 			System.out.println("Looking for Cards");
@@ -1745,6 +1835,9 @@ public class GameScreenController implements Initializable {
 	}
 
 	public void useYearOfPlenty() {
+                pnDevelopDialog.setMouseTransparent(true);
+                pnDevelopDialog.setVisible(false);
+                
 		removeList = new ArrayList<>();
 		players.get(currentPlayerNumber).hand.forEach((DevelopmentCard d2) -> {
 			if (d2 instanceof YearOfPlenty) {
@@ -1775,10 +1868,11 @@ public class GameScreenController implements Initializable {
 				removeList.add(d2);
 			}
 
-			players.get(currentPlayerNumber).removeDevelopmentCardArrayList(removeList);
-			System.out.println("You removed Year Of Plenty");
 
 		});
+                players.get(currentPlayerNumber).removeDevelopmentCardArrayList(removeList);
+                System.out.println("You removed Year Of Plenty");
+
 		// players.get(currentPlayerNumber).removeDevelopmentCardArrayList(removeList);
 		// System.out.println("You removed Year Of Plenty");
 
@@ -1821,12 +1915,15 @@ public class GameScreenController implements Initializable {
 	public void clickSteel1() {
 		setSteelYOP(chooseSteelYOP);
 		setResourceState(getSteelYOP());
+                setGameState(STEEL_CLICK);
+
 		useMonopolyCard(players);
 	}
 
 	public void clickGlass1() {
 		setGlassYOP(chooseGlassYOP);
 		setResourceState(getGlassYOP());
+                setGameState(GLASS_CLICK);
 		useMonopolyCard(players);
 
 	}
@@ -1834,6 +1931,8 @@ public class GameScreenController implements Initializable {
 	public void clickHemp1() {
 		setGlassYOP(chooseHempYOP);
 		setResourceState(getHempYOP());
+                setGameState(HEMP_CLICK);
+
 		useMonopolyCard(players);
 
 	}
@@ -1841,6 +1940,8 @@ public class GameScreenController implements Initializable {
 	public void clickWater1() {
 		setGlassYOP(chooseWaterYOP);
 		setResourceState(getWaterYOP());
+                setGameState(WATER_CLICK1);
+
 		useMonopolyCard(players);
 
 	}
@@ -1848,6 +1949,8 @@ public class GameScreenController implements Initializable {
 	public void clickPlastic1() {
 		setGlassYOP(choosePlasticYOP);
 		setResourceState(getPlasticYOP());
+                setGameState(PLASTIC_CLICK1);
+
 		useMonopolyCard(players);
 
 	}

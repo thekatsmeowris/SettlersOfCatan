@@ -183,12 +183,12 @@
                                     <Pane id="pnYOP" fx:id="pnYOP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="206.0" prefWidth="172.0" rotate="90.0" style="-fx-background-color: #c0c0c0;" translateX="50.0" translateY="-50.0" visible="false">
                                        <children>
                                            
-                                          <RadioButton layoutX="20.0" layoutY="100.0" mnemonicParsing="false" onAction="#clickGlass" rotate="-90.0" text="Glass" />
+                                          <RadioButton id="glassYOP" fx:id="glassYOP" layoutX="20.0" layoutY="100.0" mnemonicParsing="false" onAction="#clickGlass" rotate="-90.0" text="Glass" />
                                           <Button mnemonicParsing="false" onAction="#closeYOPPane" rotate="-90.0" text="X" />
-                                          <RadioButton layoutY="100.0" mnemonicParsing="false" onAction="#clickSteel" rotate="-90.0" text="Steel" />
-                                          <RadioButton layoutX="40.0" layoutY="100.0" mnemonicParsing="false" onAction="#clickHemp" rotate="-90.0" text="Hemp" />
-                                          <RadioButton layoutX="60.0" layoutY="100.0" mnemonicParsing="false" onAction="#clickWater" rotate="-90.0" text="Water" />
-                                          <RadioButton layoutX="80.0" layoutY="100.0" mnemonicParsing="false" onAction="#clickPlastic" rotate="-90.0" text="Plastic" />
+                                          <RadioButton id="steelYOP" fx:id="steelYOP" layoutY="100.0" mnemonicParsing="false" onAction="#clickSteel" rotate="-90.0" text="Steel" />
+                                          <RadioButton id="hempYOP" fx:id="hempYOP" layoutX="40.0" layoutY="100.0" mnemonicParsing="false" onAction="#clickHemp" rotate="-90.0" text="Hemp" />
+                                          <RadioButton id="waterYOP" fx:id="waterYOP" layoutX="60.0" layoutY="100.0" mnemonicParsing="false" onAction="#clickWater" rotate="-90.0" text="Water" />
+                                          <RadioButton id="plasticYOP" fx:id="plasticYOP" layoutX="80.0" layoutY="100.0" mnemonicParsing="false" onAction="#clickPlastic" rotate="-90.0" text="Plastic" />
                                        </children>
                                     </Pane>
                                     <Pane fx:id="popupDialog" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" onMouseClicked="#handleClick" prefHeight="206.0" prefWidth="172.0" style="-fx-background-color: #c0c0c0;" visible="false">
@@ -361,7 +361,7 @@
                                                 </ImageView>
                                                     </children>
                                                 </HBox>
-                                                <!--<HBox fx:id="tradeResourceTrackers" layoutX="463.0" layoutY="170.0" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="192.0" prefWidth="436.0">
+                                                <HBox fx:id="tradeResourceTrackers" layoutX="463.0" layoutY="170.0" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="192.0" prefWidth="436.0">
                                                     <children>
                                                               <TradeResourceTracker />
                                                               <TradeResourceTracker />
@@ -372,7 +372,7 @@
                                                           
                                                           </children>
       
-                                                      </HBox>-->
+                                                      </HBox>
                                              </children>
                                           </Pane>
                                           <Pane id="dicePane" fx:id="dicePane" mouseTransparent="true" prefHeight="543.0" prefWidth="1300.0" style="-fx-background-color: #c0c0c0;" visible="false">
@@ -481,12 +481,12 @@
                                     </AnchorPane>
                                     <Pane id="pnMon" fx:id="pnMon" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="176.0" style="-fx-background-color: #c0c0c0;" visible="false">
                                        <children>
-                                          <RadioButton layoutY="50.0" mnemonicParsing="false" onAction="#clickGlass1" text="Glass" />
+                                          <RadioButton id="glassMON" fx:id="glassMON" layoutY="50.0" mnemonicParsing="false" onAction="#clickGlass1" text="Glass" />
                                           <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#closeMONPane" text="X" />
-                                          <RadioButton layoutY="30.0" mnemonicParsing="false" onAction="#clickSteel1" text="Steel" />
-                                          <RadioButton layoutY="80.0" mnemonicParsing="false" onAction="#clickHemp1" text="Hemp" />
-                                          <RadioButton layoutY="100.0" mnemonicParsing="false" onAction="#clickWater1" text="Water" />
-                                          <RadioButton layoutY="120.0" mnemonicParsing="false" onAction="#clickPlastic1" text="Plastic" />
+                                          <RadioButton id="steelMON" fx:id="steelMON" layoutY="30.0" mnemonicParsing="false" onAction="#clickSteel1" text="Steel" />
+                                          <RadioButton id="hempMON" fx:id="hempMON" layoutY="80.0" mnemonicParsing="false" onAction="#clickHemp1" text="Hemp" />
+                                          <RadioButton id="waterMON" fx:id="waterMON" layoutY="100.0" mnemonicParsing="false" onAction="#clickWater1" text="Water" />
+                                          <RadioButton id="plasticMON" fx:id="plasticMON" layoutY="120.0" mnemonicParsing="false" onAction="#clickPlastic1" text="Plastic" />
                                        </children>
                                     </Pane>
                                  </children>
