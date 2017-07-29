@@ -97,6 +97,7 @@ public class HexBoard {
 			Color.web("#AFBDA8"), // dull green
 			Color.web("#AE9C9E"), // reddish GRAY 4
 			Color.web("#000000") }; // black null color 5
+        
 
 	List<Integer> possibleTokens = new ArrayList<Integer>(); // array of
 	// possible

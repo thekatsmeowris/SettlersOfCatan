@@ -16,6 +16,7 @@ package som;
  *          and a simple driver to test the code.
  */
 import java.util.ArrayList;
+import javafx.scene.image.Image;
 
 import som.assets.City;
 import som.assets.Road;
@@ -28,6 +29,17 @@ public class ResourceBank {
 	private final static int WATER = 3;
 	private final static int PLASTIC = 4;
 	private int bankQuantity;
+        
+        public Image[] resourceImages = new Image[]{
+        new Image(getClass().getResourceAsStream("graphics/oreCard.png")),
+         new Image(getClass().getResourceAsStream("graphics/glassCard.png")),
+         new Image(getClass().getResourceAsStream("graphics/hempCard.png")),
+         new Image(getClass().getResourceAsStream("graphics/waterCard.png")),
+         new Image(getClass().getResourceAsStream("graphics/plasticCard.png"))
+     
+        }; 
+        
+        
 	ArrayList<Resource> resourceList = new ArrayList<>(); // creating an
 															// ArrayList of
 															// Resource objects

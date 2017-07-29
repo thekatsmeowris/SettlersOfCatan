@@ -8,3 +8,9 @@
 .text {
 	-fx-font-family: 'space age';
 }
+.text02 {
+        
+	-fx-font-family: 'space age';
+       -fx-font-size: '20px';
+
+}
