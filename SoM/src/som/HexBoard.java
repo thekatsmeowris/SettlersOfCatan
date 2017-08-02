@@ -5,6 +5,9 @@
  */
 package som;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -116,7 +119,7 @@ public class HexBoard {
 	Stack tokenStack = new Stack();
 	Stack terrainStack = new Stack();
 
-	public HexBoard() {
+	public HexBoard() throws Exception {
 		graphics = new Graphics();
 		marsPane = new StackPane();
 		spriteImageView = new ImageView();
@@ -182,7 +185,12 @@ public class HexBoard {
 		boardShell = new StackPane(); // creates the stackpane for boardshell
 		makeBoard(); // generates a board of hexes using random distribution of
 		// terrain (does not assign dice values yet)
-		makeVertices(); // generates a set of verticies based on the hexes and
+                
+
+//saveBoard();
+
+
+                makeVertices(); // generates a set of verticies based on the hexes and
 		// vertexList
 		makeEdges(); // generates a set of edges based on the hexes, vertexList
 		// and edgeList
@@ -330,7 +338,12 @@ public class HexBoard {
 				}
 			});
 		}
-	}
+                
+        
+        
+        
+        
+        }
 
 	private void makeVertices() { // makes the vertices for the board
 
@@ -576,5 +589,33 @@ public class HexBoard {
 	private void addAdjacentHexes() {
 
 	}
+        
+        
+        /// saveBoard allows a generated board to be saved
+        private boolean saveBoard() throws Exception{
+            String boardFile="SoMBoard.xml";
+            
+            HexBoard hexBoard = new HexBoard();
+            
+            try{
+                XMLEncoder encoder= new XMLEncoder(new BufferedOutputStream(new FileOutputStream(boardFile)));
+                encoder.writeObject(this);
+                encoder.close();
+                return true;
+            }catch (Exception e){
+                return false;
 
+            }
+        }
+        
+        ///loadBoard allows a generated board to be loaded
+        private HexBoard loadHexBoard (String loadFile) throws Exception{
+        String boardFile="SoMBoard.xml";
+        XMLDecoder decoder= new XMLDecoder(new BufferedInputStream(new FileInputStream(boardFile)));
+        HexBoard hexBoard=(HexBoard)decoder.readObject();
+        decoder.close();
+        
+        return hexBoard;
+        }
+        
 }

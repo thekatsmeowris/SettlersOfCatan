@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import customcontrols.TradeResourceTracker?>
+
+ <AnchorPane mouseTransparent="true" prefHeight="109.0" prefWidth="1309.0" style="-: #171717;" visible="true">
+                                       <children>
+                                          <Pane fx:id="pnAcceptTradeDialog" layoutX="541.0" layoutY="172.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #C97B84; -fx-border-color: #53e864;" visible="false">
+                                             <children>
+                                                <Button layoutX="133.0" layoutY="161.0" mnemonicParsing="false" onAction="#tradeDialogNo" text="No" />
+                                                <Button layoutX="173.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeParentPane" text="X" />
+                                                <Button layoutX="26.0" layoutY="161.0" mnemonicParsing="false" onAction="#tradeDialogYes" text="Yes" />
+                                                <VBox fx:id="vbTradeContents" layoutX="10.0" layoutY="30.0" prefHeight="129.0" prefWidth="182.0">
+                                                   <children>
+                                                      <Label prefHeight="57.0" prefWidth="152.0" text="_name_ would like to trade:" wrapText="true">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <HBox fx:id="hbIncomingResources" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                                                         <children>
+                                                            <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Circle fill="DODGERBLUE" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </StackPane>
+                                                            <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Circle fill="DODGERBLUE" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </StackPane>
+                                                            <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Circle fill="DODGERBLUE" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </StackPane>
+                                                            <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Circle fill="DODGERBLUE" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </StackPane>
+                                                            <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Circle fill="DODGERBLUE" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </StackPane>
+                                                         </children>
+                                                         <VBox.margin>
+                                                            <Insets />
+                                                         </VBox.margin>
+                                                      </HBox>
+                                                      <Label text="for:" />
+                                                      <HBox fx:id="hbOutgoingResources" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+                                                         <children>
+                                                            <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Circle fill="DODGERBLUE" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </StackPane>
+                                                            <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Circle fill="DODGERBLUE" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </StackPane>
+                                                            <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Circle fill="DODGERBLUE" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </StackPane>
+                                                            <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Circle fill="DODGERBLUE" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </StackPane>
+                                                            <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Circle fill="DODGERBLUE" radius="10.0" stroke="BLACK" strokeType="INSIDE" />
+                                                                  <Label text="0" />
+                                                               </children>
+                                                            </StackPane>
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </Pane>
+                            
+                                          <Pane id="pnTradeDialog" fx:id="pnTradeDialog" layoutX="5.0" layoutY="22.0" mouseTransparent="true" prefHeight="521.0" prefWidth="1300.0" style="-fx-background-color: #ff8b87;" visible="false">
+                                             <children>
+                                                <Button layoutX="1274.0" mnemonicParsing="false" onAction="#closeTradeDialog" text="X" />
+                                                <Text layoutX="572.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Trade">
+                                                   <font>
+                                                      <Font name="Arial Black" size="49.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text layoutX="41.0" layoutY="407.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="REQUEST">
+                                                   <font>
+                                                      <Font name="Arial Black" size="24.0" />
+                                                   </font>
+                                                </Text>
+                                                <Button layoutX="571.0" layoutY="463.0" mnemonicParsing="false" onAction="#submitTradeOffer" prefHeight="57.0" prefWidth="156.0" text="SUBMIT" />
+                                          
+                                                      <HBox fx:id="tradeResponses" layoutY="440.0" prefHeight="100.0" prefWidth="200.0">
+                                                    <children>
+                                                      <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Circle fill="#21ff3c" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
+                                                                    <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                         <image>
+                                                            <Image url="@../res/green-check.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                         </children>
+                                                      </StackPane>
+                                                      <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Circle fill="#e3ff21" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
+                                                            <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                               <image>
+                                                                  <Image url="@../res/green-check.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </children>
+                                                      </StackPane>
+                                                      <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                         <children>
+                                                            <Circle fill="#ff2d1f" radius="21.0" stroke="BLACK" strokeType="INSIDE" />
+                                                            <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                                                               <image>
+                                                                  <Image url="@../res/green-check.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </children>
+                                                      </StackPane>
+                                                    </children>
+                                                </HBox>
+                                                <HBox fx:id="tradeResourceTrackers" layoutX="247.0" layoutY="102.0" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="299.0" prefWidth="905.0">
+                                                    <children>
+                                                              <TradeResourceTracker />
+                                                              <TradeResourceTracker />
+                                                              <TradeResourceTracker />
+                                                              <TradeResourceTracker />
+                                                              <TradeResourceTracker />
+                                                                  
+                                                          
+                                                          </children>
+      
+                                                      </HBox>
+                                                <Text layoutX="63.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Offer">
+                                                   <font>
+                                                      <Font name="Arial Black" size="24.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </Pane>
+                                          <Pane id="dicePane" fx:id="dicePane" mouseTransparent="true" prefHeight="543.0" prefWidth="1300.0" style="-fx-background-color: #c0c0c0;" visible="false">
+                                             <children>
+                                                <Text layoutX="450.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="ROLL DICE!" textAlignment="CENTER" wrappingWidth="432.6376953125">
+                                                   <font>
+                                                      <Font name="Arial Black" size="49.0" />
+                                                   </font>
+                                                </Text>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="420.0" layoutY="150.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="5.0" width="200.0" />
+                                                <Text id="leftDie" fx:id="leftDie" layoutX="503.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="0">
+                                                   <font>
+                                                      <Font name="Arial Black" size="49.0" />
+                                                   </font>
+                                                </Text>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="200.0" layoutX="720.0" layoutY="150.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="5.0" width="200.0" />
+                                                <Text id="rightDie" fx:id="rightDie" layoutX="803.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="0">
+                                                   <font>
+                                                      <Font name="Arial Black" size="49.0" />
+                                                   </font>
+                                                </Text>
+                                                <Button id="btnRollDice" fx:id="btnRollDice" layoutX="640.0" layoutY="399.0" mnemonicParsing="false" onAction="#rollDice" text="ROLL DICE" />
+                                             </children>
+                                          </Pane>
+                                          <Pane id="pnPlayerLeft" fx:id="pnPlayerLeft" layoutX="30.0" layoutY="220.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.5" prefHeight="80.0" prefWidth="60.0" styleClass="opponentInfo">
+                                             <children>
+                                                <Circle fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radius="60.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                                                <Arc fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" length="15.0" radiusX="30.0" radiusY="30.0" startAngle="270.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                                                <Circle fill="WHITE" layoutX="29.0" layoutY="34.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="15.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../res/user1.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="11.0" layoutX="13.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="14.0" layoutX="-22.0" layoutY="62.0" stroke="BLACK" strokeType="INSIDE" width="99.0" />
+                                                <Label alignment="CENTER" layoutX="-21.0" layoutY="53.0" prefHeight="33.0" prefWidth="99.0" text="NAME" textAlignment="CENTER" />
+                                                <Label layoutX="18.0" layoutY="42.0" prefHeight="33.0" prefWidth="24.0" text="VP">
+                                                   <font>
+                                                      <Font size="8.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </Pane>
+                                          <Pane id="pnPlayerMid" fx:id="pnPlayerMid" layoutX="600.0" layoutY="-10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.5" prefHeight="80.0" prefWidth="60.0" styleClass="opponentInfo">
+                                             <children>
+                                                <Circle fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radius="60.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                                                <Arc fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radiusX="30.0" radiusY="30.0" startAngle="270.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                                                <Circle fill="WHITE" layoutX="29.0" layoutY="34.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="15.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../res/user1.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="11.0" layoutX="13.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="14.0" layoutX="-22.0" layoutY="62.0" stroke="BLACK" strokeType="INSIDE" width="99.0" />
+                                                <Label alignment="CENTER" layoutX="-21.0" layoutY="53.0" prefHeight="33.0" prefWidth="99.0" text="NAME" textAlignment="CENTER" />
+                                                <Label layoutX="18.0" layoutY="42.0" prefHeight="33.0" prefWidth="24.0" text="VP">
+                                                   <font>
+                                                      <Font size="8.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </Pane>
+                                          <Pane id="pnPlayerRight" fx:id="pnPlayerRight" layoutX="1209.0" layoutY="220.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.5" prefHeight="80.0" prefWidth="60.0" styleClass="opponentInfo">
+                                             <children>
+                                                <Circle fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radius="60.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+                                                <Arc fill="DODGERBLUE" layoutX="29.0" layoutY="34.0" radiusX="30.0" radiusY="30.0" startAngle="270.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                                                <Circle fill="WHITE" layoutX="29.0" layoutY="34.0" radius="20.0" stroke="BLACK" strokeType="INSIDE" />
+                                                <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="15.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../res/user1.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="11.0" layoutX="13.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" width="30.0" />
+                                                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="14.0" layoutX="-22.0" layoutY="62.0" stroke="BLACK" strokeType="INSIDE" width="99.0" />
+                                                <Label alignment="CENTER" layoutX="-21.0" layoutY="53.0" prefHeight="33.0" prefWidth="99.0" text="NAME" textAlignment="CENTER" />
+                                                <Label layoutX="18.0" layoutY="42.0" prefHeight="33.0" prefWidth="24.0" text="VP">
+                                                   <font>
+                                                      <Font size="8.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </Pane>
+                                          <Pane fx:id="pnStatusPane" layoutX="167.0" layoutY="-10.0" prefHeight="101.0" prefWidth="274.0">
+                                             <children>
+                                                <Label fx:id="txtCurrentStatus" layoutX="75.0" layoutY="51.0" text="Game State">
+                                                   <font>
+                                                      <Font size="22.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="txtLastRoll" layoutX="-100.0" layoutY="81.0" style="-fx-text-fill: orange; -fx-font-size: 32;" text="">
+                                                   <font>
+                                                      <Font size="72.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="endGameText" layoutX="75.0" layoutY="110.0" text="Game Over!">
+                                                	<font>
+                                                		<Font size="22.0" />
+                                                	</font>
+                                                </Label>
+                                             </children>
+                                          </Pane>
+                                       </children>
+                                    </AnchorPane>
