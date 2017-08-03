@@ -2056,6 +2056,7 @@ public class GameScreenController implements Initializable {
 
 	}
         private void loadLastBoard(){
+            
             board=new HexBoard();
             try {
                 board=boardHelper.loadHexBoard();
