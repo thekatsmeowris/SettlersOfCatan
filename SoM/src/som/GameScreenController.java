@@ -16,6 +16,8 @@ import java.util.ResourceBundle;
 import customcontrols.TradeResourceTracker;
 import devCards.Knight;
 import devCards.VictoryPoint;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -76,7 +78,7 @@ public class GameScreenController implements Initializable {
 	AnchorPane lastAnchorPane, playerInfoPane;
 
 	@FXML
-	Button diceRoller, btnRollDice, startGameBtn, tradeBtn, buildBtn, cancelBuildBtn, gameStateBtn, endBtn, devBtn;
+	Button diceRoller, btnRollDice, startGameBtn, tradeBtn, buildBtn, cancelBuildBtn, gameStateBtn, endBtn, devBtn, fn;
 
         @FXML
         RadioButton glassYOP, steelYOP, hempYOP, waterYOP, plasticYOP, glassMON, steelMON, hempMON, waterMON, plasticMON;
@@ -177,6 +179,7 @@ public class GameScreenController implements Initializable {
 	DevelopmentDeck developmentDeck = new DevelopmentDeck();
 	DevelopmentCard thisCard;
 	HexBoard board;
+        BoardHelper boardHelper=new BoardHelper();
 	ResourceGenerator resGen;
 	ResourceBank resourceBank;
 	int turnCount;
@@ -197,8 +200,18 @@ public class GameScreenController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		currentPlayerNumber = 0;
+                
 		board = new HexBoard();
-
+                System.out.println(board);
+            try {
+                boardHelper.saveBoard(board);
+                
+            } catch (Exception ex) {
+                Logger.getLogger(GameScreenController.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("FAILED TO SAVE");
+                
+            }
+                
 		animatedMedia = new AnimatedMedia();
 
 		for (MediaView mv : animatedMedia.getMediaViews()) {
@@ -2042,4 +2055,16 @@ public class GameScreenController implements Initializable {
 		});
 
 	}
+        private void loadLastBoard(){
+            board=new HexBoard();
+            try {
+                board=boardHelper.loadHexBoard();
+            } catch (Exception ex) {
+                Logger.getLogger(GameScreenController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        public void fn(){
+            loadLastBoard();
+            gameBoard.requestLayout();
+        }
 }

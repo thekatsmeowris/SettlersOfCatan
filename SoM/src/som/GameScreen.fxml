@@ -45,6 +45,8 @@
                                     <Button id="tradeBtn" fx:id="tradeBtn" layoutX="14.0" layoutY="10" mnemonicParsing="false" onAction="#openTradeDialog" prefHeight="24.0" prefWidth="100.0" text="Trade" />
                                     <Button id="devBtn" fx:id="devBtn" layoutX="14.0" layoutY="35.0" mnemonicParsing="false" onAction="#openDevelopDialog" prefHeight="24.0" prefWidth="100.0" text="Dev Card" />
                                     <Button id="endBtn" fx:id="endBtn" layoutX="14.0" layoutY="60.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="24.0" prefWidth="100.0" text="End Turn" />
+                                    <Button id="fnBtn" fx:id="fnBtn" layoutX="14.0" layoutY="95.0" mnemonicParsing="false" onAction="#fn" prefHeight="24.0" prefWidth="100.0" text="Fn" />
+
                                     <!--<Button layoutX="144.0" layoutY="28.0" mnemonicParsing="false" onAction="#simulateTradeRequest" prefHeight="54.0" prefWidth="96.0" text="Function" />-->
                                  </children>
                               </Group>

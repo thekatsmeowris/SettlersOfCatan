@@ -34,7 +34,255 @@ import javafx.util.Duration;
  *
  * @author makogenq
  */
-public class HexBoard {
+public class HexBoard implements Serializable{
+
+    public Graphics getGraphics() {
+        return graphics;
+    }
+
+    public void setGraphics(Graphics graphics) {
+        this.graphics = graphics;
+    }
+
+    public Image getMarsImage() {
+        return marsImage;
+    }
+
+    public void setMarsImage(Image marsImage) {
+        this.marsImage = marsImage;
+    }
+
+    public Image getSpriteImage() {
+        return spriteImage;
+    }
+
+    public void setSpriteImage(Image spriteImage) {
+        this.spriteImage = spriteImage;
+    }
+
+    public ImageView getSpriteImageView() {
+        return spriteImageView;
+    }
+
+    public void setSpriteImageView(ImageView spriteImageView) {
+        this.spriteImageView = spriteImageView;
+    }
+
+    public ImageView getMarsView() {
+        return marsView;
+    }
+
+    public void setMarsView(ImageView marsView) {
+        this.marsView = marsView;
+    }
+
+    public StackPane getMarsPane() {
+        return marsPane;
+    }
+
+    public void setMarsPane(StackPane marsPane) {
+        this.marsPane = marsPane;
+    }
+
+    public ArrayList<Hex> getHexList() {
+        return hexList;
+    }
+
+    public void setHexList(ArrayList<Hex> hexList) {
+        this.hexList = hexList;
+    }
+
+    public ArrayList<Hex> getTransHexList() {
+        return transHexList;
+    }
+
+    public void setTransHexList(ArrayList<Hex> transHexList) {
+        this.transHexList = transHexList;
+    }
+
+    public ArrayList<HexVertex> getVertexList() {
+        return vertexList;
+    }
+
+    public void setVertexList(ArrayList<HexVertex> vertexList) {
+        this.vertexList = vertexList;
+    }
+
+    public ArrayList<HexEdge> getEdgeList() {
+        return edgeList;
+    }
+
+    public void setEdgeList(ArrayList<HexEdge> edgeList) {
+        this.edgeList = edgeList;
+    }
+
+    public int getMaxColumns() {
+        return maxColumns;
+    }
+
+    public void setMaxColumns(int maxColumns) {
+        this.maxColumns = maxColumns;
+    }
+
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
+
+    public void setNumberOfRows(int numberOfRows) {
+        this.numberOfRows = numberOfRows;
+    }
+
+    public double getCurrentX() {
+        return currentX;
+    }
+
+    public void setCurrentX(double currentX) {
+        this.currentX = currentX;
+    }
+
+    public double getCurrentY() {
+        return currentY;
+    }
+
+    public void setCurrentY(double currentY) {
+        this.currentY = currentY;
+    }
+
+    public StackPane getBoardShell() {
+        return boardShell;
+    }
+
+    public void setBoardShell(StackPane boardShell) {
+        this.boardShell = boardShell;
+    }
+
+    public Pane getTransHexPane() {
+        return transHexPane;
+    }
+
+    public void setTransHexPane(Pane transHexPane) {
+        this.transHexPane = transHexPane;
+    }
+
+    public static Pane getNumberPane() {
+        return numberPane;
+    }
+
+    public static void setNumberPane(Pane numberPane) {
+        HexBoard.numberPane = numberPane;
+    }
+
+    public Text getT1() {
+        return t1;
+    }
+
+    public void setT1(Text t1) {
+        this.t1 = t1;
+    }
+
+    public Pane getVertexPane() {
+        return vertexPane;
+    }
+
+    public void setVertexPane(Pane vertexPane) {
+        this.vertexPane = vertexPane;
+    }
+
+    public Pane getEdgePane() {
+        return edgePane;
+    }
+
+    public void setEdgePane(Pane edgePane) {
+        this.edgePane = edgePane;
+    }
+
+    public Pane getPopUpDialog() {
+        return popUpDialog;
+    }
+
+    public void setPopUpDialog(Pane popUpDialog) {
+        this.popUpDialog = popUpDialog;
+    }
+
+    public int getColumnMax() {
+        return columnMax;
+    }
+
+    public void setColumnMax(int columnMax) {
+        this.columnMax = columnMax;
+    }
+
+    public double getHexRadius() {
+        return hexRadius;
+    }
+
+    public void setHexRadius(double hexRadius) {
+        this.hexRadius = hexRadius;
+    }
+
+    public double getInRadius() {
+        return inRadius;
+    }
+
+    public void setInRadius(double inRadius) {
+        this.inRadius = inRadius;
+    }
+
+    public float getCenterX() {
+        return centerX;
+    }
+
+    public void setCenterX(float centerX) {
+        this.centerX = centerX;
+    }
+
+    public float getCenterY() {
+        return centerY;
+    }
+
+    public void setCenterY(float centerY) {
+        this.centerY = centerY;
+    }
+
+    public List<Integer> getPossibleTokens() {
+        return possibleTokens;
+    }
+
+    public void setPossibleTokens(List<Integer> possibleTokens) {
+        this.possibleTokens = possibleTokens;
+    }
+
+    public int[] getTemp() {
+        return temp;
+    }
+
+    public void setTemp(int[] temp) {
+        this.temp = temp;
+    }
+
+    public int[] getPossibleTerrainTypes() {
+        return possibleTerrainTypes;
+    }
+
+    public void setPossibleTerrainTypes(int[] possibleTerrainTypes) {
+        this.possibleTerrainTypes = possibleTerrainTypes;
+    }
+
+    public Stack getTokenStack() {
+        return tokenStack;
+    }
+
+    public void setTokenStack(Stack tokenStack) {
+        this.tokenStack = tokenStack;
+    }
+
+    public Stack getTerrainStack() {
+        return terrainStack;
+    }
+
+    public void setTerrainStack(Stack terrainStack) {
+        this.terrainStack = terrainStack;
+    }
 
 	Graphics graphics;
 	Image marsImage, spriteImage; // Image of Mars and sprite sheet of tornado
@@ -119,7 +367,7 @@ public class HexBoard {
 	Stack tokenStack = new Stack();
 	Stack terrainStack = new Stack();
 
-	public HexBoard() throws Exception {
+	public HexBoard() {
 		graphics = new Graphics();
 		marsPane = new StackPane();
 		spriteImageView = new ImageView();
@@ -591,31 +839,6 @@ public class HexBoard {
 	}
         
         
-        /// saveBoard allows a generated board to be saved
-        private boolean saveBoard() throws Exception{
-            String boardFile="SoMBoard.xml";
-            
-            HexBoard hexBoard = new HexBoard();
-            
-            try{
-                XMLEncoder encoder= new XMLEncoder(new BufferedOutputStream(new FileOutputStream(boardFile)));
-                encoder.writeObject(this);
-                encoder.close();
-                return true;
-            }catch (Exception e){
-                return false;
-
-            }
-        }
         
-        ///loadBoard allows a generated board to be loaded
-        private HexBoard loadHexBoard (String loadFile) throws Exception{
-        String boardFile="SoMBoard.xml";
-        XMLDecoder decoder= new XMLDecoder(new BufferedInputStream(new FileInputStream(boardFile)));
-        HexBoard hexBoard=(HexBoard)decoder.readObject();
-        decoder.close();
-        
-        return hexBoard;
-        }
         
 }
