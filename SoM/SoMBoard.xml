@@ -2,11 +2,11 @@
 <java version="1.8.0_111" class="java.beans.XMLDecoder">
  <object class="som.HexBoard" id="HexBoard0">
   <void id="ColorArray0" property="colorPalette">
-   <void id="Color0" index="4"/>
-   <void id="Color1" index="3"/>
+   <void id="Color0" index="2"/>
+   <void id="Color1" index="0"/>
    <void id="Color2" index="1"/>
-   <void id="Color3" index="2"/>
-   <void id="Color4" index="0"/>
+   <void id="Color3" index="3"/>
+   <void id="Color4" index="4"/>
   </void>
   <void id="ArrayList0" property="edgeList">
    <void id="HexEdge0" index="0">
@@ -119,10 +119,10 @@
                                                                                                               <object idref="Color0"/>
                                                                                                              </void>
                                                                                                              <void property="terrainType">
-                                                                                                              <int>4</int>
+                                                                                                              <int>2</int>
                                                                                                              </void>
                                                                                                              <void property="tokenValue">
-                                                                                                              <int>3</int>
+                                                                                                              <int>6</int>
                                                                                                              </void>
                                                                                                             </void>
                                                                                                            </void>
@@ -150,52 +150,65 @@
                                                                                                                                 <void id="HexEdge61" index="2">
                                                                                                                                  <void id="ArrayList63" property="adjacentEdge">
                                                                                                                                   <void id="HexEdge62" index="0">
-                                                                                                                                   <void id="ArrayList64" property="adjacentVertex">
+                                                                                                                                   <void id="ArrayList64" property="adjacentHex">
+                                                                                                                                    <void index="0">
+                                                                                                                                     <void property="hexColor">
+                                                                                                                                      <object idref="Color1"/>
+                                                                                                                                     </void>
+                                                                                                                                     <void property="terrainType">
+                                                                                                                                      <int>0</int>
+                                                                                                                                     </void>
+                                                                                                                                     <void property="tokenValue">
+                                                                                                                                      <int>12</int>
+                                                                                                                                     </void>
+                                                                                                                                    </void>
+                                                                                                                                   </void>
+                                                                                                                                   <void id="ArrayList65" property="adjacentVertex">
                                                                                                                                     <void id="HexVertex2" index="0">
-                                                                                                                                     <void id="ArrayList65" property="adjacentHex">
+                                                                                                                                     <void id="ArrayList66" property="adjacentHex">
                                                                                                                                       <void id="Hex1" index="0">
-                                                                                                                                       <void id="ArrayList66" property="edges">
+                                                                                                                                       <void id="ArrayList67" property="edges">
                                                                                                                                         <void id="HexEdge63" index="3">
-                                                                                                                                         <void id="ArrayList67" property="adjacentEdge">
+                                                                                                                                         <void id="ArrayList68" property="adjacentEdge">
                                                                                                                                           <void id="HexEdge64" index="1">
-                                                                                                                                           <void id="ArrayList68" property="adjacentEdge">
+                                                                                                                                           <void id="ArrayList69" property="adjacentEdge">
                                                                                                                                             <void id="HexEdge65" index="2">
-                                                                                                                                             <void id="ArrayList69" property="adjacentEdge">
+                                                                                                                                             <void id="ArrayList70" property="adjacentEdge">
                                                                                                                                               <void id="HexEdge66" index="2">
-                                                                                                                                               <void id="ArrayList70" property="adjacentEdge">
+                                                                                                                                               <void id="ArrayList71" property="adjacentEdge">
                                                                                                                                                 <void id="HexEdge67" index="1">
-                                                                                                                                                 <void id="ArrayList71" property="adjacentVertex">
+                                                                                                                                                 <void id="ArrayList72" property="adjacentVertex">
                                                                                                                                                   <void id="HexVertex3" index="0">
                                                                                                                                                    <void property="parentHex">
                                                                                                                                                     <void property="hexColor">
-                                                                                                                                                     <object idref="Color0"/>
+                                                                                                                                                     <object idref="Color1"/>
                                                                                                                                                     </void>
                                                                                                                                                     <void property="terrainType">
-                                                                                                                                                     <int>4</int>
+                                                                                                                                                     <int>0</int>
                                                                                                                                                     </void>
                                                                                                                                                     <void property="tokenValue">
-                                                                                                                                                     <int>3</int>
+                                                                                                                                                     <int>11</int>
                                                                                                                                                     </void>
                                                                                                                                                    </void>
                                                                                                                                                   </void>
                                                                                                                                                   <void id="HexVertex4" index="1">
                                                                                                                                                    <void id="Hex2" property="parentHex">
-                                                                                                                                                    <void id="ArrayList72" property="edges">
+                                                                                                                                                    <void id="ArrayList73" property="edges">
                                                                                                                                                      <void id="HexEdge68" index="4">
-                                                                                                                                                      <void id="ArrayList73" property="adjacentEdge">
+                                                                                                                                                      <void id="ArrayList74" property="adjacentEdge">
                                                                                                                                                        <void id="HexEdge69" index="1">
-                                                                                                                                                        <void id="ArrayList74" property="adjacentEdge">
+                                                                                                                                                        <void id="ArrayList75" property="adjacentEdge">
                                                                                                                                                          <void id="HexEdge70" index="1">
-                                                                                                                                                          <void id="ArrayList75" property="adjacentEdge">
+                                                                                                                                                          <void id="ArrayList76" property="adjacentEdge">
                                                                                                                                                            <void id="HexEdge71" index="2">
-                                                                                                                                                            <void id="ArrayList76" property="adjacentVertex">
+                                                                                                                                                            <void id="ArrayList77" property="adjacentVertex">
                                                                                                                                                              <void id="HexVertex5" index="1">
                                                                                                                                                               <void property="parentHex">
                                                                                                                                                                <void property="hexColor">
-                                                                                                                                                                <object idref="Color1"/>
+                                                                                                                                                                <object idref="Color2"/>
                                                                                                                                                                </void>
                                                                                                                                                                <void property="terrainType">
-                                                                                                                                                                <int>3</int>
+                                                                                                                                                                <int>1</int>
                                                                                                                                                                </void>
                                                                                                                                                                <void property="tokenValue">
                                                                                                                                                                 <int>2</int>
@@ -212,13 +225,13 @@
                                                                                                                                                      </void>
                                                                                                                                                     </void>
                                                                                                                                                     <void property="hexColor">
-                                                                                                                                                     <object idref="Color1"/>
+                                                                                                                                                     <object idref="Color3"/>
                                                                                                                                                     </void>
                                                                                                                                                     <void property="terrainType">
                                                                                                                                                      <int>3</int>
                                                                                                                                                     </void>
                                                                                                                                                     <void property="tokenValue">
-                                                                                                                                                     <int>9</int>
+                                                                                                                                                     <int>3</int>
                                                                                                                                                     </void>
                                                                                                                                                    </void>
                                                                                                                                                   </void>
@@ -227,18 +240,15 @@
                                                                                                                                                </void>
                                                                                                                                               </void>
                                                                                                                                              </void>
-                                                                                                                                             <void id="ArrayList77" property="adjacentVertex">
+                                                                                                                                             <void id="ArrayList78" property="adjacentVertex">
                                                                                                                                               <void id="HexVertex6" index="0">
-                                                                                                                                               <void id="ArrayList78" property="adjacentHex">
+                                                                                                                                               <void id="ArrayList79" property="adjacentHex">
                                                                                                                                                 <void index="0">
                                                                                                                                                  <void property="hexColor">
-                                                                                                                                                  <object idref="Color0"/>
+                                                                                                                                                  <object idref="Color3"/>
                                                                                                                                                  </void>
                                                                                                                                                  <void property="terrainType">
-                                                                                                                                                  <int>4</int>
-                                                                                                                                                 </void>
-                                                                                                                                                 <void property="tokenValue">
-                                                                                                                                                  <int>12</int>
+                                                                                                                                                  <int>3</int>
                                                                                                                                                  </void>
                                                                                                                                                 </void>
                                                                                                                                                </void>
@@ -257,7 +267,7 @@
                                                                                                                                         <int>1</int>
                                                                                                                                        </void>
                                                                                                                                        <void property="tokenValue">
-                                                                                                                                        <int>5</int>
+                                                                                                                                        <int>11</int>
                                                                                                                                        </void>
                                                                                                                                       </void>
                                                                                                                                      </void>
@@ -269,15 +279,18 @@
                                                                                                                                </void>
                                                                                                                               </void>
                                                                                                                              </void>
-                                                                                                                             <void id="ArrayList79" property="adjacentVertex">
+                                                                                                                             <void id="ArrayList80" property="adjacentVertex">
                                                                                                                               <void id="HexVertex7" index="1">
-                                                                                                                               <void id="ArrayList80" property="adjacentHex">
+                                                                                                                               <void id="ArrayList81" property="adjacentHex">
                                                                                                                                 <void index="1">
                                                                                                                                  <void property="hexColor">
-                                                                                                                                  <object idref="Color0"/>
+                                                                                                                                  <object idref="Color1"/>
                                                                                                                                  </void>
                                                                                                                                  <void property="terrainType">
-                                                                                                                                  <int>4</int>
+                                                                                                                                  <int>0</int>
+                                                                                                                                 </void>
+                                                                                                                                 <void property="tokenValue">
+                                                                                                                                  <int>10</int>
                                                                                                                                  </void>
                                                                                                                                 </void>
                                                                                                                                </void>
@@ -299,8 +312,14 @@
                                                                                                                </void>
                                                                                                               </void>
                                                                                                              </void>
+                                                                                                             <void property="hexColor">
+                                                                                                              <object idref="Color0"/>
+                                                                                                             </void>
+                                                                                                             <void property="terrainType">
+                                                                                                              <int>2</int>
+                                                                                                             </void>
                                                                                                              <void property="tokenValue">
-                                                                                                              <int>11</int>
+                                                                                                              <int>3</int>
                                                                                                              </void>
                                                                                                             </void>
                                                                                                            </void>
@@ -313,18 +332,18 @@
                                                                                                     </void>
                                                                                                    </void>
                                                                                                   </void>
-                                                                                                  <void id="ArrayList81" property="adjacentVertex">
+                                                                                                  <void id="ArrayList82" property="adjacentVertex">
                                                                                                    <void id="HexVertex8" index="0">
-                                                                                                    <void id="ArrayList82" property="adjacentHex">
+                                                                                                    <void id="ArrayList83" property="adjacentHex">
                                                                                                      <void index="0">
                                                                                                       <void property="hexColor">
-                                                                                                       <object idref="Color2"/>
+                                                                                                       <object idref="Color4"/>
                                                                                                       </void>
                                                                                                       <void property="terrainType">
-                                                                                                       <int>1</int>
+                                                                                                       <int>4</int>
                                                                                                       </void>
                                                                                                       <void property="tokenValue">
-                                                                                                       <int>8</int>
+                                                                                                       <int>5</int>
                                                                                                       </void>
                                                                                                      </void>
                                                                                                     </void>
@@ -336,12 +355,18 @@
                                                                                               </void>
                                                                                              </void>
                                                                                             </void>
-                                                                                            <void id="ArrayList83" property="adjacentVertex">
+                                                                                            <void id="ArrayList84" property="adjacentVertex">
                                                                                              <void id="HexVertex9" index="0">
-                                                                                              <void id="ArrayList84" property="adjacentHex">
+                                                                                              <void id="ArrayList85" property="adjacentHex">
                                                                                                <void index="0">
+                                                                                                <void property="hexColor">
+                                                                                                 <object idref="Color3"/>
+                                                                                                </void>
+                                                                                                <void property="terrainType">
+                                                                                                 <int>3</int>
+                                                                                                </void>
                                                                                                 <void property="tokenValue">
-                                                                                                 <int>8</int>
+                                                                                                 <int>4</int>
                                                                                                 </void>
                                                                                                </void>
                                                                                               </void>
@@ -349,11 +374,17 @@
                                                                                             </void>
                                                                                            </void>
                                                                                           </void>
-                                                                                          <void id="ArrayList85" property="adjacentVertex">
+                                                                                          <void id="ArrayList86" property="adjacentVertex">
                                                                                            <void id="HexVertex10" index="0">
                                                                                             <void property="parentHex">
+                                                                                             <void property="hexColor">
+                                                                                              <object idref="Color4"/>
+                                                                                             </void>
+                                                                                             <void property="terrainType">
+                                                                                              <int>4</int>
+                                                                                             </void>
                                                                                              <void property="tokenValue">
-                                                                                              <int>6</int>
+                                                                                              <int>9</int>
                                                                                              </void>
                                                                                             </void>
                                                                                            </void>
@@ -364,34 +395,19 @@
                                                                                       </void>
                                                                                      </void>
                                                                                     </void>
-                                                                                    <void id="ArrayList86" property="adjacentVertex">
-                                                                                     <void id="HexVertex11" index="0">
-                                                                                      <void property="parentHex">
-                                                                                       <void property="hexColor">
-                                                                                        <object idref="Color3"/>
-                                                                                       </void>
-                                                                                       <void property="terrainType">
-                                                                                        <int>2</int>
-                                                                                       </void>
-                                                                                       <void property="tokenValue">
-                                                                                        <int>9</int>
-                                                                                       </void>
-                                                                                      </void>
-                                                                                     </void>
-                                                                                    </void>
                                                                                    </void>
                                                                                   </void>
                                                                                  </void>
                                                                                 </void>
                                                                                 <void id="ArrayList87" property="adjacentVertex">
-                                                                                 <void id="HexVertex12" index="0">
+                                                                                 <void id="HexVertex11" index="0">
                                                                                   <void id="ArrayList88" property="adjacentHex">
                                                                                    <void index="0">
                                                                                     <void property="hexColor">
-                                                                                     <object idref="Color1"/>
+                                                                                     <object idref="Color0"/>
                                                                                     </void>
                                                                                     <void property="terrainType">
-                                                                                     <int>3</int>
+                                                                                     <int>2</int>
                                                                                     </void>
                                                                                     <void property="tokenValue">
                                                                                      <int>10</int>
@@ -403,17 +419,17 @@
                                                                                </void>
                                                                               </void>
                                                                               <void id="ArrayList89" property="adjacentVertex">
-                                                                               <void id="HexVertex13" index="0">
+                                                                               <void id="HexVertex12" index="0">
                                                                                 <void id="ArrayList90" property="adjacentHex">
                                                                                  <void index="1">
                                                                                   <void property="hexColor">
-                                                                                   <object idref="Color4"/>
+                                                                                   <object idref="Color0"/>
                                                                                   </void>
                                                                                   <void property="terrainType">
-                                                                                   <int>0</int>
+                                                                                   <int>2</int>
                                                                                   </void>
                                                                                   <void property="tokenValue">
-                                                                                   <int>4</int>
+                                                                                   <int>8</int>
                                                                                   </void>
                                                                                  </void>
                                                                                 </void>
@@ -426,14 +442,17 @@
                                                                          </void>
                                                                         </void>
                                                                         <void id="ArrayList91" property="adjacentVertex">
-                                                                         <void id="HexVertex14" index="0">
+                                                                         <void id="HexVertex13" index="0">
                                                                           <void id="ArrayList92" property="adjacentHex">
                                                                            <void index="1">
                                                                             <void property="hexColor">
-                                                                             <object idref="Color4"/>
+                                                                             <object idref="Color2"/>
                                                                             </void>
                                                                             <void property="terrainType">
-                                                                             <int>0</int>
+                                                                             <int>1</int>
+                                                                            </void>
+                                                                            <void property="tokenValue">
+                                                                             <int>4</int>
                                                                             </void>
                                                                            </void>
                                                                           </void>
@@ -442,17 +461,17 @@
                                                                        </void>
                                                                       </void>
                                                                       <void id="ArrayList93" property="adjacentVertex">
-                                                                       <void id="HexVertex15" index="1">
+                                                                       <void id="HexVertex14" index="1">
                                                                         <void id="ArrayList94" property="adjacentHex">
                                                                          <void index="1">
                                                                           <void property="hexColor">
                                                                            <object idref="Color3"/>
                                                                           </void>
                                                                           <void property="terrainType">
-                                                                           <int>2</int>
+                                                                           <int>3</int>
                                                                           </void>
                                                                           <void property="tokenValue">
-                                                                           <int>10</int>
+                                                                           <int>6</int>
                                                                           </void>
                                                                          </void>
                                                                         </void>
@@ -465,17 +484,17 @@
                                                                  </void>
                                                                 </void>
                                                                 <void id="ArrayList95" property="adjacentVertex">
-                                                                 <void id="HexVertex16" index="1">
+                                                                 <void id="HexVertex15" index="1">
                                                                   <void id="ArrayList96" property="adjacentHex">
                                                                    <void index="1">
                                                                     <void property="hexColor">
-                                                                     <object idref="Color2"/>
+                                                                     <object idref="Color4"/>
                                                                     </void>
                                                                     <void property="terrainType">
-                                                                     <int>1</int>
+                                                                     <int>4</int>
                                                                     </void>
                                                                     <void property="tokenValue">
-                                                                     <int>6</int>
+                                                                     <int>8</int>
                                                                     </void>
                                                                    </void>
                                                                   </void>
@@ -541,11 +560,6 @@
       </void>
      </void>
     </void>
-   </void>
-  </void>
-  <void property="t1">
-   <void property="text">
-    <string>6</string>
    </void>
   </void>
  </object>

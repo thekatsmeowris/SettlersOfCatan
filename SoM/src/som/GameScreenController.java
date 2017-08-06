@@ -60,7 +60,8 @@ import som.assets.Settlement;
  * @author makogenq
  */
 public class GameScreenController implements Initializable {
-
+//FXML Objects Declarations 
+    
 	@FXML
 	Pane gameLayer, gameBoard, playerGUI, dicePane, pnTradeDialog, robberConfirmDialog, pnPlayerLeft, pnPlayerMid,
 			pnPlayerRight, pnAcceptTradeDialog, pnBuild, pnDevelopDialog, pnYOP, pnMon, playerStackPane;
@@ -94,52 +95,26 @@ public class GameScreenController implements Initializable {
 	@FXML
 	private VBox vbTradeContents, popupDialog;
 
-	Node selectedItem;
+//End FXML Declarations
+        
+        
+	
+
 	int diceValue;
 	int longestRoadValue;
 	int largestArmyValue;
 	int resourcePass;
-	ArrayList<DevelopmentCard> removeList;
 	final int SETTLMENT_VP_VALUE = 1;
 
-	public final static int MAX_PLAYERS = 4;
-	private static Player currentPlayer;
-	private static Player playerWithLongestRoad;
-	private static Player playerWithLargestArmy;
-	private static int gameState;
-	private static int previousGameState;
-	private static int resourceState;
-	private static int itsSteel;
-	private static int itsGlass;
-	private static int itsHemp;
-	private static int itsWater;
-	private static int itsPlastic;
-        public final static int GLASS_CLICK = 23;
-        public final static int GLASS_CLICK1 = 24;
-        public final static int STEEL_CLICK = 25;
-        public final static int STEEL_CLICK1 = 26;
-        public final static int HEMP_CLICK = 27;
-        public final static int HEMP_CLICK1 = 28;
-        public final static int WATER_CLICK = 29;
-        public final static int WATER_CLICK1 = 30;
-        public final static int PLASTIC_CLICK = 31;
-        public final static int PLASTIC_CLICK1 = 32;
 
-	static Audio audio = new Audio();
-	public final static int chooseSteelYOP = 0;
-	public final static int chooseGlassYOP = 1;
-	public final static int chooseHempYOP = 2;
-	public final static int chooseWaterYOP = 3;
-	public final static int choosePlasticYOP = 4;
-	public final static int GAME_OVER = 404;
-	public final static int NEW_GAME = 0;
+        public final static int NEW_GAME = 0;
 	public final static int DETERMINE_PLAYER_ORDER = 1;
 	public final static int INIT_BUILD_PHASE_A = 2;
 	public final static int INIT_BUILD_PHASE_B = 3;
 	public final static int PRE_ROLL = 4;
 	public final static int MAIN_PHASE = 5;
-
-	public final static int PLACING_ROAD = 10;
+        
+        public final static int PLACING_ROAD = 10;
 	public final static int PLACING_SETTLEMENT = 11;
 	public final static int PLACING_CITY = 12;
 	public final static int MOVING_ROBBER = 13;
@@ -154,35 +129,82 @@ public class GameScreenController implements Initializable {
 	public final static int PLACING_FREE_ROAD = 21;
 	public final static int MOVING_KNIGHT = 22;
 
+        public final static int GLASS_CLICK = 23;
+        public final static int GLASS_CLICK1 = 24;
+        public final static int STEEL_CLICK = 25;
+        public final static int STEEL_CLICK1 = 26;
+        public final static int HEMP_CLICK = 27;
+        public final static int HEMP_CLICK1 = 28;
+        public final static int WATER_CLICK = 29;
+        public final static int WATER_CLICK1 = 30;
+        public final static int PLASTIC_CLICK = 31;
+        public final static int PLASTIC_CLICK1 = 32;
+        
+        public final static int MAX_PLAYERS = 4;
+	private static Player currentPlayer;
+	private static Player playerWithLongestRoad;
+	private static Player playerWithLargestArmy;
+	private static int gameState;
+	private static int previousGameState;
+	private static int resourceState;
+	private static int itsSteel;
+	private static int itsGlass;
+	private static int itsHemp;
+	private static int itsWater;
+	private static int itsPlastic;
+
+        
+
+	public final static int chooseSteelYOP = 0;
+	public final static int chooseGlassYOP = 1;
+	public final static int chooseHempYOP = 2;
+	public final static int chooseWaterYOP = 3;
+	public final static int choosePlasticYOP = 4;
+	
+        public final static int GAME_OVER = 404;
+
+	
 	private static int currentPlayerNumber;
 	private boolean advanceBackwards;
 
-	/*
-	 * public final static int DISTR_RESOURCES = 20; public final static int
-	 * DISCARDING = 21; public final static int STEALING_RESOURCE = 22; public
-	 * final static int
+        static Audio audio = new Audio();
+
+        Node selectedItem;
+        ArrayList<DevelopmentCard> removeList;
+        int turnCount;
+
+        int freeRoad; // number of free roads the player can place
+
+        /*
+	 * public final static int DISTR_RESOURCES = 20; 
+         * public final static int DISCARDING = 21; 
+         * public final static int STEALING_RESOURCE = 22; 
+	 * public final static int
 	 * 
 	 */
 
-	int freeRoad; // number of free roads the player can place
 	// int resourcePass; //these skip checking resource requirements.
-	// Circle selectedCircle=new HexVertex();
 
 	/**
 	 * Initializes the controller class.
 	 */
 
 	// -----------------------------------------------------//
-
+        //container for sending and reciving resources in trade
 	TradePack thisPlayerTradePack;
-	static ArrayList<Player> players;
-	DevelopmentDeck developmentDeck = new DevelopmentDeck();
-	DevelopmentCard thisCard;
+	//List of Players currently engaged in gameplay
+        static ArrayList<Player> players;
+        //Deck of Development Cards
+        DevelopmentDeck developmentDeck = new DevelopmentDeck();
+        DevelopmentCard thisCard;
+        
+        //The Game Board
 	HexBoard board;
         BoardHelper boardHelper=new BoardHelper();
-	ResourceGenerator resGen;
+	
+        //the object that generates resources on the start of each turn
+        ResourceGenerator resGen;
 	ResourceBank resourceBank;
-	int turnCount;
 	ResourceGenerator resourceGenerator;
 	Robber rob;
 
@@ -200,8 +222,11 @@ public class GameScreenController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		currentPlayerNumber = 0;
-                
+
+                //create the new board
 		board = new HexBoard();
+                
+                //seralize amd save the board to an xml file
                 System.out.println(board);
             try {
                 boardHelper.saveBoard(board);
