@@ -19,6 +19,7 @@ import javafx.scene.shape.Arc;
 /**
  *
  * @author makogenq
+ * @author thekatsmeowris
  */
 public class Player {
 	private static final int VICTORY_POINT_MAX = 10;
