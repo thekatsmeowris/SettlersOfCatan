@@ -9,6 +9,7 @@ package som;
 /**
  *
  * @author Chadwick J Davis
+ * @author Katie Mowris
  * CS 56
  * April-9-2017
  * Purpose: ResourceBank class and Resource class for 
