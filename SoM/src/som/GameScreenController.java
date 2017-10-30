@@ -58,6 +58,7 @@ import som.assets.Settlement;
  * FXML Controller class
  *
  * @author makogenq
+ *@author thekatsmeowris
  */
 public class GameScreenController implements Initializable {
 //FXML Objects Declarations 
